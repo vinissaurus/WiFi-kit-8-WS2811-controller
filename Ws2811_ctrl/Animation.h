@@ -1,6 +1,6 @@
 #define BRIGHTNESS  255
 #define FRAMES_PER_SECOND 60
-#define RATE 100
+#define RATE 50
 
 bool gReverseDirection = true;
 
