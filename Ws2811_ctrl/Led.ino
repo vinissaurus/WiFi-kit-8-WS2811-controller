@@ -16,7 +16,7 @@ void led_setup() {
 ///////////////////////////NOT ANYMORE, BEEATCH! PLEASE VISIT "Animation.h" for more info
 
 //ANIMATIONS HEHE
-int animation_mode = 2;
+int animation_mode = 3;
 
 int led_counter = 0;
 void led_loop() {
@@ -32,6 +32,12 @@ void led_loop() {
         break;
       case 2:
         Ocean();
+        break;
+      case 3:
+        Palette();
+        break;
+      case 4:
+        pride();
         break;
     }
 
