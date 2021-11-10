@@ -21,17 +21,24 @@ void led_setup() {
 
 //ANIMATIONS HEHE
 bool anim_play = true;
-int animation_mode = 4;
+int animation_mode = 0;
 
 int button_counter = 0;
+//int repeated_press = 0;
 
 void button_press(int time_pressed) {
   //if (time_pressed > 10) {
   Serial.println(time_pressed);
   //}
   if (time_pressed > 5 && time_pressed < 30) {
-    anim_play = !anim_play; //play or pause
-    Serial.println(anim_play);
+    //anim_play = !anim_play; //play or pause
+    if (animation_mode < 5) {
+      animation_mode++;
+    }
+    else {
+      animation_mode = 0;
+    }
+    //Serial.println(anim_play);
   }
 }
 
@@ -41,6 +48,7 @@ void button_loop() {
       if (button_counter > 0) {
         button_press(button_counter);
         button_counter = 0;
+        //repeated_press++;
       }
       break;
     case HIGH:
@@ -72,6 +80,9 @@ void led_loop() {
         break;
       case 4:
         pride();
+        break;
+      case 5:
+        TwinkleFox();
         break;
     }
 
