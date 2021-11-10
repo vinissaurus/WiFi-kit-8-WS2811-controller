@@ -1,4 +1,4 @@
-#include <WiFiManager.h> // https://github.com/tzapu/WiFiManager
+ // https://github.com/tzapu/WiFiManager
 
 #define TRIGGER_PIN 0
 
@@ -9,7 +9,8 @@ bool wm_nonblocking = false; // change to true to use non blocking
 WiFiManager wm; // global wm instance
 WiFiManagerParameter custom_field; // global param ( for non blocking w params )
 
-void wifi_setup() {
+int wifi_setup() {
+  int is_it_connected=0;
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   Serial.begin(115200);
   delay(3000);
@@ -79,7 +80,9 @@ void wifi_setup() {
   else {
     //if you get here you have connected to the WiFi
     Serial.println("connected...yeey :)");
+    is_it_connected=1;
   }
+  return is_it_connected;
 }
 
 

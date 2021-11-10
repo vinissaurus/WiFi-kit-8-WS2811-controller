@@ -15,13 +15,21 @@ void led_setup() {
 
   pinMode(BUTTON, INPUT);
 }
+
+void set_led_speed(int new_speed) {
+  RATE = new_speed;
+}
+
+void set_led_brightness(int new_brightness) {
+  BRIGHTNESS = new_brightness;
+}
 //ANIMATIONS HERE
 
 ///////////////////////////NOT ANYMORE, BEEATCH! PLEASE VISIT "Animation.h" for more info
 
 //ANIMATIONS HEHE
 bool anim_play = true;
-int animation_mode = 0;
+int animation_mode = 1;
 
 int button_counter = 0;
 //int repeated_press = 0;

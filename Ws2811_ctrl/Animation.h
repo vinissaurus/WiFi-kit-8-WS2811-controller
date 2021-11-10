@@ -1,11 +1,14 @@
-#define BRIGHTNESS  255
 #define FRAMES_PER_SECOND 60
-#define RATE 60
+
+int BRIGHTNESS=255;
+int RATE=60;
 
 CRGBArray<NUM_LEDS> leds;
 //CRGB leds[NUM_LEDS];
 
 CRGBPalette16 gPal;
+
+
 
 void fadeall() {
   for (int i = 0; i < NUM_LEDS; i++) {
