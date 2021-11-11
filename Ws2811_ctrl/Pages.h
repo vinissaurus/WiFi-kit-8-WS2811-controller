@@ -1,3 +1,7 @@
+int bieta=145;
+
+
+
 const char index_html[] PROGMEM = R"rawliteral(
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,7 +16,7 @@ const char index_html[] PROGMEM = R"rawliteral(
 
 <div class="slidecontainer">
   <form action="/" method="get"></form>
-    <input type="range" name="Bright" min="0"  max="255" value="50" class="slider" id="brightness" onmouseup=send_bright()>
+    <input type="range" name="Bright" min="0"  max="255" value=%XPRT0% class="slider" id="brightness" onmouseup=send_bright()>
     <script>
     var xhr = new XMLHttpRequest();
     function send_bright() {
@@ -66,3 +70,12 @@ const char index_html[] PROGMEM = R"rawliteral(
 </html>
 
 )rawliteral";
+
+String processor(const String& var){
+  //Serial.println(var);
+  if(var == "XPRT0"){
+    String exif = "\""+String(bieta)+"\"";
+    return exif;
+  }
+  return String();
+}

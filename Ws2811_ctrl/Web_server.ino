@@ -6,20 +6,21 @@
 //ESP8266WebServer server(80);
 char ipAdr[16];
 
-void set_value(AsyncWebServerRequest *request){
-  if(request->hasParam("bright")){
+void set_value(AsyncWebServerRequest *request) {
+  if (request->hasParam("bright")) {
     set_led_brightness(request->getParam("bright")->value().toInt());
-    }
-  
-  request->send(200, "text/plain", "{situacao: 0}" );
   }
 
+  request->send(200, "text/plain", "{situacao: 0}" );
+}
+
 void handleRoot(AsyncWebServerRequest *request) {
-    request->send(200, "text/html", index_html );
+
+  request->send_P(200, "text/html", index_html , processor);
 }
 
 void handleNotFound(AsyncWebServerRequest *request) {
-  String message = "{situacao: -1}";  
+  String message = "{situacao: -1}";
   request->send(404, "text/plain", message);
 }
 
@@ -44,5 +45,3 @@ void web_setup() {
   scr_out("Talk to me at:", ipAdr);
   webServer.begin();
 }
-
-int web_ck = 0;
