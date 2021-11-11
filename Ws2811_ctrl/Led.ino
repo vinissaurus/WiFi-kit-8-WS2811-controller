@@ -22,6 +22,8 @@ void set_led_speed(int new_speed) {
 
 void set_led_brightness(int new_brightness) {
   BRIGHTNESS = new_brightness;
+  Serial.println("Changed brightness to:");
+  Serial.println(BRIGHTNESS);
 }
 //ANIMATIONS HERE
 

@@ -13,8 +13,8 @@ void setup() {
 }
 
 void loop() {
-  wifi_loop();
+//  wifi_loop();
   led_loop();
-  web_loop();
+  //web_loop();
   //scr_loop();
 }

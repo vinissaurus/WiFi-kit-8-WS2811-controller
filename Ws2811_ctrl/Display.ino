@@ -11,17 +11,8 @@ u8g2_uint_t offset;     // current offset for the scrolling text
 u8g2_uint_t width;      // pixel width of the scrolling text (must be lesser than 128 unless U8G2_16BIT is defined
 const char *text = "VSSAURUS "; // scroll this text from right to left
 const char *vers = "V 1.0";
-const char *lastMod = "24/10/2019";
+const char *lastMod = "11/11/2021";
 const char *title = "Ws2811 PIXCA";
-
-
-
-void displayInit() {
- scr.begin();
-  scr.setFont(u8g2_font_amstrad_cpc_extended_8f); // set the target font to calculate the pixel width
-  width = scr.getUTF8Width(text);    // calculate the pixel width of the text
-  scr.setFontMode(0);  
-}
 
 
 int clkTimer(int clocks = pageRate) { //timer para trocar as faces das páginas na tela OLED

@@ -6,8 +6,20 @@
 <h1>WS2811 Configuration</h1>
 <h2>LED settings</h2>
 
+
+
 <div class="slidecontainer">
-    <input type="range" name="Bright" min="1"  max="100" value="50" class="slider" id="brightness">
+  <form action="/" method="get"></form>
+    <input type="range" name="Bright" min="1"  max="100" value="50" class="slider" id="brightness" onmouseup=send_bright()>
+    <script>
+    var xhr = new XMLHttpRequest();
+    function send_bright() {
+      
+      xhr.open("GET", "/set?bright="+document.getElementById("brightness").value, true);      
+      xhr.send();
+    }
+  </script>
+      </form>
     <label for="Bright">Brightness</label>
   </div>
   
