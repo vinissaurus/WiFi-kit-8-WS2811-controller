@@ -29,10 +29,39 @@ void set_led_brightness(int new_brightness) {
 
 //ANIMATIONS HEHE
 bool anim_play = true;
-int animation_mode = 1;
+int animation_mode = 5;
 
 int button_counter = 0;
 //int repeated_press = 0;
+
+void display_animation_mode(){
+      switch (animation_mode) {
+      case 0:
+        //Cylon();
+        animation_mode++;
+        break;
+      case 1:
+        //Fire();
+        scr_out("Fyre","festival");
+        break;
+      case 2:
+        //Ocean();
+        scr_out("Wave","rly");
+        break;
+      case 3:
+        //Palette();
+        scr_out("Colours","by benetton");
+        break;
+      case 4:
+        //pride();
+        scr_out("Pride","people");
+        break;
+      case 5:
+        //TwinkleFox();
+        scr_out("Happy","holydays");
+        break;
+    }
+  }
 
 void button_press(int time_pressed) {
   //if (time_pressed > 10) {
@@ -42,6 +71,7 @@ void button_press(int time_pressed) {
     //anim_play = !anim_play; //play or pause
     if (animation_mode < 5) {
       animation_mode++;
+      display_animation_mode();
     }
     else {
       animation_mode = 0;
@@ -75,7 +105,8 @@ void led_loop() {
 
     switch (animation_mode) {
       case 0:
-        Cylon();
+        //Cylon();
+        animation_mode++;
         break;
       case 1:
         Fire();

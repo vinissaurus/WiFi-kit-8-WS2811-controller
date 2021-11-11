@@ -3,11 +3,11 @@
 
 void setup() {
   Serial.begin(115200);
-
+  scr_setup();
   if (wifi_setup() == 1) {
     web_setup();
   }
-  //scr_setup();
+  
   led_setup();
 
 }

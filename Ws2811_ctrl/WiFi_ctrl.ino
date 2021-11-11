@@ -10,6 +10,7 @@ WiFiManager wm; // global wm instance
 WiFiManagerParameter custom_field; // global param ( for non blocking w params )
 
 int wifi_setup() {
+  scr_out("Connecting...","wait prease");
   int is_it_connected=0;
   WiFi.mode(WIFI_STA); // explicitly set mode, esp defaults to STA+AP
   Serial.begin(115200);
@@ -72,7 +73,7 @@ int wifi_setup() {
   // res = wm.autoConnect(); // auto generated AP name from chipid
   // res = wm.autoConnect("AutoConnectAP"); // anonymous ap
   res = wm.autoConnect("Ws2811_ctrl", "password"); // password protected ap
-
+  
   if (!res) {
     Serial.println("Failed to connect or hit timeout");
     // ESP.restart();
@@ -80,6 +81,7 @@ int wifi_setup() {
   else {
     //if you get here you have connected to the WiFi
     Serial.println("connected...yeey :)");
+    scr_out("I connect!","Done!");
     is_it_connected=1;
   }
   return is_it_connected;
@@ -91,6 +93,7 @@ void wifi_reset() {
   wm.resetSettings();
   ESP.restart();
   Serial.println("Just erased wifi config");
+  scr_out("Credentials","deleted!");
 }
 
 String getParam(String name) {

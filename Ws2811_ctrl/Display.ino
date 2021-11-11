@@ -13,7 +13,7 @@ const char *text = "VSSAURUS "; // scroll this text from right to left
 const char *vers = "V 1.0";
 const char *lastMod = "24/10/2019";
 const char *title = "Ws2811 PIXCA";
-char ipAdr[16];
+
 
 
 void displayInit() {
@@ -60,7 +60,7 @@ void splashScreen() {
     scr.drawUTF8(4, 20, "by VSSAURUS");
 
   } while ( scr.nextPage() );
-  delay(5000);
+  delay(3000);
   scr.firstPage();
   do {
     scr.drawLine(0, 0, 127, 0);
@@ -72,19 +72,21 @@ void splashScreen() {
     scr.drawUTF8(4, 20, lastMod);
 
   } while ( scr.nextPage() );
-  delay(5000);
+  delay(3000);
 }
 
-void scrOut2(const char* a, const char* b) { //método para imprimir duas linhas na tela OLED
+void scr_out(String a, String b) { //método para imprimir duas linhas na tela OLED
 //  Heltec.display->clear();
 //  Heltec.display->setTextAlignment(TEXT_ALIGN_LEFT);
 //  Heltec.display->drawStringMaxWidth(4, 12,128, a);
 //  Heltec.display->drawStringMaxWidth(4, 20,128, b);
 //  Heltec.display->display();
+  const char* aa = a.c_str();
+  const char* bb = b.c_str();
   scr.firstPage();
   do {
-    scr.drawUTF8(4, 12, a);
-    scr.drawUTF8(4, 20, b);
+    scr.drawUTF8(4, 12, aa);
+    scr.drawUTF8(4, 23, bb);
   } while ( scr.nextPage() );
 }
 
@@ -102,10 +104,6 @@ void scrMainPage(int c) {
   }
 }
 
-void wifiConfigPage() {
-
-
-}
 
 void scr_setup(){
   scr.begin();
@@ -113,7 +111,7 @@ void scr_setup(){
   width = scr.getUTF8Width(text);    // calculate the pixel width of the text
   scr.setFontMode(0);    // enable transparent mode, which is faster
   splashScreen();
-
+  scr.firstPage();
   do {
     scr.drawUTF8(4, 12, "Connected to:");
 //    scr.drawUTF8(4, 20, ssid);
@@ -123,30 +121,13 @@ void scr_setup(){
 
   //sprintf(ipAdr,"",WiFi.localIP(),"");
   //sprintf(ipAdr, "%d.%d.%d.%d", WiFi.localIP()[0], WiFi.localIP()[1], WiFi.localIP()[2], WiFi.localIP()[3]);
-  scr.firstPage();
-  do {
-    scr.drawUTF8(4, 12, "IP Address:");
-    //scr.drawUTF8(4, 20, ipAdr);
-    //scr.drawUTF8(4,20, "255.255.255.255");
 
-  } while ( scr.nextPage() );
-
-  scr.firstPage();
-//  do {
-//    scr.drawUTF8(4, 12, "Current time:");
-//    scr.drawUTF8(4, 20, nowTime);
-//  } while ( scr.nextPage() );
   }
 
 void scr_loop() {
   //Heltec.display->clear();
-   switch (mainPage) {
-    case 1://WiFi config mode
-      wifiConfigPage();
-      break;
-    case 2:
-      break;
-  }
+  
+  
   //scr.firstPage();
   //Heltec.display->display();
 }
