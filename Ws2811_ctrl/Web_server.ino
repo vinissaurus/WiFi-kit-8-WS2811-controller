@@ -6,17 +6,31 @@ void set_value(AsyncWebServerRequest *request) {
   if (request->hasParam("bright")) {
     set_led_brightness(request->getParam("bright")->value().toInt());
   }
-    if (request->hasParam("speed")) {
+  if (request->hasParam("speed")) {
     set_led_speed(request->getParam("speed")->value().toInt());
+  }
+  if (request->hasParam("cycle")) {
+    set_led_cycle(request->getParam("cycle")->value().toInt());
   }
 
   request->send(200, "text/plain", "{situacao: 0}" );
 }
 
-void refresh_fields(){
-  ext_bright=get_led_brightness();
-  ext_speed=get_led_speed();
+void change_anim(AsyncWebServerRequest *request) {
+  String sign = request->getParam("d")->value();
+  if (sign.equals("+")) {
+    next_anim();
   }
+  if (sign.equals("-")) {
+    prev_anim();
+  }
+  request->send(200, "text/plain", "{situacao: 0}" );
+}
+
+void refresh_fields() {
+  ext_bright = get_led_brightness();
+  ext_speed = get_led_speed();
+}
 
 void handleRoot(AsyncWebServerRequest *request) {
   refresh_fields();
@@ -41,6 +55,7 @@ void web_setup() {
 
   webServer.on("/", handleRoot);
   webServer.on("/set", set_value);
+  webServer.on("/anim", change_anim);
   webServer.onNotFound(handleNotFound);
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers",  "Content-Type, Content-Range, Content-Disposition, Content-Description, Control-Allow-Headers, Cache-Control, Pragma, Expires, Access-Control-Allow-Headers, X-Requested-With");

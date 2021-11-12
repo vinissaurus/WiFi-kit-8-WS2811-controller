@@ -4,11 +4,15 @@ FASTLED_USING_NAMESPACE
 
 #define LED_PIN 15 //"D8"
 #define COLOR_ORDER RGB
-#define CHIPSET WS2811
+#define CHIPSET WS2812
 #define BUTTON 12 //"D6"
 #define BUTTON_RATE 10
 
-int CYCLE_TROUGH = 50;//0-100
+int CYCLE_TROUGH = 50;//20-100
+
+bool anim_play = true;
+int animation_mode = 5;
+int max_anim = 5;
 
 void led_setup() {
   delay(3000); // sanity delay
@@ -23,8 +27,8 @@ void led_setup() {
 void set_led_brightness(int new_brightness) {
   BRIGHTNESS = new_brightness;
   FastLED.setBrightness( BRIGHTNESS );
-  Serial.println("Changed brightness to:");
-  Serial.println(BRIGHTNESS);
+  //Serial.println("Changed brightness to:");
+  //Serial.println(BRIGHTNESS);
 }
 
 int get_led_brightness() {
@@ -36,16 +40,38 @@ int get_led_speed() {
 }
 
 void set_led_speed(int new_speed) {
-  RATE = 100-new_speed;
+  RATE = 100 - new_speed;
 }
 
+int get_led_cycle() {
+  return CYCLE_TROUGH;
+}
+
+void set_led_cycle(int new_cycle) {
+  CYCLE_TROUGH = new_cycle;
+}
+
+void next_anim() {
+  animation_mode++;
+  if (animation_mode > max_anim) {
+    animation_mode = 0;
+  }
+  display_animation_mode();
+}
+
+void prev_anim() {
+  animation_mode--;
+  if (animation_mode < 0) {
+    animation_mode = max_anim;
+  }
+  display_animation_mode();
+}
 //ANIMATIONS HERE
 
 ///////////////////////////NOT ANYMORE, BEEATCH! PLEASE VISIT "Animation.h" for more info
 
 //ANIMATIONS HEHE
-bool anim_play = true;
-int animation_mode = 5;
+
 
 int button_counter = 0;
 //int repeated_press = 0;
@@ -120,23 +146,27 @@ void led_loop() {
     led_ck = millis();
 
     switch (animation_mode) {
-      case 0:
+      case 0://OFF
         //Cylon();
-        animation_mode++;
+        //animation_mode++;
         break;
-      case 1:
-        Fire();
+      case 1://CYCLE
+        //Cylon();
+        //animation_mode++;
         break;
       case 2:
-        Ocean();
+        Fire();
         break;
       case 3:
-        Palette();
+        Ocean();
         break;
       case 4:
-        pride();
+        Palette();
         break;
       case 5:
+        pride();
+        break;
+      case 6:
         TwinkleFox();
         break;
     }
