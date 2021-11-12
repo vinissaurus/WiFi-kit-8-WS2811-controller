@@ -1,21 +1,25 @@
-//#include <ESPAsyncTCP.h>
-//#include <ESP8266WiFi.h>
-
 #include "Pages.h"
-#define WEB_RATE 50
-//ESP8266WebServer server(80);
+
 char ipAdr[16];
 
 void set_value(AsyncWebServerRequest *request) {
   if (request->hasParam("bright")) {
     set_led_brightness(request->getParam("bright")->value().toInt());
   }
+    if (request->hasParam("speed")) {
+    set_led_speed(request->getParam("speed")->value().toInt());
+  }
 
   request->send(200, "text/plain", "{situacao: 0}" );
 }
 
-void handleRoot(AsyncWebServerRequest *request) {
+void refresh_fields(){
+  ext_bright=get_led_brightness();
+  ext_speed=get_led_speed();
+  }
 
+void handleRoot(AsyncWebServerRequest *request) {
+  refresh_fields();
   request->send_P(200, "text/html", index_html , processor);
 }
 

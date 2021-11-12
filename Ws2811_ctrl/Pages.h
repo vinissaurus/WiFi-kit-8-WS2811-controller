@@ -1,5 +1,5 @@
-int bieta=145;
-
+int ext_bright = 0;
+int ext_speed = 0;
 
 
 const char index_html[] PROGMEM = R"rawliteral(
@@ -15,22 +15,28 @@ const char index_html[] PROGMEM = R"rawliteral(
 
 
 <div class="slidecontainer">
-  <form action="/" method="get"></form>
+ <form action="/" method="get"></form>
     <input type="range" name="Bright" min="0"  max="255" value=%XPRT0% class="slider" id="brightness" onmouseup=send_bright()>
-    <script>
-    var xhr = new XMLHttpRequest();
-    function send_bright() {
-      
-      xhr.open("GET", "/set?bright="+document.getElementById("brightness").value, true);      
-      xhr.send();
-    }
-  </script>
+    
+ 
       </form>
     <label for="Bright">Brightness</label>
   </div>
   
 <div class="slidecontainer">
-    <input type="range" name="Speed" min="1" max="100" value="50" class="slider" id="speed">
+    <input type="range" name="Speed" min="1" max="100" value=%XPRT1% class="slider" id="speed" onmouseup=send_speed()>
+     <script>
+    var xhr = new XMLHttpRequest();
+    function send_bright() {
+      xhr.open("GET", "/set?bright="+document.getElementById("brightness").value, true);      
+      xhr.send();
+    }
+    
+    function send_speed() {
+      xhr.open("GET", "/set?speed="+document.getElementById("speed").value, true);      
+      xhr.send();
+    }
+  </script>
     <label for="Bright">Animation speed</label>
   </div>
 
@@ -74,7 +80,11 @@ const char index_html[] PROGMEM = R"rawliteral(
 String processor(const String& var){
   //Serial.println(var);
   if(var == "XPRT0"){
-    String exif = "\""+String(bieta)+"\"";
+    String exif = "\""+String(ext_bright)+"\"";
+    return exif;
+  }
+    if(var == "XPRT1"){
+    String exif = "\""+String(ext_speed)+"\"";
     return exif;
   }
   return String();

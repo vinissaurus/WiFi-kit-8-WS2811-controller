@@ -8,6 +8,8 @@ void led_loop();
 
 void set_led_speed(int new_speed);
 void set_led_brightness(int new_brightness);
+int get_led_brightness();
+int get_led_speed();
 
 //void scr_loop();
 void scr_setup();

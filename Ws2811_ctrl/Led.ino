@@ -8,6 +8,8 @@ FASTLED_USING_NAMESPACE
 #define BUTTON 12 //"D6"
 #define BUTTON_RATE 10
 
+int CYCLE_TROUGH = 50;//0-100
+
 void led_setup() {
   delay(3000); // sanity delay
   FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
@@ -16,15 +18,27 @@ void led_setup() {
   pinMode(BUTTON, INPUT);
 }
 
-void set_led_speed(int new_speed) {
-  RATE = new_speed;
-}
+
 
 void set_led_brightness(int new_brightness) {
   BRIGHTNESS = new_brightness;
+  FastLED.setBrightness( BRIGHTNESS );
   Serial.println("Changed brightness to:");
   Serial.println(BRIGHTNESS);
 }
+
+int get_led_brightness() {
+  return BRIGHTNESS;
+}
+
+int get_led_speed() {
+  return RATE;
+}
+
+void set_led_speed(int new_speed) {
+  RATE = 100-new_speed;
+}
+
 //ANIMATIONS HERE
 
 ///////////////////////////NOT ANYMORE, BEEATCH! PLEASE VISIT "Animation.h" for more info
@@ -36,34 +50,34 @@ int animation_mode = 5;
 int button_counter = 0;
 //int repeated_press = 0;
 
-void display_animation_mode(){
-      switch (animation_mode) {
-      case 0:
-        //Cylon();
-        animation_mode++;
-        break;
-      case 1:
-        //Fire();
-        scr_out("Fyre","festival");
-        break;
-      case 2:
-        //Ocean();
-        scr_out("Wave","rly");
-        break;
-      case 3:
-        //Palette();
-        scr_out("Colours","by benetton");
-        break;
-      case 4:
-        //pride();
-        scr_out("Pride","people");
-        break;
-      case 5:
-        //TwinkleFox();
-        scr_out("Happy","holydays");
-        break;
-    }
+void display_animation_mode() {
+  switch (animation_mode) {
+    case 0:
+      //Cylon();
+      animation_mode++;
+      break;
+    case 1:
+      //Fire();
+      scr_out("Fyre", "festival");
+      break;
+    case 2:
+      //Ocean();
+      scr_out("Wave", "rly");
+      break;
+    case 3:
+      //Palette();
+      scr_out("Colours", "by benetton");
+      break;
+    case 4:
+      //pride();
+      scr_out("Pride", "people");
+      break;
+    case 5:
+      //TwinkleFox();
+      scr_out("Happy", "holydays");
+      break;
   }
+}
 
 void button_press(int time_pressed) {
   //if (time_pressed > 10) {
