@@ -18,13 +18,13 @@ void set_value(AsyncWebServerRequest *request) {
 
 void change_anim(AsyncWebServerRequest *request) {
   String sign = request->getParam("d")->value();
-  if (sign.equals("+")) {
+  if (sign.equals("next")) {
     next_anim();
   }
-  if (sign.equals("-")) {
+  if (sign.equals("prev")) {
     prev_anim();
   }
-  request->send(200, "text/plain", "{situacao: 0}" );
+  request->send(200, "text/plain", animation_names[animation_mode] );
 }
 
 void refresh_fields() {

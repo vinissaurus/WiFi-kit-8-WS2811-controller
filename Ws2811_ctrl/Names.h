@@ -3,6 +3,8 @@
 
 AsyncWebServer webServer(80);
 
+String animation_names[] = {"OFF","CYCLE ALL","Fire","Ocean","Palette","Pride!","Christmas"};
+
 void led_setup();
 void led_loop();
 

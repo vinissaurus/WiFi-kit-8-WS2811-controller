@@ -4,7 +4,7 @@ FASTLED_USING_NAMESPACE
 
 #define LED_PIN 15 //"D8"
 #define COLOR_ORDER RGB
-#define CHIPSET WS2812
+#define CHIPSET WS2811
 #define BUTTON 12 //"D6"
 #define BUTTON_RATE 10
 
@@ -52,16 +52,22 @@ void set_led_cycle(int new_cycle) {
 }
 
 void next_anim() {
-  animation_mode++;
-  if (animation_mode > max_anim) {
+  if (animation_mode < max_anim) {
+    animation_mode++;
+    display_animation_mode();
+  }
+  else {
     animation_mode = 0;
   }
   display_animation_mode();
 }
 
 void prev_anim() {
-  animation_mode--;
-  if (animation_mode < 0) {
+  if (animation_mode > 0) {
+    animation_mode--;
+    display_animation_mode();
+  }
+  else {
     animation_mode = max_anim;
   }
   display_animation_mode();
@@ -77,32 +83,7 @@ int button_counter = 0;
 //int repeated_press = 0;
 
 void display_animation_mode() {
-  switch (animation_mode) {
-    case 0:
-      //Cylon();
-      animation_mode++;
-      break;
-    case 1:
-      //Fire();
-      scr_out("Fyre", "festival");
-      break;
-    case 2:
-      //Ocean();
-      scr_out("Wave", "rly");
-      break;
-    case 3:
-      //Palette();
-      scr_out("Colours", "by benetton");
-      break;
-    case 4:
-      //pride();
-      scr_out("Pride", "people");
-      break;
-    case 5:
-      //TwinkleFox();
-      scr_out("Happy", "holydays");
-      break;
-  }
+  scr_out("Animation mode:", animation_names[animation_mode]);
 }
 
 void button_press(int time_pressed) {
@@ -147,13 +128,11 @@ void led_loop() {
 
     switch (animation_mode) {
       case 0://OFF
-        //Cylon();
-        //animation_mode++;
+        fadeall();
         break;
-      case 1://CYCLE
-        //Cylon();
-        //animation_mode++;
-        break;
+      //      case 1://CYCLE THROUG MODES
+      //
+      //        break;
       case 2:
         Fire();
         break;
