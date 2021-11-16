@@ -4,7 +4,6 @@ int ext_cycle = 0;
 
 
 const char index_html[] PROGMEM = R"rawliteral(
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!DOCTYPE html>
 <html>
@@ -40,10 +39,10 @@ const char index_html[] PROGMEM = R"rawliteral(
           if (xhr.status === 200) {
             console.log(xhr.response);
             console.log(xhr.responseText);
-            document.getElementById("anim_mode").value = xhr.responseText;
+            get_response(xhr.responseText);
           }
         }
-      };
+      }
       xhr.send();
     }
 
@@ -54,11 +53,18 @@ const char index_html[] PROGMEM = R"rawliteral(
           if (xhr.status === 200) {
             console.log(xhr.response);
             console.log(xhr.responseText);
-            document.getElementById("anim_mode").value = xhr.responseText;
+            get_response(xhr.responseText);
           }
         }
-      };
+      }
       xhr.send();
+    }
+
+    function get_response(h_response){
+      if(h_response.includes('anim=')){
+        h_response = h_response.replace('anim=','');
+        document.getElementById("anim_mode").value=h_response;
+      }
     }
   </script>
 
@@ -91,7 +97,9 @@ const char index_html[] PROGMEM = R"rawliteral(
   </div>
   <div>
     <button type="button" onclick=previous_()><</button>
-        <button type="button" onclick=next_()>></button>
+    <button type="button" onclick=next_()>></button>
+      
+           
   </div>
 
   <h2>Time settings</h2>

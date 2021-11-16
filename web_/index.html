@@ -33,10 +33,10 @@
           if (xhr.status === 200) {
             console.log(xhr.response);
             console.log(xhr.responseText);
-            document.getElementById("anim_mode").value = xhr.responseText;
+            get_response(xhr.responseText);
           }
         }
-      };
+      }
       xhr.send();
     }
 
@@ -47,11 +47,31 @@
           if (xhr.status === 200) {
             console.log(xhr.response);
             console.log(xhr.responseText);
-            document.getElementById("anim_mode").value = xhr.responseText;
+            get_response(xhr.responseText);
           }
         }
-      };
+      }
       xhr.send();
+    }
+
+    function get_response(h_response){
+      if(h_response.includes('anim=')){
+        h_response = h_response.replace('anim=','');
+        document.getElementById("anim_mode").value=h_response;
+      }
+    }
+
+    function save_time(){
+      if(document.getElementById("ontime").value===""){
+          alert("Please, fill in the time to start!");
+      }
+      else if(document.getElementById("offtime").value===""){
+          alert("Please, fill in the time to shutdown!");
+      }
+      else{
+        alert("you're good!");
+      }
+
     }
   </script>
 
@@ -84,7 +104,9 @@
   </div>
   <div>
     <button type="button" onclick=previous_()><</button>
-        <button type="button" onclick=next_()>></button>
+    <button type="button" onclick=next_()>></button>
+      
+           
   </div>
 
   <h2>Time settings</h2>
@@ -112,14 +134,15 @@
     <input type="time" id="offtime" name="Offtime" min="09:00" max="18:00" required>
     <small>OFF time</small>
   </div>
+  <div>
+    <button type="button" onclick=save_time()>Save time settings</button>
+  </div>
 
   <h2>Other settings</h2>
   <div>
     <button type="button" onclick="alert('Will do!')">Reset WiFi settings</button>
   </div>
-  <div>
-    <button type="button" onclick="alert('Will do!')">Save settings</button>
-  </div>
+ 
 </body>
 
 </html>

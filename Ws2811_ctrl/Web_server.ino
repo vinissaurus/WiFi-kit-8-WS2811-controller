@@ -24,7 +24,8 @@ void change_anim(AsyncWebServerRequest *request) {
   if (sign.equals("prev")) {
     prev_anim();
   }
-  request->send(200, "text/plain", animation_names[animation_mode] );
+  String response = "anim="+animation_names[animation_mode];
+  request->send(200, "text/plain", response  );
 }
 
 void refresh_fields() {

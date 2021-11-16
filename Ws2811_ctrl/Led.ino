@@ -12,7 +12,7 @@ int CYCLE_TROUGH = 50;//20-100
 
 bool anim_play = true;
 int animation_mode = 5;
-int max_anim = 5;
+int max_anim = 6;
 
 void led_setup() {
   delay(3000); // sanity delay
