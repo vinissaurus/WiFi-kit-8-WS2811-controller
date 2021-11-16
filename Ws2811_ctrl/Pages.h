@@ -1,6 +1,10 @@
 int ext_bright = 0;
 int ext_speed = 0;
 int ext_cycle = 0;
+int current_mode=0;
+String time_on="12:00";
+String time_off="12:00";
+
 
 
 const char index_html[] PROGMEM = R"rawliteral(
@@ -60,11 +64,26 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.send();
     }
 
-    function get_response(h_response){
-      if(h_response.includes('anim=')){
-        h_response = h_response.replace('anim=','');
-        document.getElementById("anim_mode").value=h_response;
+    function get_response(h_response) {
+      if (h_response.includes('anim=')) {
+        h_response = h_response.replace('anim=', '');
+        document.getElementById("anim_mode").value = h_response;
       }
+    }
+
+    function save_time() {
+      if (document.getElementById("ontime").value === "") {
+        alert("Please, fill in the time to start!");
+      }
+      else if (document.getElementById("offtime").value === "") {
+        alert("Please, fill in the time to shutdown!");
+      }
+      else {
+        xhr.open("GET", "/time?on=" + document.getElementById("ontime").value + "&off=" + document.getElementById("offtime").value, true);
+        xhr.send();
+        //alert("you're good!");
+      }
+
     }
   </script>
 
@@ -97,9 +116,9 @@ const char index_html[] PROGMEM = R"rawliteral(
   </div>
   <div>
     <button type="button" onclick=previous_()><</button>
-    <button type="button" onclick=next_()>></button>
-      
-           
+        <button type="button" onclick=next_()>></button>
+
+
   </div>
 
   <h2>Time settings</h2>
@@ -119,22 +138,23 @@ const char index_html[] PROGMEM = R"rawliteral(
   </div>
 
   <div>
-    <input type="time" id="ontime" name="Ontime" min="09:00" max="18:00" required>
+    <input type="time" id="ontime" name="Ontime" value=%XPRT3% required>
     <small>ON time</small>
   </div>
 
   <div>
-    <input type="time" id="offtime" name="Offtime" min="09:00" max="18:00" required>
+    <input type="time" id="offtime" name="Offtime" value=%XPRT4% required>
     <small>OFF time</small>
+  </div>
+  <div>
+    <button type="button" onclick=save_time()>Save time settings</button>
   </div>
 
   <h2>Other settings</h2>
   <div>
     <button type="button" onclick="alert('Will do!')">Reset WiFi settings</button>
   </div>
-  <div>
-    <button type="button" onclick="alert('Will do!')">Save settings</button>
-  </div>
+
 </body>
 
 </html>
@@ -143,13 +163,26 @@ const char index_html[] PROGMEM = R"rawliteral(
 
 String processor(const String& var){
   //Serial.println(var);
-  if(var == "XPRT0"){
+if(var == "XPRT0"){
     String exif = "\""+String(ext_bright)+"\"";
     return exif;
   }
-    if(var == "XPRT1"){
+if(var == "XPRT1"){
     String exif = "\""+String(ext_speed)+"\"";
     return exif;
   }
+if(var == "XPRT2"){
+    String exif = "\""+String(ext_cycle)+"\"";
+    return exif;
+  }
+if(var == "XPRT3"){
+    String exif = "\""+time_on+"\"";
+    return exif;
+  }
+if(var == "XPRT4"){
+    String exif = "\""+time_off+"\"";
+    return exif;
+  }  
+  
   return String();
 }

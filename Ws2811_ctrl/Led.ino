@@ -36,7 +36,7 @@ int get_led_brightness() {
 }
 
 int get_led_speed() {
-  return RATE;
+  return 100-RATE;
 }
 
 void set_led_speed(int new_speed) {

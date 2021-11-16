@@ -9,6 +9,7 @@ void setup() {
   }
   
   led_setup();
+  load_settings();
 
 }
 

@@ -54,22 +54,24 @@
       xhr.send();
     }
 
-    function get_response(h_response){
-      if(h_response.includes('anim=')){
-        h_response = h_response.replace('anim=','');
-        document.getElementById("anim_mode").value=h_response;
+    function get_response(h_response) {
+      if (h_response.includes('anim=')) {
+        h_response = h_response.replace('anim=', '');
+        document.getElementById("anim_mode").value = h_response;
       }
     }
 
-    function save_time(){
-      if(document.getElementById("ontime").value===""){
-          alert("Please, fill in the time to start!");
+    function save_time() {
+      if (document.getElementById("ontime").value === "") {
+        alert("Please, fill in the time to start!");
       }
-      else if(document.getElementById("offtime").value===""){
-          alert("Please, fill in the time to shutdown!");
+      else if (document.getElementById("offtime").value === "") {
+        alert("Please, fill in the time to shutdown!");
       }
-      else{
-        alert("you're good!");
+      else {
+        xhr.open("GET", "/time?on=" + document.getElementById("ontime").value + "off=" + document.getElementById("offtime").value, true);
+        xhr.send();
+        //alert("you're good!");
       }
 
     }
@@ -104,9 +106,9 @@
   </div>
   <div>
     <button type="button" onclick=previous_()><</button>
-    <button type="button" onclick=next_()>></button>
-      
-           
+        <button type="button" onclick=next_()>></button>
+
+
   </div>
 
   <h2>Time settings</h2>
@@ -126,12 +128,12 @@
   </div>
 
   <div>
-    <input type="time" id="ontime" name="Ontime" min="09:00" max="18:00" required>
+    <input type="time" id="ontime" name="Ontime" value=%XPRT3% required>
     <small>ON time</small>
   </div>
 
   <div>
-    <input type="time" id="offtime" name="Offtime" min="09:00" max="18:00" required>
+    <input type="time" id="offtime" name="Offtime" value=%XPRT4% required>
     <small>OFF time</small>
   </div>
   <div>
@@ -142,7 +144,7 @@
   <div>
     <button type="button" onclick="alert('Will do!')">Reset WiFi settings</button>
   </div>
- 
+
 </body>
 
 </html>
