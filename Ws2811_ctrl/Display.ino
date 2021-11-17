@@ -1,4 +1,5 @@
 //OLEDDisplayUi ui     ( Heltec.display ); //128px X 32px
+#ifdef DISPLAY
 #include <U8g2lib.h>
 
 int mainPage = 1;
@@ -122,3 +123,5 @@ void scr_loop() {
   //scr.firstPage();
   //Heltec.display->display();
 }
+
+#endif

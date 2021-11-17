@@ -3,7 +3,8 @@
 
 AsyncWebServer webServer(80);
 
-String animation_names[] = {"OFF","CYCLE ALL","Fire","Ocean","Palette","Pride!","Christmas"};
+String animation_names[] = {"OFF","CYCLE ALL","Ocean","Palette","Pride!","Christmas"};
+int animation_mode = 1;
 
 void led_setup();
 void led_loop();
@@ -31,6 +32,11 @@ void ota_loop();
 
 void load_settings();
 void read_time();
+void save_animation();
+void save_brightness(int new_brighness);
+void save_speed(int new_speed);
+void save_cycle_time(int new_cycle_time);
+//void get_animation();
 int get_on_time();
 int get_off_time();
 void save_time(int H_ON,int M_ON,int H_OFF,int M_OFF);

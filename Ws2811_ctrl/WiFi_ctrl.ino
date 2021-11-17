@@ -28,6 +28,12 @@ int wifi_setup() {
   return is_it_connected;
 }
 
+void wifi_reset() {
+  ESPAsync_wifiManager.resetSettings();
+  Serial.println("Just erased wifi config");
+  scr_out("Credentials", "deleted!");
+}
+
 #ifdef OTA_ENABLED
 void ota_start() {
   // Port defaults to 8266
@@ -81,9 +87,3 @@ void ota_loop() {
   ArduinoOTA.handle();
 }
 #endif
-
-void wifi_reset() {
-  ESPAsync_wifiManager.resetSettings();
-  Serial.println("Just erased wifi config");
-  scr_out("Credentials", "deleted!");
-}

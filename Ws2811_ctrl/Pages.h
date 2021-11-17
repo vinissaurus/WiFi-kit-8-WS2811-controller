@@ -108,7 +108,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   </div>
 
   <div class="slidecontainer">
-    <input type="range" name="Cycle" min="1" max="100" value=%XPRT2% class="slider" id="cycle_time">
+    <input type="range" name="Cycle" min="30" max="250" value=%XPRT2% class="slider" id="cycle_time" onmouseup=send_cycle_time()>
     <label for="Bright">Cycle time</label>
   </div>
 
