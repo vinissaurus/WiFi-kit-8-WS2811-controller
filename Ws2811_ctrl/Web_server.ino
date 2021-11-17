@@ -34,6 +34,7 @@ void refresh_fields() {
   ext_cycle = get_led_cycle();
   time_on=get_on_time();
   time_off=get_off_time();
+  actual_anim=animation_names[animation_mode];
 }
 
 void handleRoot(AsyncWebServerRequest *request) {
@@ -77,8 +78,8 @@ void web_setup() {
   webServer.on("/anim", change_anim);
   webServer.on("/time", set_time);
   webServer.onNotFound(handleNotFound);
-  //DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
-  //DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers",  "Content-Type, Content-Range, Content-Disposition, Content-Description, Control-Allow-Headers, Cache-Control, Pragma, Expires, Access-Control-Allow-Headers, X-Requested-With");
+  DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
+  DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers",  "Content-Type, Content-Range, Content-Disposition, Content-Description, Control-Allow-Headers, Cache-Control, Pragma, Expires, Access-Control-Allow-Headers, X-Requested-With");
 
   sprintf(ipAdr, "%d.%d.%d.%d", WiFi.localIP()[0], WiFi.localIP()[1], WiFi.localIP()[2], WiFi.localIP()[3]);
   scr_out("Talk to me at:", ipAdr);

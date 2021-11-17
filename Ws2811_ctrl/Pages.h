@@ -1,13 +1,15 @@
 int ext_bright = 0;
 int ext_speed = 0;
 int ext_cycle = 0;
-int current_mode=0;
-String time_on="12:00";
-String time_off="12:00";
+int current_mode = 0;
+int time_on = 0;
+int time_off = 0;
+String actual_anim;
 
 
 
 const char index_html[] PROGMEM = R"rawliteral(
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!DOCTYPE html>
 <html>
@@ -112,7 +114,7 @@ const char index_html[] PROGMEM = R"rawliteral(
   <h3>Animation settings</h3>
   <p>Current mode:</p>
   <div>
-    <input type="text" id="anim_mode" name="fname" value="" disabled="disabled"><br>
+    <input type="text" id="anim_mode" name="fname" value=%XPRT5% disabled="disabled"><br>
   </div>
   <div>
     <button type="button" onclick=previous_()><</button>
@@ -175,14 +177,27 @@ if(var == "XPRT2"){
     String exif = "\""+String(ext_cycle)+"\"";
     return exif;
   }
+
 if(var == "XPRT3"){
-    String exif = "\""+time_on+"\"";
-    return exif;
+    int h, m;
+    h=(time_on-time_on%100)/100;
+    m=time_on%100;
+    char buffer[10];
+    sprintf(buffer, "\"%02d:%02d\"", h, m);
+    return buffer;
   }
+
 if(var == "XPRT4"){
-    String exif = "\""+time_off+"\"";
-    return exif;
+    int h, m;
+    h=(time_off-time_off%100)/100;
+    m=time_off%100;
+    char buffer[10];
+    sprintf(buffer, "\"%02d:%02d\"", h, m);
+    return buffer;
   }  
+  if(var == "XPRT5"){
+    return actual_anim;
+  } 
   
   return String();
 }

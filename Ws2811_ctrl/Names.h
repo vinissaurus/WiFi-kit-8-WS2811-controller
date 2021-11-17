@@ -27,6 +27,6 @@ int wifi_setup();
 
 void load_settings();
 void read_time();
-String get_on_time();
-String get_off_time();
+int get_on_time();
+int get_off_time();
 void save_time(int H_ON,int M_ON,int H_OFF,int M_OFF);
