@@ -4,6 +4,9 @@ int ext_cycle = 0;
 int current_mode = 0;
 int time_on = 0;
 int time_off = 0;
+int time_schedule = 1;
+int time_fadein = 0;
+int time_fadeout = 0;
 String actual_anim;
 
 
@@ -125,17 +128,17 @@ const char index_html[] PROGMEM = R"rawliteral(
 
   <h2>Time settings</h2>
   <div>
-    <input type="checkbox" id="timeschedule" name="Timeschedule">
+    <input type="checkbox" id="timeschedule" %XPRT6% onclick="alert('Will do!')" name="Timeschedule" >
     <label for="timeschedule">On/off schedule</label>
   </div>
 
   <div>
-    <input type="checkbox" id="fadein" name="Fadein">
+    <input type="checkbox" id="fadein" %XPRT7% name="Fadein">
     <label for="fadein">Fade in</label>
   </div>
 
   <div>
-    <input type="checkbox" id="fadeout" name="Fadeout">
+    <input type="checkbox" id="fadeout" %XPRT8% name="Fadeout">
     <label for="fadeout">Fade out</label>
   </div>
 
@@ -148,9 +151,57 @@ const char index_html[] PROGMEM = R"rawliteral(
     <input type="time" id="offtime" name="Offtime" value=%XPRT4% required>
     <small>OFF time</small>
   </div>
+  
+  <div>
+      <select name="timezone_offset" id="timezone-offset" class="span5">
+      <option value="-12:00">(GMT -12:00) Eniwetok, Kwajalein</option>
+      <option value="-11:00">(GMT -11:00) Midway Island, Samoa</option>
+      <option value="-10:00">(GMT -10:00) Hawaii</option>
+      <option value="-09:50">(GMT -9:30) Taiohae</option>
+      <option value="-09:00">(GMT -9:00) Alaska</option>
+      <option value="-08:00">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+      <option value="-07:00">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+      <option value="-06:00">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+      <option value="-05:00">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+      <option value="-04:50">(GMT -4:30) Caracas</option>
+      <option value="-04:00">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+      <option value="-03:50">(GMT -3:30) Newfoundland</option>
+      <option value="-03:00">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+      <option value="-02:00">(GMT -2:00) Mid-Atlantic</option>
+      <option value="-01:00">(GMT -1:00) Azores, Cape Verde Islands</option>
+      <option value="+00:00" selected="selected">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+      <option value="+01:00">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+      <option value="+02:00">(GMT +2:00) Kaliningrad, South Africa</option>
+      <option value="+03:00">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+      <option value="+03:50">(GMT +3:30) Tehran</option>
+      <option value="+04:00">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+      <option value="+04:50">(GMT +4:30) Kabul</option>
+      <option value="+05:00">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+      <option value="+05:50">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+      <option value="+05:75">(GMT +5:45) Kathmandu, Pokhara</option>
+      <option value="+06:00">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+      <option value="+06:50">(GMT +6:30) Yangon, Mandalay</option>
+      <option value="+07:00">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+      <option value="+08:00">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+      <option value="+08:75">(GMT +8:45) Eucla</option>
+      <option value="+09:00">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+      <option value="+09:50">(GMT +9:30) Adelaide, Darwin</option>
+      <option value="+10:00">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+      <option value="+10:50">(GMT +10:30) Lord Howe Island</option>
+      <option value="+11:00">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+      <option value="+11:50">(GMT +11:30) Norfolk Island</option>
+      <option value="+12:00">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+      <option value="+12:75">(GMT +12:45) Chatham Islands</option>
+      <option value="+13:00">(GMT +13:00) Apia, Nukualofa</option>
+      <option value="+14:00">(GMT +14:00) Line Islands, Tokelau</option>
+    </select>
+    <label for="timezone_offset">Timezone</label>
+</div>
   <div>
     <button type="button" onclick=save_time()>Save time settings</button>
   </div>
+  
+  
 
   <h2>Other settings</h2>
   <div>
@@ -198,6 +249,27 @@ if(var == "XPRT4"){
   if(var == "XPRT5"){
     return actual_anim;
   } 
+    if(var == "XPRT6"){
+    if(time_schedule==1){
+    return "checked";
+    }else{
+    return "";
+    }
+  } 
+      if(var == "XPRT7"){
+    if(time_fadein==1){
+    return "checked";
+    }else{
+    return "";
+    }
+  }
+      if(var == "XPRT8"){
+    if(time_fadeout==1){
+    return "checked";
+    }else{
+    return "";
+    }
+  }
   
   return String();
 }

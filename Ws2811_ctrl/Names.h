@@ -24,6 +24,10 @@ void scr_out(String a, String b);
 
 void web_setup();
 int wifi_setup();
+#ifdef OTA_ENABLED
+void ota_start();
+void ota_loop();
+#endif
 
 void load_settings();
 void read_time();
