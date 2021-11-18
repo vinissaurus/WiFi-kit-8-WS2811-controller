@@ -1,10 +1,12 @@
 #include "Names.h"
 //#define OTA_ENABLED
-//#define DISPLAY
+#define DISPLAY_ENABLED
 
 void setup() {
   Serial.begin(115200);
+#ifdef DISPLAY_ENABLED
   scr_setup();
+#endif
   if (wifi_setup() == 1) {
     web_setup();
 

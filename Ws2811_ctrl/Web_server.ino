@@ -34,7 +34,11 @@ void refresh_fields() {
   ext_cycle = get_led_cycle();
   time_on=get_on_time();
   time_off=get_off_time();
+  if(!anim_cycle){
   actual_anim=animation_names[animation_mode];
+  }else{
+    actual_anim="CYCLE ALL";
+    }
 }
 
 void handleRoot(AsyncWebServerRequest *request) {

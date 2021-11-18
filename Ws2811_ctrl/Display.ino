@@ -1,6 +1,7 @@
 //OLEDDisplayUi ui     ( Heltec.display ); //128px X 32px
-#ifdef DISPLAY
+#ifdef DISPLAY_ENABLED
 #include <U8g2lib.h>
+
 
 int mainPage = 1;
 int pageRate = 0;
@@ -16,26 +17,26 @@ const char *lastMod = "11/11/2021";
 const char *title = "Ws2811 PIXCA";
 
 
-int clkTimer(int clocks = pageRate) { //timer para trocar as faces das páginas na tela OLED
-  int currentMillis = millis();
-  int timerOut = 0;
-  if (countZero == 0) {
-    countZero = currentMillis;
-  }
-  if (countZero + clocks <= currentMillis) {
-    timerOut = 1;
-    countZero = currentMillis;
-    stepCounter++;
-    timerOut = stepCounter;
-    if (stepCounter > steps) {
-      stepCounter = 1;
-      timerOut = stepCounter;
-    }
-
-  }
-
-  return timerOut;
-}
+//int clkTimer(int clocks = pageRate) { //timer para trocar as faces das páginas na tela OLED
+//  int currentMillis = millis();
+//  int timerOut = 0;
+//  if (countZero == 0) {
+//    countZero = currentMillis;
+//  }
+//  if (countZero + clocks <= currentMillis) {
+//    timerOut = 1;
+//    countZero = currentMillis;
+//    stepCounter++;
+//    timerOut = stepCounter;
+//    if (stepCounter > steps) {
+//      stepCounter = 1;
+//      timerOut = stepCounter;
+//    }
+//
+//  }
+//
+//  return timerOut;
+//}
 
 void splashScreen() {
   //scr.firstPage();
@@ -48,7 +49,7 @@ void splashScreen() {
     scr.drawLine(0, 0, 0, 31);
     scr.drawLine(127, 0, 127, 31);
 
-    scr.drawUTF8(4, 12, "Ws2811 PIXCA");
+    scr.drawUTF8(4, 12, "Ws2811 CTRL");
     scr.drawUTF8(4, 20, "by VSSAURUS");
 
   } while ( scr.nextPage() );
@@ -123,5 +124,4 @@ void scr_loop() {
   //scr.firstPage();
   //Heltec.display->display();
 }
-
 #endif

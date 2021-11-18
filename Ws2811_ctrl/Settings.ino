@@ -18,10 +18,17 @@ void load_settings() {
 
   EEPROM.begin(512);
   animation_mode = EEPROM.read(ANIMATION);
+  //delay(200);
   set_led_brightness(EEPROM.read(BRIGHTNESS));
+  //Serial.println(EEPROM.read(BRIGHTNESS));
+  //delay(200);
   set_led_speed(EEPROM.read(SPEED));
+  //Serial.println(EEPROM.read(SPEED));
+  //delay(200);
   set_led_cycle(EEPROM.read(CYCLE_TIME));
-  EEPROM.end();
+  //Serial.println(EEPROM.read(CYCLE_TIME));
+  //delay(200);
+  //EEPROM.end();
   
 }
 
@@ -38,7 +45,7 @@ void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
   EEPROM.write(OFF_TIME, H_OFF);
   EEPROM.write(OFF_TIME + 1, M_OFF);
   EEPROM.commit();
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 void read_time() {
@@ -50,13 +57,14 @@ void read_time() {
   on_time = h_on * 100 + m_on;
   off_time = h_off * 100 +  m_off;
 
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 void save_animation() {
   EEPROM.begin(512);
   EEPROM.write(ANIMATION, animation_mode);
-  EEPROM.end();
+  EEPROM.commit();
+  //EEPROM.end();
 }
 
 
@@ -64,19 +72,22 @@ void save_animation() {
 void save_brightness(int new_brighness) {
   EEPROM.begin(512);
   EEPROM.write(BRIGHTNESS, new_brighness);
-  EEPROM.end();
+  EEPROM.commit();
+  //EEPROM.end();
 }
 
 void save_speed(int new_speed) {
   EEPROM.begin(512);
   EEPROM.write(SPEED, new_speed);
-  EEPROM.end();
+  EEPROM.commit();
+  //EEPROM.end();
 }
 
 void save_cycle_time(int new_cycle_time) {
   EEPROM.begin(512);
   EEPROM.write(CYCLE_TIME, new_cycle_time);
-  EEPROM.end();
+  EEPROM.commit();
+  //EEPROM.end();
 }
 
 int get_on_time() {

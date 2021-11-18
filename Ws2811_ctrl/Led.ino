@@ -13,7 +13,7 @@ int CYCLE_TROUGH = 250;//20-100
 bool anim_play = true;
 
 int max_anim = 5;
-bool anim_cycle=false;
+
 
 void led_setup() {
   delay(3000); // sanity delay
@@ -23,6 +23,7 @@ void led_setup() {
   pinMode(BUTTON, INPUT);
   if(animation_mode==1){
     anim_cycle=true;
+    animation_mode=2;
     }
     
 }
@@ -41,11 +42,11 @@ int get_led_brightness() {
 }
 
 int get_led_speed() {
-  return 100 - RATE;
+  return RATE;
 }
 
 void set_led_speed(int new_speed) {
-  RATE = 100 - new_speed;
+  RATE = new_speed;
   save_speed(RATE);
 }
 
@@ -56,7 +57,6 @@ int get_led_cycle() {
 void set_led_cycle(int new_cycle) {
   CYCLE_TROUGH = new_cycle;
   save_cycle_time(CYCLE_TROUGH);
-
 }
 
 void next_anim() {
@@ -131,9 +131,10 @@ void button_loop() {
 int led_ck = 0;
 int button_ck = 0;
 int cycle_counter=0;
+int _rate = 100-RATE;
 
 void led_loop() {
-  if (millis() >= led_ck + RATE) {
+  if (millis() >= led_ck + _rate) {
     led_ck = millis();    
     
     switch (animation_mode) {
@@ -171,7 +172,7 @@ void led_loop() {
             animation_mode++;
             }
           }else{
-            animation_mode=0;
+            animation_mode=2;
             }
         }
   

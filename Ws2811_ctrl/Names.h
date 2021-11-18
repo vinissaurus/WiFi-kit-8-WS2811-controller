@@ -5,6 +5,7 @@ AsyncWebServer webServer(80);
 
 String animation_names[] = {"OFF","CYCLE ALL","Ocean","Palette","Pride!","Christmas"};
 int animation_mode = 1;
+bool anim_cycle=false;
 
 void led_setup();
 void led_loop();
@@ -20,8 +21,10 @@ void prev_anim();
 
 
 //void scr_loop();
+#ifdef DISPLAY_ENABLED
 void scr_setup();
 void scr_out(String a, String b);
+#endif
 
 void web_setup();
 int wifi_setup();
