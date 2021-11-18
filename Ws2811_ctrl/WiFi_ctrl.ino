@@ -9,7 +9,9 @@ DNSServer dnsServer;
 ESPAsync_WiFiManager ESPAsync_wifiManager(&webServer, &dnsServer, "AutoConnectAP");
 
 int wifi_setup() {
+#ifdef DISPLAY_ON
   scr_out("Connecting...", "wait prease");
+#endif
   int is_it_connected = 0;
 
   Serial.print("\nStarting Async_AutoConnect_ESP8266_minimal on " + String(ARDUINO_BOARD)); Serial.println(ESP_ASYNC_WIFIMANAGER_VERSION);
@@ -31,7 +33,9 @@ int wifi_setup() {
 void wifi_reset() {
   ESPAsync_wifiManager.resetSettings();
   Serial.println("Just erased wifi config");
+#ifdef DISPLAY_ON
   scr_out("Credentials", "deleted!");
+#endif
 }
 
 #ifdef OTA_ENABLED

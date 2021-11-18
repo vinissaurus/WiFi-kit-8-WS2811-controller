@@ -19,13 +19,6 @@ int get_led_cycle();
 void next_anim();
 void prev_anim();
 
-
-//void scr_loop();
-#ifdef DISPLAY_ENABLED
-void scr_setup();
-void scr_out(String a, String b);
-#endif
-
 void web_setup();
 int wifi_setup();
 #ifdef OTA_ENABLED

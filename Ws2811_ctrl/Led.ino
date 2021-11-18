@@ -14,6 +14,11 @@ bool anim_play = true;
 
 int max_anim = 5;
 
+void display_animation_mode() {
+  #ifdef DISPLAY_ON
+  scr_out("Animation mode:", animation_names[animation_mode]);
+  #endif
+}
 
 void led_setup() {
   delay(3000); // sanity delay
@@ -62,7 +67,7 @@ void set_led_cycle(int new_cycle) {
 void next_anim() {
   if (animation_mode < max_anim) {
     animation_mode++;
-    display_animation_mode();
+    
     if (animation_mode == 1) {
     anim_cycle=true;
     animation_mode++;
@@ -79,7 +84,7 @@ void next_anim() {
 void prev_anim() {
   if (animation_mode > 0) {
     animation_mode--;
-    display_animation_mode();
+    
   }
   else {
     animation_mode = max_anim;
@@ -98,9 +103,7 @@ void prev_anim() {
 int button_counter = 0;
 //int repeated_press = 0;
 
-void display_animation_mode() {
-  scr_out("Animation mode:", animation_names[animation_mode]);
-}
+
 
 void button_press(int time_pressed) {
   //if (time_pressed > 10) {
