@@ -10,9 +10,11 @@
 #define BRIGHTNESS 9
 #define SPEED 10
 #define CYCLE_TIME 11
+#define CREDENTIALS_SLOT 12 
 
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
+
 void load_settings() {
   read_time();
 
@@ -98,4 +100,72 @@ int get_on_time() {
 int get_off_time() {
   off_time = h_off * 100 +  m_off;
   return off_time;
+}
+
+
+
+
+void save_credentials() {
+  EEPROM.begin(512);
+  //salvar o tamanho do SSID:
+  EEPROM.write(CREDENTIALS_SLOT, memSSID.length());
+  int starting = CREDENTIALS_SLOT + 1;
+  //salvar o SSID
+  for (int i = 0; i < memSSID.length(); ++i) {
+    EEPROM.write(starting + i, memSSID[i]);
+    // Serial.print(memSSID[i]);
+  }
+  //Serial.println("----testcase1");
+
+
+  starting = CREDENTIALS_SLOT + 1 + memSSID.length() + 1;
+  //salvar o tamanho da senha
+  EEPROM.write(CREDENTIALS_SLOT + 1 + memSSID.length(), memPSK.length());
+  //salvar la seña
+  for (int i = 0; i < memPSK.length(); ++i) {
+    EEPROM.write(starting + i, memPSK[i]);
+    //Serial.print(memPSK[i]);
+  }
+  //Serial.println("----testcase2");
+  EEPROM.commit();
+  EEPROM.end();
+}
+
+
+void load_credentials() {
+  //ler o tamanho do SSID
+  memSSID = "";
+  memPSK = "";
+  EEPROM.begin(512);
+  int sizeOf = EEPROM.read(CREDENTIALS_SLOT);
+  if (sizeOf == 0) {//verificar se existem credenciais registradas
+    memPSK = "@null";
+    //Serial.println("IsNull");
+
+  }
+  else {
+    int starting = CREDENTIALS_SLOT + 1;
+    //ler o SSID
+    for (int i = 0; i < sizeOf; ++i) {
+      memSSID += char(EEPROM.read(starting + i));
+    }
+    //Serial.println(memSSID);
+    //ler o tamanho do PSK
+    starting = CREDENTIALS_SLOT + 1 + memSSID.length() + 1;
+    sizeOf = EEPROM.read(CREDENTIALS_SLOT + 1 + memSSID.length());
+    for (int i = 0; i < sizeOf; ++i)  {
+      memPSK += char(EEPROM.read(starting + i));
+    }
+  }
+  //Serial.println(memPSK);
+  EEPROM.end();
+
+}
+
+void delete_credentials() {
+  Serial.println("Deleting credentials...");
+  EEPROM.begin(512);
+  EEPROM.write(CREDENTIALS_SLOT, 0);
+  EEPROM.commit();
+  EEPROM.end();
 }

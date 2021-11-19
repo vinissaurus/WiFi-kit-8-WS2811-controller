@@ -5,7 +5,6 @@
 #include <ArduinoOTA.h>
 #endif
 
-
 DNSServer dnsServer;
 
 ESPAsync_WiFiManager ESPAsync_wifiManager(&webServer, &dnsServer, "AutoConnectAP");
@@ -16,21 +15,35 @@ int wifi_setup() {
 #endif
   int is_it_connected = 0;
 
-  Serial.print("\nStarting Async_AutoConnect_ESP8266_minimal on " + String(ARDUINO_BOARD)); //Serial.println(ESP_ASYNC_WIFIMANAGER_VERSION);
-
+  //Serial.print("\nStarting Async_AutoConnect_ESP8266_minimal on " + String(ARDUINO_BOARD));
+  Serial.println(ESP_ASYNC_WIFIMANAGER_VERSION);
   //ESPAsync_wifiManager.resetSettings();   //reset saved settings
   //ESPAsync_wifiManager.setAPStaticIPConfig(IPAddress(192,168,186,1), IPAddress(192,168,186,1), IPAddress(255,255,255,0));
 
-  ESPAsync_wifiManager.autoConnect("AutoConnectAP");
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
-    is_it_connected = 1;
+  load_credentials();
+  
+  //Serial.println(memSSID);
+  if (memPSK != "@null") {
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(memSSID.c_str(), memPSK.c_str());
+    if (WiFi.status() == WL_CONNECTED) {
+      goto finished;
+    }
   }
-  else {
-    Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
-  }
+ESPAsync_wifiManager.autoConnect("AutoConnectAP");
+if (WiFi.status() == WL_CONNECTED) {
+  Serial.println(ESPAsync_wifiManager.WiFi_SSID());
+  memSSID = ESPAsync_wifiManager.WiFi_SSID();
+  memPSK = ESPAsync_wifiManager.WiFi_Pass();
+  save_credentials();
+  //Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
+  is_it_connected = 1;
+}
 
-  return is_it_connected;
+finished:
+Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
+Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
+return is_it_connected;
 }
 
 void wifi_reset() {

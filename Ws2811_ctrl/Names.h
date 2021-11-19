@@ -2,6 +2,7 @@
 #define NUM_LEDS 50
 
 AsyncWebServer webServer(80);
+String memSSID, memPSK;
 
 String animation_names[] = {"OFF","CYCLE ALL","Ocean","Palette","Pride!","Christmas"};
 int animation_mode = 1;
@@ -36,3 +37,6 @@ void save_cycle_time(int new_cycle_time);
 int get_on_time();
 int get_off_time();
 void save_time(int H_ON,int M_ON,int H_OFF,int M_OFF);
+void save_credentials();
+void load_credentials();
+void delete_credentials();
