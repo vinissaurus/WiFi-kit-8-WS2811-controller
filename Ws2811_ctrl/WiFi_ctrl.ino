@@ -4,6 +4,8 @@
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #endif
+
+
 DNSServer dnsServer;
 
 ESPAsync_WiFiManager ESPAsync_wifiManager(&webServer, &dnsServer, "AutoConnectAP");
@@ -14,10 +16,11 @@ int wifi_setup() {
 #endif
   int is_it_connected = 0;
 
-  Serial.print("\nStarting Async_AutoConnect_ESP8266_minimal on " + String(ARDUINO_BOARD)); Serial.println(ESP_ASYNC_WIFIMANAGER_VERSION);
+  Serial.print("\nStarting Async_AutoConnect_ESP8266_minimal on " + String(ARDUINO_BOARD)); //Serial.println(ESP_ASYNC_WIFIMANAGER_VERSION);
 
   //ESPAsync_wifiManager.resetSettings();   //reset saved settings
   //ESPAsync_wifiManager.setAPStaticIPConfig(IPAddress(192,168,186,1), IPAddress(192,168,186,1), IPAddress(255,255,255,0));
+
   ESPAsync_wifiManager.autoConnect("AutoConnectAP");
   if (WiFi.status() == WL_CONNECTED) {
     Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
@@ -47,7 +50,7 @@ void ota_start() {
   // ArduinoOTA.setHostname("myesp8266");
 
   // No authentication by default
-  ArduinoOTA.setPassword("adumbass");
+  ArduinoOTA.setPassword("bass");
 
   // Password can be set with it's md5 value as well
   // MD5(admin) = 21232f297a57a5a743894a0e4a801fc3
