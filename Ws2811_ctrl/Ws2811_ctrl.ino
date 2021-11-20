@@ -1,6 +1,6 @@
 #include "Names.h"
 //#include "Display.h"
-//#define OTA_ENABLED
+#define OTA_ENABLED
 
 
 void setup() {

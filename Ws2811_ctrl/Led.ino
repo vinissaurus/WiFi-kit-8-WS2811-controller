@@ -3,11 +3,11 @@
 FASTLED_USING_NAMESPACE
 
 //#define LED_PIN 15 //"D8"
-#define LED_PIN 13 
+#define LED_PIN 13
 #define COLOR_ORDER RGB
 #define CHIPSET WS2812
 //#define BUTTON 12 //"D6"
-#define BUTTON 10 
+#define BUTTON 10
 #define BUTTON_RATE 10
 
 int CYCLE_TROUGH = 250;//20-100
@@ -17,9 +17,9 @@ bool anim_play = true;
 int max_anim = 5;
 
 void display_animation_mode() {
-  #ifdef DISPLAY_ON
+#ifdef DISPLAY_ON
   scr_out("Animation mode:", animation_names[animation_mode]);
-  #endif
+#endif
 }
 
 void led_setup() {
@@ -28,11 +28,11 @@ void led_setup() {
   FastLED.setBrightness( BRIGHTNESS );
 
   pinMode(BUTTON, INPUT);
-  if(animation_mode==1){
-    anim_cycle=true;
-    animation_mode=2;
-    }
-    
+  if (animation_mode == 1) {
+    anim_cycle = true;
+    animation_mode = 2;
+  }
+
 }
 
 
@@ -69,31 +69,41 @@ void set_led_cycle(int new_cycle) {
 void next_anim() {
   if (animation_mode < max_anim) {
     animation_mode++;
-    
-    if (animation_mode == 1) {
-    anim_cycle=true;
-    animation_mode++;
-    }else{anim_cycle=false;}
-  }
-  else {
+
+  } else {
     animation_mode = 0;
   }
-  
+
   display_animation_mode();
   save_animation();
+
+  if (animation_mode == 1) {
+    anim_cycle = true;
+    animation_mode++;
+  } else {
+    anim_cycle = false;
+  }
 }
+
 
 void prev_anim() {
   if (animation_mode > 0) {
     animation_mode--;
-    
+
   }
   else {
     animation_mode = max_anim;
   }
-  
+
   display_animation_mode();
   save_animation();
+
+  if (animation_mode == 1) {
+    anim_cycle = true;
+    animation_mode++;
+  } else {
+    anim_cycle = false;
+  }
 }
 //ANIMATIONS HERE
 
@@ -112,8 +122,8 @@ void button_press(int time_pressed) {
   Serial.println(time_pressed);
   //}
   if (time_pressed > 5 && time_pressed < 30) {
-    //anim_play = !anim_play; //play or pause
-    next_anim();
+    anim_play = !anim_play; //play or pause
+    //next_anim();
   }
 }
 
@@ -135,13 +145,14 @@ void button_loop() {
 
 int led_ck = 0;
 int button_ck = 0;
-int cycle_counter=0;
-int _rate = 100-RATE;
+int cycle_counter = 0;
+int _rate = 100 - RATE;
 
 void led_loop() {
+  if(anim_play){
   if (millis() >= led_ck + _rate) {
-    led_ck = millis();    
-    
+    led_ck = millis();
+
     switch (animation_mode) {
       case 0://OFF
         fadeall();
@@ -149,9 +160,9 @@ void led_loop() {
       //      case 1://CYCLE THROUG MODES
       //
       //        break;
-//      case 2:
-//        Fire();
-//        break;
+      //      case 2:
+      //        Fire();
+      //        break;
       case 2:
         Ocean();
         break;
@@ -169,18 +180,19 @@ void led_loop() {
     FastLED.show();
   }
 
-      if(anim_cycle && millis() >=cycle_counter+CYCLE_TROUGH*1000){
-        cycle_counter=millis();
-        if(animation_mode<max_anim){
-          animation_mode++;
-          if(animation_mode==1){
-            animation_mode++;
-            }
-          }else{
-            animation_mode=2;
-            }
-        }
-  
+  if (anim_cycle && millis() >= cycle_counter + CYCLE_TROUGH * 1000) {
+    cycle_counter = millis();
+    if (animation_mode < max_anim) {
+      animation_mode++;
+      if (animation_mode == 1) {
+        animation_mode++;
+      }
+    } else {
+      animation_mode = 2;
+    }
+  }
+}
+
   if (millis() >= button_ck + BUTTON_RATE) {
     button_ck = millis();
     button_loop();

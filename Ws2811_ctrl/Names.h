@@ -1,5 +1,5 @@
 #include <ESPAsyncWebServer.h>
-#define NUM_LEDS 50
+#define NUM_LEDS 100
 
 AsyncWebServer webServer(80);
 String memSSID, memPSK;
@@ -22,10 +22,9 @@ void prev_anim();
 
 void web_setup();
 int wifi_setup();
-#ifdef OTA_ENABLED
 void ota_start();
 void ota_loop();
-#endif
+
 
 void load_settings();
 void read_time();
