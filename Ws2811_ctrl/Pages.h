@@ -4,7 +4,7 @@ int ext_cycle = 0;
 int current_mode = 0;
 int time_on = 0;
 int time_off = 0;
-int time_schedule = 1;
+int time_schedule = 0;
 int time_fadein = 0;
 int time_fadeout = 0;
 String actual_anim;

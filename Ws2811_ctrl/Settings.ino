@@ -1,4 +1,6 @@
 #include <EEPROM.h>
+#include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
+#include <WiFiUdp.h>
 //EEPROM MAP
 #define TIMED_ON 0
 #define TIMED_FADE 1
@@ -10,11 +12,14 @@
 #define BRIGHTNESS 9
 #define SPEED 10
 #define CYCLE_TIME 11
-#define CREDENTIALS_SLOT 12 
+#define CREDENTIALS_SLOT 12
 
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
 int fade_config;
+
+WiFiUDP ntpUDP;
+NTPClient timeClient(ntpUDP);
 
 void load_settings() {
   read_time();
@@ -33,7 +38,7 @@ void load_settings() {
   //Serial.println(EEPROM.read(CYCLE_TIME));
   //delay(200);
   //EEPROM.end();
-  
+
 }
 
 void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
@@ -62,6 +67,11 @@ void read_time() {
   off_time = h_off * 100 +  m_off;
 
   //EEPROM.end();
+}
+
+void begin_ntp() {
+  timeClient.setTimeOffset(0);
+  //timeClient.setPoolServerName(const char* poolServerName);
 }
 
 void save_animation() {
@@ -95,11 +105,11 @@ void save_cycle_time(int new_cycle_time) {
 }
 
 
-void save_fade_settings(int new_settings){
+void save_fade_settings(int new_settings) {
   EEPROM.begin(512);
   EEPROM.write(TIMED_FADE , new_settings);
   EEPROM.commit();
-  }
+}
 
 
 int get_on_time() {

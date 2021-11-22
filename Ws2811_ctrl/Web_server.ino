@@ -29,7 +29,6 @@ void set_value(AsyncWebServerRequest *request) {
     }
   }
 
-
   request->send(200, "text/plain", "{situacao: 0}" );
 }
 
