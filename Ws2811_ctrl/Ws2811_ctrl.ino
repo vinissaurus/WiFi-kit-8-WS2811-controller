@@ -5,7 +5,6 @@
 
 void setup() {
   Serial.begin(115200);
-
   wifi_setup();
   web_setup();
 

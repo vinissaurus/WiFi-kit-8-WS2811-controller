@@ -202,18 +202,20 @@ void led_loop() {
   if (anim_play) {
     if (millis() >= led_ck + _rate) {
       led_ck = millis();
-
+      
+      if(anim_cycle){
       if (fade_in && step_counter < BRIGHTNESS) {
         FastLED.setBrightness(step_counter);
-        Serial.println(step_counter);//0-255
+        //Serial.println(step_counter);//0-255
       }
       if (fade_out && step_counter >= cycle_steps) {
         bright_counter++;
         int birt = BRIGHTNESS - bright_counter;
         FastLED.setBrightness(birt);
-        Serial.println(birt);
+        //Serial.println(birt);
       }
       step_counter++;
+      }
 
       switch (animation_mode) {
         case 0://OFF
