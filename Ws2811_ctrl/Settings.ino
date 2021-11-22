@@ -14,6 +14,7 @@
 
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
+int fade_config;
 
 void load_settings() {
   read_time();
@@ -28,6 +29,7 @@ void load_settings() {
   //Serial.println(EEPROM.read(SPEED));
   //delay(200);
   set_led_cycle(EEPROM.read(CYCLE_TIME));
+  set_led_fade(EEPROM.read(TIMED_FADE));
   //Serial.println(EEPROM.read(CYCLE_TIME));
   //delay(200);
   //EEPROM.end();
@@ -91,6 +93,14 @@ void save_cycle_time(int new_cycle_time) {
   EEPROM.commit();
   //EEPROM.end();
 }
+
+
+void save_fade_settings(int new_settings){
+  EEPROM.begin(512);
+  EEPROM.write(TIMED_FADE , new_settings);
+  EEPROM.commit();
+  }
+
 
 int get_on_time() {
   on_time = h_on * 100 + m_on;

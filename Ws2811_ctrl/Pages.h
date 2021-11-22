@@ -39,6 +39,21 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.send();
     }
 
+    function send_on_off(){
+      xhr.open("GET", "/set?on_sched=" + document.getElementById("timeschedule").value, true);
+      xhr.send();
+    }
+  
+    function send_fade_in(){
+      xhr.open("GET", "/set?fadein=" + document.getElementById("fadein").value, true);
+      xhr.send();
+    }
+
+    function send_fade_out(){
+      xhr.open("GET", "/set?fadeout=" + document.getElementById("fadeout").value, true);
+      xhr.send();
+    }
+
     function next_() {
       xhr.open("GET", "/anim?d=next", true);
       xhr.responseType = 'text';
@@ -128,17 +143,17 @@ const char index_html[] PROGMEM = R"rawliteral(
 
   <h2>Time settings</h2>
   <div>
-    <input type="checkbox" id="timeschedule" %XPRT6% onclick="alert('Will do!')" name="Timeschedule" >
+    <input type="checkbox" id="timeschedule" %XPRT6% onclick=send_on_off() name="Timeschedule" >
     <label for="timeschedule">On/off schedule</label>
   </div>
-
+   
   <div>
-    <input type="checkbox" id="fadein" %XPRT7% name="Fadein">
+    <input type="checkbox" id="fadein" %XPRT7% onclick=send_fade_in() name="Fadein">
     <label for="fadein">Fade in</label>
   </div>
 
   <div>
-    <input type="checkbox" id="fadeout" %XPRT8% name="Fadeout">
+    <input type="checkbox" id="fadeout" %XPRT8% onclick=send_fade_out() name="Fadeout">
     <label for="fadeout">Fade out</label>
   </div>
 

@@ -10,11 +10,15 @@ FASTLED_USING_NAMESPACE
 #define BUTTON 10
 #define BUTTON_RATE 10
 
-int CYCLE_TROUGH = 250;//20-100
+int CYCLE_THROUGH = 250;//20-100
 
 bool anim_play = true;
 
+int step_counter = 0;
+int cycle_steps = 0;
 int max_anim = 5;
+bool fade_in = false;
+bool fade_out = false;
 
 void display_animation_mode() {
 #ifdef DISPLAY_ON
@@ -35,11 +39,54 @@ void led_setup() {
 
 }
 
+void set_fadein(bool in) {
+  fade_in = in;
+  set_led_fade(get_led_fade());
+}
+
+void set_fadeout(bool out) {
+  fade_out = out;
+  set_led_fade(get_led_fade());
+}
+
+void set_led_fade(int new_fade) {
+  switch (new_fade) {
+    case 0:
+      fade_in = false;
+      fade_out = false;
+      break;
+    case 1:
+      fade_in = true;
+      fade_out = false;
+      break;
+    case 2:
+      fade_in = false;
+      fade_out = true;
+      break;
+    case 3:
+      fade_in = true;
+      fade_out = true;
+      break;
+  }
+  save_fade_settings(new_fade);
+}
+
+int get_led_fade() {
+  if (!fade_in && !fade_out)
+    return 0;
+  if (fade_in && !fade_out)
+    return 1;
+  if (!fade_in && fade_out)
+    return 2;
+  if (fade_in && fade_out)
+    return 3;
+}
 
 void set_led_brightness(int new_brightness) {
   BRIGHTNESS = new_brightness;
   FastLED.setBrightness( BRIGHTNESS );
   save_brightness(BRIGHTNESS);
+  cycle_steps = 25 * CYCLE_THROUGH - BRIGHTNESS;
   //Serial.println("Changed brightness to:");
   //Serial.println(BRIGHTNESS);
 }
@@ -58,12 +105,13 @@ void set_led_speed(int new_speed) {
 }
 
 int get_led_cycle() {
-  return CYCLE_TROUGH;
+  return CYCLE_THROUGH;
 }
 
 void set_led_cycle(int new_cycle) {
-  CYCLE_TROUGH = new_cycle;
-  save_cycle_time(CYCLE_TROUGH);
+  CYCLE_THROUGH = new_cycle;
+  save_cycle_time(CYCLE_THROUGH);
+  cycle_steps = 25 * CYCLE_THROUGH - BRIGHTNESS;
 }
 
 void next_anim() {
@@ -146,52 +194,69 @@ void button_loop() {
 int led_ck = 0;
 int button_ck = 0;
 int cycle_counter = 0;
+int bright_counter = 0;
 int _rate = 100 - RATE;
 
+
 void led_loop() {
-  if(anim_play){
-  if (millis() >= led_ck + _rate) {
-    led_ck = millis();
+  if (anim_play) {
+    if (millis() >= led_ck + _rate) {
+      led_ck = millis();
 
-    switch (animation_mode) {
-      case 0://OFF
-        fadeall();
-        break;
-      //      case 1://CYCLE THROUG MODES
-      //
-      //        break;
-      //      case 2:
-      //        Fire();
-      //        break;
-      case 2:
-        Ocean();
-        break;
-      case 3:
-        Palette();
-        break;
-      case 4:
-        pride();
-        break;
-      case 5:
-        TwinkleFox();
-        break;
-    }
-
-    FastLED.show();
-  }
-
-  if (anim_cycle && millis() >= cycle_counter + CYCLE_TROUGH * 1000) {
-    cycle_counter = millis();
-    if (animation_mode < max_anim) {
-      animation_mode++;
-      if (animation_mode == 1) {
-        animation_mode++;
+      if (fade_in && step_counter < BRIGHTNESS) {
+        FastLED.setBrightness(step_counter);
+        Serial.println(step_counter);//0-255
       }
-    } else {
-      animation_mode = 2;
+      if (fade_out && step_counter >= cycle_steps) {
+        bright_counter++;
+        int birt = BRIGHTNESS - bright_counter;
+        FastLED.setBrightness(birt);
+        Serial.println(birt);
+      }
+      step_counter++;
+
+      switch (animation_mode) {
+        case 0://OFF
+          fadeall();
+          break;
+        //      case 1://CYCLE THROUG MODES
+        //
+        //        break;
+        //      case 2:
+        //        Fire();
+        //        break;
+        case 2:
+          Ocean();
+          break;
+        case 3:
+          Palette();
+          break;
+        case 4:
+          pride();
+          break;
+        case 5:
+          TwinkleFox();
+          break;
+      }
+      
+      FastLED.show();
+    }
+
+    if (anim_cycle && millis() >= cycle_counter + CYCLE_THROUGH * 1000) {
+      cycle_counter = millis();
+      if (animation_mode < max_anim) {
+        animation_mode++;
+        if (animation_mode == 1) {
+          animation_mode++;
+        }
+      } else {
+        animation_mode = 2;
+      }
+      //Serial.println(step_counter);
+      step_counter = 0;
+      bright_counter = 0;
     }
   }
-}
 
   if (millis() >= button_ck + BUTTON_RATE) {
     button_ck = millis();
