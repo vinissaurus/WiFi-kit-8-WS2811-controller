@@ -8,10 +8,10 @@
   <style type="text/css" rel="stylesheet">
     body {
       font-family: Arial, Helvetica, sans-serif;
-      background-image: linear-gradient(to bottom, rgb(173, 243, 255), rgb(179, 179, 179));
+      background-image: linear-gradient(to bottom, rgb(100, 100, 100), rgb(29, 29, 29));
       padding: 0 2%;
 
-      position: center;
+
     }
 
     :root {}
@@ -23,6 +23,7 @@
       background-image: linear-gradient(to bottom, rgb(7, 7, 7), rgb(218, 218, 218));
       width: 60%;
       margin: auto;
+      position: center;
     }
 
     .header_bar {
@@ -47,7 +48,7 @@
     }
 
     .anim_settings {
-      text-align: center;
+
       border-style: solid;
       border-width: 1px;
       width: 50vw;
@@ -67,24 +68,38 @@
 
     .time_settings {
       border-style: solid;
-      border-width: 1px;
-      width: 50vw;
-      height: 32vh;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
+    border-width: 1px;
+    width: 50vw;
+    height: 25vh;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
     }
 
     .on_off {
-      justify-content: center;
       display: grid;
-      height: 3vh;
-      grid-template-columns: 15vw 15vw 20vw;
+      /* height: 3vh; */
+      grid-template-columns: 19vw 19vw;
+      /* flex-wrap: nowrap; */
+      justify-content: center;
     }
 
     .change_buttons {
+      display: grid;
+      height: 3vh;
+      grid-template-columns: 20vw 20vw;
+      grid-template-rows: 3vh 3vh;
+    }
+
+    .p_button {
       width: 20vw;
-      ;
+    }
+
+    .f_label {
+      font-size: 2vw;
+    }
+    .f_timezone{
+
     }
   </style>
 
@@ -207,57 +222,57 @@
     </div>
 
     <div class="anim_settings">
-      <h3 style="font-size: 3vw;">Current animation mode</h3>
+      <h3 style="font-size: 3vw; text-align: center;">Animation mode</h3>
       <div>
-        <input type="text" style="width: 39vw; font-family: fantasy; text-align: center;" id="anim_mode" name="fname"
-          value=%XPRT5% disabled="disabled"><br>
+        <input type="text"
+          style="width: 39vw; font-family: fantasy; text-align: center;display: block;margin-left: auto; margin-right: auto;"
+          id="anim_mode" name="fname" value=%XPRT5% disabled="disabled">
       </div>
-      
-    </div>
-    <div class="change_buttons">
-      <div>
-        <button class="change_buttons" type="button" onclick=previous_()>◄</button>
-      </div>
-      <div>
-        <button class="change_buttons" type="button" onclick=next_()>►</button>
-      </div>
-      <div>
-        <input type="checkbox" id="fadein" %XPRT7% onclick=send_fade_in() name="Fadein">
-        <label for="fadein">Fade in</label>
-      </div>
+      <div class="change_buttons">
+        <div>
+          <button class="p_button" type="button" onclick=previous_()>◄</button>
+        </div>
+        <div>
+          <button class="p_button" type="button" onclick=next_()>►</button>
+        </div>
+        <div>
+          <input type="checkbox" id="fadein" %XPRT7% onclick=send_fade_in() name="Fadein">
+          <label class="f_label" for="fadein">Fade in</label>
+        </div>
 
-      <div>
-        <input type="checkbox" id="fadeout" %XPRT8% onclick=send_fade_out() name="Fadeout">
-        <label for="fadeout">Fade out</label>
+        <div>
+          <input type="checkbox" id="fadeout" %XPRT8% onclick=send_fade_out() name="Fadeout">
+          <label class="f_label" for="fadeout">Fade out</label>
+        </div>
       </div>
     </div>
+
 
     <div class="time_settings">
-      <h2>Time settings</h2>
+      <h2 style="font-size: 3vw;text-align: center;">Time settings</h2>
 
-
-
+      <div style="font-size: 2vw; text-align: center;">
+        <input type="checkbox" id="timeschedule" %XPRT6% onclick=send_on_off() name="Timeschedule">
+        <label for="timeschedule">On/off schedule</label>
+      </div>
 
       <div class="on_off">
-        <div>
-          <input type="checkbox" id="timeschedule" %XPRT6% onclick=send_on_off() name="Timeschedule">
-          <label for="timeschedule">On/off schedule</label>
-        </div>
+
         <div>
           <input type="time" id="ontime" name="Ontime" value=%XPRT3% required>
-          <small style="font-size: 1.4vw;">ON time</small>
+          <small style="font-size: 1.4vw;">🕒ON</small>
         </div>
 
         <div>
-          <input style="font-size: 1.4vw;" type="time" id="offtime" name="Offtime" value=%XPRT4% required>
-          <small>OFF time</small>
+          <input type="time" id="offtime" name="Offtime" value=%XPRT4% required>
+          <small style="font-size: 1.4vw;">🕒OFF</small>
         </div>
-        <div>
-          <button type="button" onclick=save_time()>Save time settings</button>
-        </div>
+
       </div>
-      <label for="timezone_offset">Timezone</label><br>
-      <div>
+
+
+      <div class="f_timezone">
+        <label for="timezone_offset">Timezone</label><br>
         <select name="timezone_offset" id="timezone-offset" class="span5">
           <option value="-12:00">(GMT -12:00) Eniwetok, Kwajalein</option>
           <option value="-11:00">(GMT -11:00) Midway Island, Samoa</option>
@@ -301,7 +316,11 @@
           <option value="+14:00">(GMT +14:00) Line Islands, Tokelau</option>
         </select>
 
+        <div>
+          <button type="button" onclick=save_time()>Save time settings</button>
+        </div>
       </div>
+
 
     </div>
 
