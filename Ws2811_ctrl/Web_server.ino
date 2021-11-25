@@ -82,11 +82,12 @@ void refresh_fields() {
   }
 }
 
-void handleRoot(AsyncWebServerRequest *request) {
+void handleRoot(AsyncWebServerRequest *request) {  
   refresh_fields();
-  delay(500);
-  //request->send_P(200, "text/html", index_html , processor);
-  request->send(200, "text/html", index_html);
+ //AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/index.html", "text/plain", 12, processor);
+  //delay(1000);
+  //request->send(response);
+  request->send(SPIFFS, "/index.html", String(), false, processor);
 }
 
 void handleNotFound(AsyncWebServerRequest *request) {
