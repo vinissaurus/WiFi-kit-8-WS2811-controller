@@ -9,12 +9,10 @@
     body {
       font-family: Arial, Helvetica, sans-serif;
       background-image: linear-gradient(to bottom, rgb(100, 100, 100), rgb(29, 29, 29));
-      padding: 0 2%;
-      width: 45%;
-
+      padding: 8% 2%;
+      width: 40%;
       margin: auto;
       position: center;
-
     }
 
     .mainframe {
@@ -23,6 +21,7 @@
       position: center;
       border-style: solid;
       border-width: 0.5px;
+      text-align: center;
     }
 
     .header_bar {
@@ -35,24 +34,6 @@
       margin: auto;
     }
 
-    .led_settings {
-      display: grid;
-      grid-template-rows: 8vh 5vh 2vh 5vh;
-      text-align: center;
-      width: 90%;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .anim_settings {
-      width: 90%;
-      height: 18vh;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     .change_buttons {
       justify-content: center;
       display: grid;
@@ -61,18 +42,12 @@
       grid-template-rows: 2vh 2vh;
     }
 
-    .time_settings {
-      width: 90%;
-      position: relative;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     .on_off {
       width: 80%;
       margin: auto;
       display: grid;
-      grid-template-columns: 16vw 16vw;
+      grid-template-columns: 40% 40%;
+      grid-template-rows: 3vh 3vh;
     }
 
     .change_buttons {
@@ -82,36 +57,22 @@
       grid-template-rows: 3vh 3vh;
     }
 
-    .slidecontainer {
+    .large {
       width: 80%;
-      margin: auto;
-    }
-
-    .slider {
-      width: 100%;
-    }
+     }
 
     .p_button {
       width: 100%;
     }
 
-    .f_label {
-      font-size: 2vw;
+    .lil_text {
+      font-size: 100%;
     }
 
-    .f_timezone {
-      text-align: center;
-    }
-
-    .other_stuff {
-      width: 90%;
-      margin-left: auto;
-      margin-right: auto;
-      text-align: center;
-      padding: 1px;
+    .big_text {
+      font-size: 150%;
     }
   </style>
-
   <script>
     var xhr = new XMLHttpRequest();
     function send_bright() {
@@ -216,131 +177,99 @@
     <div class="header_bar">
       <h1>WS2811 CONFIGURATION</h1>
     </div>
-    <div class="led_settings">
-      <h2>LED settings</h2>
-      <div class="slidecontainer">
-        <label for="Bright">Brightness</label><br>
-        <input type="range" name="Bright" min="0" max="255" value=%XPRT0% class="slider" id="brightness"
-          onmouseup=send_bright()>
 
-      </div><br>
+    <h2 class="big_text">LED settings</h2>
 
-      <div class="slidecontainer">
-        <label for="Bright">Animation speed</label><br>
-        <input type="range" name="Speed" min="1" max="100" value=%XPRT1% class="slider" id="speed"
-          onmouseup=send_speed()>
+    <label for="Bright" class="lil_text">Brightness</label><br>
+    <input type="range" name="Bright" min="0" max="255" value=%XPRT0% class="large" id="brightness"
+      onmouseup=send_bright()><br>
 
-      </div><br>
+      <label for="Bright" class="lil_text">Animation speed</label><br>
+    <input type="range" name="Speed" min="1" max="100" value=%XPRT1% class="large" id="speed" onmouseup=send_speed()>    <br>
 
-      <div class="slidecontainer">
-        <label for="Bright">Cycle period</label><br>
-        <input type="range" name="Cycle" min="30" max="250" value=%XPRT2% class="slider" id="cycle_time"
-          onmouseup=send_cycle_time()>
+    <label for="Bright" class="lil_text">Cycle period</label><br>
+    <input type="range" name="Cycle" min="30" max="250" value=%XPRT2% class="large" id="cycle_time"
+      onmouseup=send_cycle_time()>
 
-      </div>
+    <h3 class="big_text">Animation mode</h3>
+    <div>
+      <input type="text"
+        style="width: 79%; font-family: fantasy; text-align: center;display: block;margin-left: auto; margin-right: auto; font-size: 150%;"
+        id="anim_mode" name="fname" value=%XPRT5% disabled="disabled">
     </div>
-
-    <div class="anim_settings">
-      <h3 style="font-size: 100%; text-align: center;">Animation mode</h3>
+    <div class="change_buttons">
       <div>
-        <input type="text"
-          style="width: 79%; font-family: fantasy; text-align: center;display: block;margin-left: auto; margin-right: auto;"
-          id="anim_mode" name="fname" value=%XPRT5% disabled="disabled">
+        <button class="p_button" type="button" onclick=previous_()>&#11013;</button>
       </div>
-      <div class="change_buttons">
-        <div>
-          <button class="p_button" type="button" onclick=previous_()>&#11013;</button>
-        </div>
-        <div>
-          <button class="p_button" type="button" onclick=next_()>&#10145;</button>
-        </div>
-        <div>
-          <input type="checkbox" id="fadein" %XPRT7% onclick=send_fade_in() name="Fadein">
-          <label class="f_label" for="fadein">Fade in</label>
-        </div>
-
-        <div>
-          <input type="checkbox" id="fadeout" %XPRT8% onclick=send_fade_out() name="Fadeout">
-          <label class="f_label" for="fadeout">Fade out</label>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="time_settings">
-      <h2 style="font-size: 100%;text-align: center;">Time settings</h2>
-
-      <div style="font-size: 2vw; text-align: center;">
-        <input type="checkbox" id="timeschedule" %XPRT6% onclick=send_on_off() name="Timeschedule">
-        <label for="timeschedule">On/off schedule</label>
-      </div>
-
-      <div class="on_off">
-
-        <div>
-          <input type="time" id="ontime" name="Ontime" value=%XPRT3% required>
-          <small style="font-size: 1.4vw;">&#128339 ON</small>
-        </div>
-
-        <div>
-          <input type="time" id="offtime" name="Offtime" value=%XPRT4% required>
-          <small style="font-size: 1.4vw;">&#128339 OFF</small>
-        </div>
-
-      </div>
-
-
-      <div class="f_timezone">
-        <div>
-          <label for="timezone_offset">Timezone</label><br>
-        </div>
-        <select name="timezone_offset" id="timezone-offset" class="timezone_sel" style="width: 80%;"
-          onchange="send_timezone()">
-          <option value="-12" %h-12%>(GMT -12:00) Eniwetok, Kwajalein</option>
-          <option value="-11" %h-11%>(GMT -11:00) Midway Island, Samoa</option>
-          <option value="-10" %h-10%>(GMT -10:00) Hawaii</option>
-          <option value="-09" %h-9%>(GMT -9:00) Alaska</option>
-          <option value="-08" %h-8%>(GMT -8:00) Pacific Time (US &amp; Canada)</option>
-          <option value="-07" %h-7%>(GMT -7:00) Mountain Time (US &amp; Canada)</option>
-          <option value="-06" %h-6%>(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
-          <option value="-05" %h-5%>(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
-          <option value="-04" %h-4%>(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
-          <option value="-03" %h-3%>(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
-          <option value="-02" %h-2%>(GMT -2:00) Mid-Atlantic</option>
-          <option value="-01" %h-1%>(GMT -1:00) Azores, Cape Verde Islands</option>
-          <option value="00" %h0%>(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
-          <option value="+01" %h+1%>(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
-          <option value="+02" %h+2%>(GMT +2:00) Kaliningrad, South Africa</option>
-          <option value="+03" %h+3%>(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
-          <option value="+04" %h+4%>(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
-          <option value="+05" %h+5%>(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
-          <option value="+06" %h+6%>(GMT +6:00) Almaty, Dhaka, Colombo</option>
-          <option value="+07" %h+7%>(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
-          <option value="+08" %h+8%>(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
-          <option value="+09" %h+9%>(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
-          <option value="+10" %h+10%>(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
-          <option value="+11" %h+11%>(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
-          <option value="+12" %h+12%>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
-          <option value="+13" %h+13%>(GMT +13:00) Apia, Nukualofa</option>
-          <option value="+14" %h+14%>(GMT +14:00) Line Islands, Tokelau</option>
-        </select>
-
-        <div>
-          <button type="button" style="width: 80%;" onclick=save_time()>Save time settings</button>
-        </div>
-      </div>
-
-
-    </div>
-
-    <div class="other_stuff">
-      <h2>Other settings</h2>
       <div>
-        <button type="button" style="width: 80%;" onclick="delete_credentials()">Reset WiFi settings</button>
+        <button class="p_button" type="button" onclick=next_()>&#10145;</button>
+      </div>
+      <div>
+        <input type="checkbox" id="fadein" %XPRT7% onclick=send_fade_in() name="Fadein">
+        <label class="lil_text" for="fadein" class="lil_text">Fade in</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="fadeout" %XPRT8% onclick=send_fade_out() name="Fadeout">
+        <label class="lil_text" for="fadeout" class="lil_text">Fade out</label>
       </div>
     </div>
+    <h2 class="big_text">Time settings</h2>
+
+    <div>
+      <input type="checkbox" id="timeschedule" %XPRT6% onclick=send_on_off() name="Timeschedule">
+      <label for="timeschedule" class="lil_text">On/off schedule</label>
+    </div>
+
+    <div class="on_off">
+      <div style="text-align: start;">
+        <input type="time" id="ontime" name="Ontime" value=%XPRT3% required>
+        <small class="lil_text">&#128339 ON</small>
+      </div>
+
+      <div style="text-align: end;">
+        <input type="time" id="offtime" name="Offtime" value=%XPRT4% required>
+        <small class="lil_text">&#128339 OFF</small>
+      </div>
+    </div>
+
+    <div>
+      <label for="timezone_offset">Timezone</label><br>
+    </div>
+    <select name="timezone_offset" id="timezone-offset" class="large" onchange="send_timezone()">
+      <option value="-12" %h-12%>(GMT -12:00) Eniwetok, Kwajalein</option>
+      <option value="-11" %h-11%>(GMT -11:00) Midway Island, Samoa</option>
+      <option value="-10" %h-10%>(GMT -10:00) Hawaii</option>
+      <option value="-09" %h-9%>(GMT -9:00) Alaska</option>
+      <option value="-08" %h-8%>(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+      <option value="-07" %h-7%>(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+      <option value="-06" %h-6%>(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+      <option value="-05" %h-5%>(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+      <option value="-04" %h-4%>(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+      <option value="-03" %h-3%>(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+      <option value="-02" %h-2%>(GMT -2:00) Mid-Atlantic</option>
+      <option value="-01" %h-1%>(GMT -1:00) Azores, Cape Verde Islands</option>
+      <option value="00" %h0%>(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+      <option value="+01" %h+1%>(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+      <option value="+02" %h+2%>(GMT +2:00) Kaliningrad, South Africa</option>
+      <option value="+03" %h+3%>(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+      <option value="+04" %h+4%>(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+      <option value="+05" %h+5%>(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+      <option value="+06" %h+6%>(GMT +6:00) Almaty, Dhaka, Colombo</option>
+      <option value="+07" %h+7%>(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+      <option value="+08" %h+8%>(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+      <option value="+09" %h+9%>(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+      <option value="+10" %h+10%>(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+      <option value="+11" %h+11%>(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+      <option value="+12" %h+12%>(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+      <option value="+13" %h+13%>(GMT +13:00) Apia, Nukualofa</option>
+      <option value="+14" %h+14%>(GMT +14:00) Line Islands, Tokelau</option>
+    </select>
+
+    <button type="button" class="large" onclick=save_time()>Save time settings</button>
+    <h2 class="big_text">Other settings</h2>
+
+    <button type="button" class="large" onclick="delete_credentials()">Reset WiFi settings</button>
   </div>
-
 </body>
-
 </html>

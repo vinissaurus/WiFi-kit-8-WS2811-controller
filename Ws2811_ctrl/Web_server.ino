@@ -82,12 +82,20 @@ void refresh_fields() {
   }
 }
 
-void handleRoot(AsyncWebServerRequest *request) {  
+void handleRoot(AsyncWebServerRequest *request) {
   refresh_fields();
- //AsyncWebServerResponse *response = request->beginResponse(SPIFFS, "/index.html", "text/plain", 12, processor);
-  //delay(1000);
-  //request->send(response);
-  request->send(SPIFFS, "/index.html", String(), false, processor);
+  //request->send_P(200, "text/html", index_html, processor);
+//  AsyncWebServerResponse *response = request->beginResponse_P(200, "text/html", index_html, processor);
+//  response->addHeader("Server", "ESP Async Web Server");
+//  request->send(response);
+AsyncWebServerResponse *response = request->beginChunkedResponse("text/plain", [](uint8_t *buffer, size_t maxLen, size_t index_html) -> size_t {
+  //Write up to "maxLen" bytes into "buffer" and return the amount written.
+  //index equals the amount of bytes that have been already sent
+  //You will be asked for more data until 0 is returned
+  //Keep in mind that you can not delay or yield waiting for more data!
+  return mySource.read(buffer, maxLen);}, processor);
+response->addHeader("Server","ESP Async Web Server");
+request->send(response);
 }
 
 void handleNotFound(AsyncWebServerRequest *request) {
