@@ -42,5 +42,8 @@ int get_on_time();
 int get_off_time();
 void save_time(int H_ON,int M_ON,int H_OFF,int M_OFF);
 void save_credentials();
+int get_timezone();
+void set_timezone(int new_timezone);
+
 void load_credentials();
 void delete_credentials();

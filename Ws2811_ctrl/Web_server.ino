@@ -28,6 +28,11 @@ void set_value(AsyncWebServerRequest *request) {
       set_fadeout(false);
     }
   }
+  if (request->hasParam("timezone")) {
+    //Serial.println(String(request->getParam("timezone")->value()));
+    set_timezone(request->getParam("timezone")->value().toInt());
+  }
+
 
   request->send(200, "text/plain", "{situacao: 0}" );
 }
@@ -50,6 +55,8 @@ void refresh_fields() {
   ext_cycle = get_led_cycle();
   time_on = get_on_time();
   time_off = get_off_time();
+  h_offset = get_timezone();
+  get_tz_placeholder();
   switch (get_led_fade()) {
     case 0:
       time_fadein = 0;
@@ -78,12 +85,19 @@ void refresh_fields() {
 void handleRoot(AsyncWebServerRequest *request) {
   refresh_fields();
   delay(500);
-  request->send_P(200, "text/html", index_html , processor);
+  //request->send_P(200, "text/html", index_html , processor);
+  request->send(200, "text/html", index_html);
 }
 
 void handleNotFound(AsyncWebServerRequest *request) {
   String message = "{situacao: -1}";
   request->send(404, "text/plain", message);
+}
+
+void delete_ssid(AsyncWebServerRequest *request) {
+  delete_credentials();
+  //String message = "{situacao: -1}";
+  request->send(200, "text/plain", "{situacao: 0}" );
 }
 
 void set_time(AsyncWebServerRequest *request) {
@@ -115,6 +129,7 @@ void web_setup() {
   webServer.on("/set", set_value);
   webServer.on("/anim", change_anim);
   webServer.on("/time", set_time);
+  webServer.on("/reset", delete_ssid);
   webServer.onNotFound(handleNotFound);
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Origin", "*");
   DefaultHeaders::Instance().addHeader("Access-Control-Allow-Headers",  "Content-Type, Content-Range, Content-Disposition, Content-Description, Control-Allow-Headers, Cache-Control, Pragma, Expires, Access-Control-Allow-Headers, X-Requested-With");

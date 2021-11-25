@@ -14,9 +14,11 @@
 #define CYCLE_TIME 11
 #define CREDENTIALS_SLOT 12
 
+
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
 int fade_config;
+int hour_offset=0;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
@@ -35,9 +37,10 @@ void load_settings() {
   //delay(200);
   set_led_cycle(EEPROM.read(CYCLE_TIME));
   set_led_fade(EEPROM.read(TIMED_FADE));
+  hour_offset=read_timezone();
   //Serial.println(EEPROM.read(CYCLE_TIME));
   //delay(200);
-  //EEPROM.end();
+  EEPROM.end();
 
 }
 
@@ -54,7 +57,7 @@ void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
   EEPROM.write(OFF_TIME, H_OFF);
   EEPROM.write(OFF_TIME + 1, M_OFF);
   EEPROM.commit();
-  //EEPROM.end();
+  EEPROM.end();
 }
 
 void read_time() {
@@ -66,7 +69,7 @@ void read_time() {
   on_time = h_on * 100 + m_on;
   off_time = h_off * 100 +  m_off;
 
-  //EEPROM.end();
+  EEPROM.end();
 }
 
 void begin_ntp() {
@@ -78,7 +81,7 @@ void save_animation() {
   EEPROM.begin(512);
   EEPROM.write(ANIMATION, animation_mode);
   EEPROM.commit();
-  //EEPROM.end();
+  EEPROM.end();
 }
 
 
@@ -87,21 +90,21 @@ void save_brightness(int new_brighness) {
   EEPROM.begin(512);
   EEPROM.write(BRIGHTNESS, new_brighness);
   EEPROM.commit();
-  //EEPROM.end();
+  EEPROM.end();
 }
 
 void save_speed(int new_speed) {
   EEPROM.begin(512);
   EEPROM.write(SPEED, new_speed);
   EEPROM.commit();
-  //EEPROM.end();
+  EEPROM.end();
 }
 
 void save_cycle_time(int new_cycle_time) {
   EEPROM.begin(512);
   EEPROM.write(CYCLE_TIME, new_cycle_time);
   EEPROM.commit();
-  //EEPROM.end();
+  EEPROM.end();
 }
 
 
@@ -123,7 +126,24 @@ int get_off_time() {
 }
 
 
+int get_timezone(){
+  return hour_offset;
+  }
 
+int read_timezone() {
+  EEPROM.begin(512);
+  int which_timezone = EEPROM.read(GMT)-12;
+  //timeClient.setTimeOffset(0);
+  return which_timezone;  
+}
+
+void set_timezone(int new_timezone) {
+  hour_offset=new_timezone;
+  int corrected_tz = 12 + new_timezone;
+  EEPROM.begin(512);
+  EEPROM.write(GMT , corrected_tz);
+  EEPROM.commit();
+}
 
 void save_credentials() {
   EEPROM.begin(512);
