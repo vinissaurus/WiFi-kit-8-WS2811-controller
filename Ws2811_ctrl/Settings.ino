@@ -17,31 +17,50 @@
 
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
+bool time_schedule;
 int fade_config;
-int hour_offset=0;
+int hour_offset = 0;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
 
 void load_settings() {
-  read_time();
+  
 
   EEPROM.begin(512);
+  read_time();
   animation_mode = EEPROM.read(ANIMATION);
-  //delay(200);
+  delay(200);
   set_led_brightness(EEPROM.read(BRIGHTNESS));
-  //Serial.println(EEPROM.read(BRIGHTNESS));
-  //delay(200);
+  Serial.println(EEPROM.read(BRIGHTNESS));
+  delay(200);
   set_led_speed(EEPROM.read(SPEED));
-  //Serial.println(EEPROM.read(SPEED));
-  //delay(200);
+  Serial.println(EEPROM.read(SPEED));
+  delay(200);
   set_led_cycle(EEPROM.read(CYCLE_TIME));
+  delay(200);
   set_led_fade(EEPROM.read(TIMED_FADE));
-  hour_offset=read_timezone();
-  //Serial.println(EEPROM.read(CYCLE_TIME));
+  hour_offset = read_timezone();
+  Serial.println(EEPROM.read(CYCLE_TIME));
   //delay(200);
   EEPROM.end();
 
+}
+
+void save_time_schedule(bool ts) {
+  time_schedule = ts;
+  EEPROM.begin(512);
+  if (time_schedule) {
+    EEPROM.write(TIMED_ON, 1);
+  } else {
+    EEPROM.write(TIMED_ON, 0);
+  }
+  EEPROM.commit();
+  EEPROM.end();
+}
+
+bool get_time_schedule() {
+  return time_schedule;
 }
 
 void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
@@ -61,7 +80,7 @@ void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
 }
 
 void read_time() {
-  EEPROM.begin(512);
+  //EEPROM.begin(512);
   h_on = EEPROM.read(ON_TIME);
   m_on = EEPROM.read(ON_TIME + 1);
   h_off = EEPROM.read(OFF_TIME);
@@ -69,7 +88,7 @@ void read_time() {
   on_time = h_on * 100 + m_on;
   off_time = h_off * 100 +  m_off;
 
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 void begin_ntp() {
@@ -98,6 +117,7 @@ void save_speed(int new_speed) {
   EEPROM.write(SPEED, new_speed);
   EEPROM.commit();
   EEPROM.end();
+  Serial.println(EEPROM.read(SPEED));
 }
 
 void save_cycle_time(int new_cycle_time) {
@@ -105,6 +125,7 @@ void save_cycle_time(int new_cycle_time) {
   EEPROM.write(CYCLE_TIME, new_cycle_time);
   EEPROM.commit();
   EEPROM.end();
+  Serial.println(EEPROM.read(CYCLE_TIME));
 }
 
 
@@ -126,19 +147,19 @@ int get_off_time() {
 }
 
 
-int get_timezone(){
+int get_timezone() {
   return hour_offset;
-  }
+}
 
 int read_timezone() {
   EEPROM.begin(512);
-  int which_timezone = EEPROM.read(GMT)-12;
+  int which_timezone = EEPROM.read(GMT) - 12;
   //timeClient.setTimeOffset(0);
-  return which_timezone;  
+  return which_timezone;
 }
 
 void set_timezone(int new_timezone) {
-  hour_offset=new_timezone;
+  hour_offset = new_timezone;
   int corrected_tz = 12 + new_timezone;
   EEPROM.begin(512);
   EEPROM.write(GMT , corrected_tz);

@@ -5,8 +5,9 @@
 
 void setup() {
   Serial.begin(115200);
+  load_settings();
   wifi_setup();
-  web_setup();
+  
 
 #ifdef OTA_ENABLED
   ota_start();
@@ -17,7 +18,7 @@ void setup() {
   scr_setup();
 #endif
 
-  load_settings();
+  web_setup();
   led_setup();
 }
 

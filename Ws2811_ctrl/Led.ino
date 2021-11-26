@@ -92,10 +92,12 @@ void set_led_brightness(int new_brightness) {
 }
 
 int get_led_brightness() {
+  //Serial.println(BRIGHTNESS);
   return BRIGHTNESS;
 }
 
 int get_led_speed() {
+  //Serial.println(RATE);
   return RATE;
 }
 
@@ -105,6 +107,7 @@ void set_led_speed(int new_speed) {
 }
 
 int get_led_cycle() {
+  //Serial.println(CYCLE_THROUGH);
   return CYCLE_THROUGH;
 }
 

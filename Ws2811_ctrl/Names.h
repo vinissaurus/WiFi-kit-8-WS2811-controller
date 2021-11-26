@@ -31,6 +31,8 @@ void ota_loop();
 
 
 void load_settings();
+void save_time_schedule(bool ts);
+bool get_time_schedule();
 void read_time();
 void save_animation();
 void save_brightness(int new_brighness);
