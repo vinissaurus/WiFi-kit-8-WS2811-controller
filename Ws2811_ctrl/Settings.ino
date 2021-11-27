@@ -1,6 +1,7 @@
 #include <EEPROM.h>
 #include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
 #include <WiFiUdp.h>
+#define EE_SIZE 256
 //EEPROM MAP
 #define TIMED_ON 0
 #define TIMED_FADE 1
@@ -15,6 +16,7 @@
 #define CREDENTIALS_SLOT 12
 
 
+
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
 bool time_schedule;
@@ -25,38 +27,31 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP);
 
 void load_settings() {
-  
-
-  EEPROM.begin(512);
-  read_time();
-  animation_mode = EEPROM.read(ANIMATION);
-  delay(200);
-  set_led_brightness(EEPROM.read(BRIGHTNESS));
-  Serial.println(EEPROM.read(BRIGHTNESS));
-  delay(200);
-  set_led_speed(EEPROM.read(SPEED));
-  Serial.println(EEPROM.read(SPEED));
-  delay(200);
-  set_led_cycle(EEPROM.read(CYCLE_TIME));
-  delay(200);
+  EEPROM.begin(EE_SIZE);
+  time_schedule = (EEPROM.read(TIMED_ON)==1?true:false);
   set_led_fade(EEPROM.read(TIMED_FADE));
-  hour_offset = read_timezone();
-  Serial.println(EEPROM.read(CYCLE_TIME));
-  //delay(200);
-  EEPROM.end();
-
+  hour_offset = EEPROM.read(GMT) - 12;
+  //LINE Reserved for DST
+  read_time();//ON_TIME & OFF_TIME
+  animation_mode = EEPROM.read(ANIMATION);
+  set_led_brightness(EEPROM.read(BRIGHTNESS));
+  set_led_speed(EEPROM.read(SPEED));
+  set_led_cycle(EEPROM.read(CYCLE_TIME));    
 }
+
+
 
 void save_time_schedule(bool ts) {
   time_schedule = ts;
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   if (time_schedule) {
     EEPROM.write(TIMED_ON, 1);
   } else {
     EEPROM.write(TIMED_ON, 0);
   }
   EEPROM.commit();
-  EEPROM.end();
+  //Serial.println(EEPROM.read(TIMED_ON));
+  //EEPROM.end();
 }
 
 bool get_time_schedule() {
@@ -70,17 +65,17 @@ void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
   m_on = M_ON;
   h_off = H_OFF;
   m_off = M_OFF;
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(ON_TIME, H_ON);
   EEPROM.write(ON_TIME + 1, M_ON);
   EEPROM.write(OFF_TIME, H_OFF);
   EEPROM.write(OFF_TIME + 1, M_OFF);
   EEPROM.commit();
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 void read_time() {
-  //EEPROM.begin(512);
+  //EEPROM.begin(EE_SIZE);
   h_on = EEPROM.read(ON_TIME);
   m_on = EEPROM.read(ON_TIME + 1);
   h_off = EEPROM.read(OFF_TIME);
@@ -97,40 +92,40 @@ void begin_ntp() {
 }
 
 void save_animation() {
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(ANIMATION, animation_mode);
   EEPROM.commit();
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 
 
 void save_brightness(int new_brighness) {
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(BRIGHTNESS, new_brighness);
   EEPROM.commit();
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 void save_speed(int new_speed) {
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(SPEED, new_speed);
   EEPROM.commit();
-  EEPROM.end();
-  Serial.println(EEPROM.read(SPEED));
+  //EEPROM.end();
+  //Serial.println(EEPROM.read(SPEED));
 }
 
 void save_cycle_time(int new_cycle_time) {
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(CYCLE_TIME, new_cycle_time);
   EEPROM.commit();
-  EEPROM.end();
-  Serial.println(EEPROM.read(CYCLE_TIME));
+  //EEPROM.end();
+  //Serial.println(EEPROM.read(CYCLE_TIME));
 }
 
 
 void save_fade_settings(int new_settings) {
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(TIMED_FADE , new_settings);
   EEPROM.commit();
 }
@@ -151,23 +146,18 @@ int get_timezone() {
   return hour_offset;
 }
 
-int read_timezone() {
-  EEPROM.begin(512);
-  int which_timezone = EEPROM.read(GMT) - 12;
-  //timeClient.setTimeOffset(0);
-  return which_timezone;
-}
+
 
 void set_timezone(int new_timezone) {
   hour_offset = new_timezone;
   int corrected_tz = 12 + new_timezone;
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(GMT , corrected_tz);
   EEPROM.commit();
 }
 
 void save_credentials() {
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   //salvar o tamanho do SSID:
   EEPROM.write(CREDENTIALS_SLOT, memSSID.length());
   int starting = CREDENTIALS_SLOT + 1;
@@ -189,7 +179,7 @@ void save_credentials() {
   }
   //Serial.println("----testcase2");
   EEPROM.commit();
-  EEPROM.end();
+  //EEPROM.end();
 }
 
 
@@ -197,7 +187,7 @@ void load_credentials() {
   //ler o tamanho do SSID
   memSSID = "";
   memPSK = "";
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   int sizeOf = EEPROM.read(CREDENTIALS_SLOT);
   if (sizeOf == 0) {//verificar se existem credenciais registradas
     memPSK = "@null";
@@ -219,14 +209,14 @@ void load_credentials() {
     }
   }
   //Serial.println(memPSK);
-  EEPROM.end();
+  //EEPROM.end();
 
 }
 
 void delete_credentials() {
   Serial.println("Deleting credentials...");
-  EEPROM.begin(512);
+  EEPROM.begin(EE_SIZE);
   EEPROM.write(CREDENTIALS_SLOT, 0);
   EEPROM.commit();
-  EEPROM.end();
+  //EEPROM.end();
 }

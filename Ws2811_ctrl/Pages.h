@@ -23,7 +23,7 @@ const char index_html[] PROGMEM = R"rawliteral(
     body {
       font-family: Arial, Helvetica, sans-serif;
       background-image: linear-gradient(to bottom, rgb(100, 100, 100), rgb(29, 29, 29));
-      padding: 8% 2%;
+      padding: 3% 2%;
       width: 40%;
       margin: auto;
       position: center;

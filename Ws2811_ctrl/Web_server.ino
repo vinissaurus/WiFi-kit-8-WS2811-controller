@@ -1,6 +1,6 @@
 #include "Pages.h"
 
-char message_200[]="{Ok!}";
+char message_200[]="{Ok!U+1F44D}";
 char ipAdr[16];
 
 void set_value(AsyncWebServerRequest *request) {
@@ -153,8 +153,13 @@ void set_time(AsyncWebServerRequest *request) {
   h2 = off_input.substring(0, off_input.indexOf(":")).toInt();
   m2 = off_input.substring(off_input.indexOf(":") + 1, off_input.length()).toInt();
   save_time(h1, m1, h2, m2);
-  request->send(200, "text/plain", "{situacao: 0}" );
+  request->send(200, "text/plain", message_200 );
 }
+
+//void ssdp(AsyncWebServerRequest *request){
+//  SSDP.schema(request);
+//  request->send(200, "text/plain", message_200 );
+//  }
 
 void web_setup() {
 
@@ -171,6 +176,7 @@ void web_setup() {
   webServer.on("/set", set_value);
   webServer.on("/anim", change_anim);
   webServer.on("/time", set_time);
+  //webServer.on("/description.xml", ssdp) {
   webServer.on("/reset", delete_ssid);
   webServer.on("/status", send_status);
   //webServer.on("/style.css", send_css);

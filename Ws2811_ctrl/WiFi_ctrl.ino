@@ -1,9 +1,11 @@
 #include <ESPAsync_WiFiManager.h>//https://github.com/khoih-prog/ESPAsync_WiFiManager
+#define ESP_DRD_USE_EEPROM false
 
 #ifdef OTA_ENABLED
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #endif
+#define SCHEMA_ON
 
 DNSServer dnsServer;
 
@@ -14,14 +16,9 @@ int wifi_setup() {
   scr_out("Connecting...", "wait prease");
 #endif
   int is_it_connected = 0;
-
-  //Serial.print("\nStarting Async_AutoConnect_ESP8266_minimal on " + String(ARDUINO_BOARD));
   Serial.println(ESP_ASYNC_WIFIMANAGER_VERSION);
-  //ESPAsync_wifiManager.resetSettings();   //reset saved settings
-  //ESPAsync_wifiManager.setAPStaticIPConfig(IPAddress(192,168,186,1), IPAddress(192,168,186,1), IPAddress(255,255,255,0));
-
   load_credentials();
-  
+
   //Serial.println(memSSID);
   if (memPSK != "@null") {
     WiFi.mode(WIFI_STA);
@@ -30,20 +27,36 @@ int wifi_setup() {
       goto finished;
     }
   }
-ESPAsync_wifiManager.autoConnect("AutoConnectAP");
-if (WiFi.status() == WL_CONNECTED) {
-  Serial.println(ESPAsync_wifiManager.WiFi_SSID());
-  memSSID = ESPAsync_wifiManager.WiFi_SSID();
-  memPSK = ESPAsync_wifiManager.WiFi_Pass();
-  save_credentials();
-  //Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
-  is_it_connected = 1;
-}
+  ESPAsync_wifiManager.autoConnect("AutoConnectAP");
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println(ESPAsync_wifiManager.WiFi_SSID());
+    memSSID = ESPAsync_wifiManager.WiFi_SSID();
+    memPSK = ESPAsync_wifiManager.WiFi_Pass();
+    save_credentials();
+    //Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
+    is_it_connected = 1;
+  }
 
 finished:
-Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
-Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
-return is_it_connected;
+  Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
+  Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
+
+#ifdef SCHEMA_ON
+//  //SSDP.schema(webServer());
+//  SSDP.setSchemaURL("description.xml");
+//  SSDP.setHTTPPort(80);
+//  SSDP.setName("Philips hue clone");
+//  SSDP.setSerialNumber("001788102201");
+//  SSDP.setURL("index.html");
+//  SSDP.setModelName("Philips hue bridge 2012");
+//  SSDP.setModelNumber("929000226503");
+//  SSDP.setModelURL("http://www.meethue.com");
+//  SSDP.setManufacturer("Royal Philips Electronics");
+//  SSDP.setManufacturerURL("http://www.philips.com");
+//  SSDP.begin();
+#endif
+
+  return is_it_connected;
 }
 
 void wifi_reset() {

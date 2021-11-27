@@ -1,4 +1,5 @@
 #include <ESPAsyncWebServer.h>
+#include <ESP8266SSDP.h>
 #define NUM_LEDS 100
 
 AsyncWebServer webServer(80);
