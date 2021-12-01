@@ -11,7 +11,7 @@ bool anim_cycle=false;
 
 void led_setup();
 void led_loop();
-
+void animation_state(bool anim_on);
 void set_fadein(bool in);
 void set_fadeout(bool out);
 void set_led_fade(int new_fade);
@@ -34,7 +34,9 @@ void dns_loop();
 
 
 void load_settings();
+void timed_schedule_loop();
 void save_time_schedule(bool ts);
+int get_animation_mode();
 bool get_time_schedule();
 void read_time();
 void save_animation();

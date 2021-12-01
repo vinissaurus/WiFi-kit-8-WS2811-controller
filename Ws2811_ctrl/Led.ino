@@ -39,6 +39,18 @@ void led_setup() {
 
 }
 
+void animation_state(bool anim_on){
+  if(anim_on){
+    animation_mode=get_animation_mode();
+    if(animation_mode==0){
+      animation_mode=2;
+      anim_cycle=true;
+      }
+    }else{
+      animation_mode=0;
+      }
+  }
+
 void set_fadein(bool in) {
   fade_in = in;
   set_led_fade(get_led_fade());

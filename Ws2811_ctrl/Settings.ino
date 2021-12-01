@@ -2,6 +2,7 @@
 #include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
 #include <WiFiUdp.h>
 #define EE_SIZE 256
+#define TIME_UPDATE_RATE 5000
 //EEPROM MAP
 #define TIMED_ON 0
 #define TIMED_FADE 1
@@ -24,11 +25,11 @@ int fade_config;
 int hour_offset = 0;
 
 WiFiUDP ntpUDP;
-NTPClient timeClient(ntpUDP);
+NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
 
 void load_settings() {
   EEPROM.begin(EE_SIZE);
-  time_schedule = (EEPROM.read(TIMED_ON)==1?true:false);
+  time_schedule = (EEPROM.read(TIMED_ON) == 1 ? true : false);
   set_led_fade(EEPROM.read(TIMED_FADE));
   hour_offset = EEPROM.read(GMT) - 12;
   //LINE Reserved for DST
@@ -36,10 +37,19 @@ void load_settings() {
   animation_mode = EEPROM.read(ANIMATION);
   set_led_brightness(EEPROM.read(BRIGHTNESS));
   set_led_speed(EEPROM.read(SPEED));
-  set_led_cycle(EEPROM.read(CYCLE_TIME));    
+  set_led_cycle(EEPROM.read(CYCLE_TIME));
+
+  if (time_schedule) {
+    timeClient.begin();
+    int t_offset = hour_offset * 3600;
+    timeClient.setTimeOffset(t_offset);
+  }
 }
 
-
+int get_animation_mode(){
+  EEPROM.begin(EE_SIZE);
+  return EEPROM.read(ANIMATION);
+  }
 
 void save_time_schedule(bool ts) {
   time_schedule = ts;
@@ -56,6 +66,25 @@ void save_time_schedule(bool ts) {
 
 bool get_time_schedule() {
   return time_schedule;
+}
+
+bool STATE_ON = false;
+int timed_loop_ck = 0;
+void timed_schedule_loop() {
+  if (millis() >= timed_loop_ck + TIME_UPDATE_RATE) {
+    timed_loop_ck = millis();
+    timeClient.update();
+    int now_h = timeClient.getHours();
+    int now_m = timeClient.getMinutes();
+    if ((now_h == h_on && now_m >= m_on) || (now_h > h_on && now_h < h_off) || (now_h == h_off && now_m <= m_off)) {
+      animation_state(true);
+      //Serial.println("I'm on, B1TCH");
+    } else {
+      animation_state(false);
+    }
+
+    //Serial.println(timeClient.getFormattedTime());
+  }
 }
 
 void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
@@ -82,14 +111,10 @@ void read_time() {
   m_off = EEPROM.read(OFF_TIME + 1);
   on_time = h_on * 100 + m_on;
   off_time = h_off * 100 +  m_off;
-
   //EEPROM.end();
 }
 
-void begin_ntp() {
-  timeClient.setTimeOffset(0);
-  //timeClient.setPoolServerName(const char* poolServerName);
-}
+
 
 void save_animation() {
   EEPROM.begin(EE_SIZE);
@@ -154,6 +179,9 @@ void set_timezone(int new_timezone) {
   EEPROM.begin(EE_SIZE);
   EEPROM.write(GMT , corrected_tz);
   EEPROM.commit();
+  int t_offset = hour_offset * 3600;
+  timeClient.setTimeOffset(t_offset);
+  timeClient.forceUpdate();
 }
 
 void save_credentials() {
