@@ -1,11 +1,17 @@
 #include <ESPAsync_WiFiManager.h>//https://github.com/khoih-prog/ESPAsync_WiFiManager
+
+#ifdef DNS_ON
+#include <ESP8266mDNS.h>
+#define DNS_NAME "wesp2811"
+#endif
+
 #define ESP_DRD_USE_EEPROM false
 
 #ifdef OTA_ENABLED
 #include <WiFiUdp.h>
 #include <ArduinoOTA.h>
 #endif
-#define SCHEMA_ON
+//#define SCHEMA_ON
 
 DNSServer dnsServer;
 
@@ -42,18 +48,22 @@ finished:
   Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
 
 #ifdef SCHEMA_ON
-//  //SSDP.schema(webServer());
-//  SSDP.setSchemaURL("description.xml");
-//  SSDP.setHTTPPort(80);
-//  SSDP.setName("Philips hue clone");
-//  SSDP.setSerialNumber("001788102201");
-//  SSDP.setURL("index.html");
-//  SSDP.setModelName("Philips hue bridge 2012");
-//  SSDP.setModelNumber("929000226503");
-//  SSDP.setModelURL("http://www.meethue.com");
-//  SSDP.setManufacturer("Royal Philips Electronics");
-//  SSDP.setManufacturerURL("http://www.philips.com");
-//  SSDP.begin();
+  //  //SSDP.schema(webServer());
+  //  SSDP.setSchemaURL("description.xml");
+  //  SSDP.setHTTPPort(80);
+  //  SSDP.setName("Philips hue clone");
+  //  SSDP.setSerialNumber("001788102201");
+  //  SSDP.setURL("index.html");
+  //  SSDP.setModelName("Philips hue bridge 2012");
+  //  SSDP.setModelNumber("929000226503");
+  //  SSDP.setModelURL("http://www.meethue.com");
+  //  SSDP.setManufacturer("Royal Philips Electronics");
+  //  SSDP.setManufacturerURL("http://www.philips.com");
+  //  SSDP.begin();
+#endif
+
+#ifdef DNS_ON
+  dns_begin();
 #endif
 
   return is_it_connected;
@@ -118,5 +128,26 @@ void ota_start() {
 
 void ota_loop() {
   ArduinoOTA.handle();
+}
+#endif
+
+#ifdef DNS_ON
+
+
+void dns_begin() {
+  if (!MDNS.begin(DNS_NAME)) {
+    Serial.println("Error setting up MDNS responder!");
+    while (1) {
+      delay(1000);
+    }
+  }
+  Serial.println("mDNS responder started");
+
+   // Add service to MDNS-SD
+  MDNS.addService("http", "tcp", 80);
+}
+
+void dns_loop() {
+  MDNS.update();
 }
 #endif

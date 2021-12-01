@@ -20,10 +20,15 @@ const char index_html[] PROGMEM = R"rawliteral(
 <head>
   <title>WS2811 Configuration</title>
   <style>
+    html{
+      padding: 2% 0%;
+      overflow: hidden;
+    }
+
     body {
       font-family: Arial, Helvetica, sans-serif;
       background-image: linear-gradient(to bottom, rgb(100, 100, 100), rgb(29, 29, 29));
-      padding: 3% 2%;
+      padding: 2% 2%;
       width: 40%;
       margin: auto;
       position: center;
@@ -289,7 +294,7 @@ const char index_html[] PROGMEM = R"rawliteral(
     <button type="button" class="large" onclick=save_time()>Save time settings</button>
     <h2 class="big_text">Other settings</h2>
 
-    <button type="button" class="large" onclick="delete_credentials()">Reset WiFi settings</button>
+    <button type="button" class="large" onclick="delete_credentials()">Reset WiFi settings</button><br><br>
   </div>
 </body>
 </html>

@@ -1,5 +1,5 @@
 #include <ESPAsyncWebServer.h>
-#include <ESP8266SSDP.h>
+//#include <ESP8266SSDP.h>
 #define NUM_LEDS 100
 
 AsyncWebServer webServer(80);
@@ -29,6 +29,8 @@ void web_setup();
 int wifi_setup();
 void ota_start();
 void ota_loop();
+void dns_begin();
+void dns_loop();
 
 
 void load_settings();
