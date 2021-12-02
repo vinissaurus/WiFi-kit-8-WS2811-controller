@@ -1,7 +1,7 @@
 #define FRAMES_PER_SECOND 60
 
-int BRIGHTNESS=255;
-int RATE=60;
+int BRIGHTNESS = 255;
+int RATE = 60;
 
 CRGBArray<NUM_LEDS> leds;
 //CRGB leds[NUM_LEDS];
@@ -150,12 +150,12 @@ void Ocean() {
 
 
 
-void pride() 
+void pride()
 {
   static uint16_t sPseudotime = 0;
   static uint16_t sLastMillis = 0;
   static uint16_t sHue16 = 0;
- 
+
   uint8_t sat8 = beatsin88( 87, 220, 250);
   uint8_t brightdepth = beatsin88( 341, 96, 224);
   uint16_t brightnessthetainc16 = beatsin88( 203, (25 * 256), (40 * 256));
@@ -163,15 +163,15 @@ void pride()
 
   uint16_t hue16 = sHue16;//gHue * 256;
   uint16_t hueinc16 = beatsin88(113, 1, 3000);
-  
+
   uint16_t ms = millis();
   uint16_t deltams = ms - sLastMillis ;
   sLastMillis  = ms;
   sPseudotime += deltams * msmultiplier;
-  sHue16 += deltams * beatsin88( 400, 5,9);
+  sHue16 += deltams * beatsin88( 400, 5, 9);
   uint16_t brightnesstheta16 = sPseudotime;
-  
-  for( uint16_t i = 0 ; i < NUM_LEDS; i++) {
+
+  for ( uint16_t i = 0 ; i < NUM_LEDS; i++) {
     hue16 += hueinc16;
     uint8_t hue8 = hue16 / 256;
 
@@ -181,12 +181,12 @@ void pride()
     uint16_t bri16 = (uint32_t)((uint32_t)b16 * (uint32_t)b16) / 65536;
     uint8_t bri8 = (uint32_t)(((uint32_t)bri16) * brightdepth) / 65536;
     bri8 += (255 - brightdepth);
-    
+
     CRGB newcolor = CHSV( hue8, sat8, bri8);
-    
+
     uint16_t pixelnumber = i;
-    pixelnumber = (NUM_LEDS-1) - pixelnumber;
-    
+    pixelnumber = (NUM_LEDS - 1) - pixelnumber;
+
     nblend( leds[pixelnumber], newcolor, 64);
   }
 }
@@ -204,12 +204,12 @@ extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
 void FillLEDsFromPaletteColors( uint8_t colorIndex)
 {
-    uint8_t brightness = 255;
-    
-    for( int i = 0; i < NUM_LEDS; i++) {
-        leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
-        colorIndex += 3;
-    }
+  uint8_t brightness = 255;
+
+  for ( int i = 0; i < NUM_LEDS; i++) {
+    leds[i] = ColorFromPalette( currentPalette, colorIndex, brightness, currentBlending);
+    colorIndex += 3;
+  }
 }
 
 
@@ -226,9 +226,9 @@ void FillLEDsFromPaletteColors( uint8_t colorIndex)
 // This function fills the palette with totally random colors.
 void SetupTotallyRandomPalette()
 {
-    for( int i = 0; i < 16; i++) {
-        currentPalette[i] = CHSV( random8(), 255, random8());
-    }
+  for ( int i = 0; i < 16; i++) {
+    currentPalette[i] = CHSV( random8(), 255, random8());
+  }
 }
 
 // This function sets up a palette of black and white stripes,
@@ -237,28 +237,28 @@ void SetupTotallyRandomPalette()
 // to set them up.
 void SetupBlackAndWhiteStripedPalette()
 {
-    // 'black out' all 16 palette entries...
-    fill_solid( currentPalette, 16, CRGB::Black);
-    // and set every fourth one to white.
-    currentPalette[0] = CRGB::White;
-    currentPalette[4] = CRGB::White;
-    currentPalette[8] = CRGB::White;
-    currentPalette[12] = CRGB::White;
-    
+  // 'black out' all 16 palette entries...
+  fill_solid( currentPalette, 16, CRGB::Black);
+  // and set every fourth one to white.
+  currentPalette[0] = CRGB::White;
+  currentPalette[4] = CRGB::White;
+  currentPalette[8] = CRGB::White;
+  currentPalette[12] = CRGB::White;
+
 }
 
 // This function sets up a palette of purple and green stripes.
 void SetupPurpleAndGreenPalette()
 {
-    CRGB purple = CHSV( HUE_PURPLE, 255, 255);
-    CRGB green  = CHSV( HUE_GREEN, 255, 255);
-    CRGB black  = CRGB::Black;
-    
-    currentPalette = CRGBPalette16(
-                                   green,  green,  black,  black,
-                                   purple, purple, black,  black,
-                                   green,  green,  black,  black,
-                                   purple, purple, black,  black );
+  CRGB purple = CHSV( HUE_PURPLE, 255, 255);
+  CRGB green  = CHSV( HUE_GREEN, 255, 255);
+  CRGB black  = CRGB::Black;
+
+  currentPalette = CRGBPalette16(
+                     green,  green,  black,  black,
+                     purple, purple, black,  black,
+                     green,  green,  black,  black,
+                     purple, purple, black,  black );
 }
 
 
@@ -268,60 +268,89 @@ void SetupPurpleAndGreenPalette()
 // takes up 64 bytes of flash.
 const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
 {
-    CRGB::Red,
-    CRGB::Gray, // 'white' is too bright compared to red and blue
-    CRGB::Blue,
-    CRGB::Black,
-    
-    CRGB::Red,
-    CRGB::Gray,
-    CRGB::Blue,
-    CRGB::Black,
-    
-    CRGB::Red,
-    CRGB::Red,
-    CRGB::Gray,
-    CRGB::Gray,
-    CRGB::Blue,
-    CRGB::Blue,
-    CRGB::Black,
-    CRGB::Black
+  CRGB::Red,
+  CRGB::Gray, // 'white' is too bright compared to red and blue
+  CRGB::Blue,
+  CRGB::Black,
+
+  CRGB::Red,
+  CRGB::Gray,
+  CRGB::Blue,
+  CRGB::Black,
+
+  CRGB::Red,
+  CRGB::Red,
+  CRGB::Gray,
+  CRGB::Gray,
+  CRGB::Blue,
+  CRGB::Blue,
+  CRGB::Black,
+  CRGB::Black
 };
 
-void ChangePalettePeriodically()
-{
-    uint8_t secondHand = (millis() / 3000) % 60;
-    static uint8_t lastSecond = 99;
-    
-    if( lastSecond != secondHand) {
-        lastSecond = secondHand;
-        if( secondHand ==  0)  { currentPalette = RainbowColors_p;         currentBlending = LINEARBLEND; }
-        if( secondHand == 10)  { currentPalette = RainbowStripeColors_p;   currentBlending = NOBLEND;  }
-        if( secondHand == 15)  { currentPalette = RainbowStripeColors_p;   currentBlending = LINEARBLEND; }
-        if( secondHand == 20)  { SetupPurpleAndGreenPalette();             currentBlending = LINEARBLEND; }
-        if( secondHand == 25)  { SetupTotallyRandomPalette();              currentBlending = LINEARBLEND; }
-        if( secondHand == 30)  { SetupBlackAndWhiteStripedPalette();       currentBlending = NOBLEND; }
-        if( secondHand == 35)  { SetupBlackAndWhiteStripedPalette();       currentBlending = LINEARBLEND; }
-        if( secondHand == 40)  { currentPalette = CloudColors_p;           currentBlending = LINEARBLEND; }
-        if( secondHand == 45)  { currentPalette = PartyColors_p;           currentBlending = LINEARBLEND; }
-        if( secondHand == 50)  { currentPalette = myRedWhiteBluePalette_p; currentBlending = NOBLEND;  }
-        if( secondHand == 55)  { currentPalette = myRedWhiteBluePalette_p; currentBlending = LINEARBLEND; }
-    }
-}
 
-void Palette(){
-    ChangePalettePeriodically();
-    
-    static uint8_t startIndex = 0;
-    startIndex = startIndex + 1; /* motion speed */
-    
-    FillLEDsFromPaletteColors( startIndex);
-    
-   }
+
+void Palette() { //Just run it
+  //ChangePalettePeriodically();
+
+  static uint8_t startIndex = 0;
+  startIndex = startIndex + 1; /* motion speed */
+
+  FillLEDsFromPaletteColors( startIndex);
+
+}
+void Palette(int which_one) {
+  switch (which_one) {
+    case 0:
+      currentPalette = RainbowColors_p;
+      currentBlending = LINEARBLEND;
+      break;
+    case 1:
+      currentPalette = RainbowStripeColors_p;
+      currentBlending = NOBLEND;
+      break;
+    case 2:
+      currentPalette = RainbowStripeColors_p;
+      currentBlending = LINEARBLEND;
+      break;
+    case 3:
+      SetupPurpleAndGreenPalette();
+      currentBlending = LINEARBLEND;
+      break;
+    case 4:
+      SetupTotallyRandomPalette();  
+      currentBlending = LINEARBLEND;
+      break;
+    case 5:
+      SetupBlackAndWhiteStripedPalette();
+      currentBlending = NOBLEND;
+      break;
+    case 6:
+      SetupBlackAndWhiteStripedPalette();
+      currentBlending = LINEARBLEND;
+      break;
+    case 7:
+      currentPalette = CloudColors_p;
+      currentBlending = LINEARBLEND;
+      break;
+    case 8:
+      currentPalette = PartyColors_p;
+      currentBlending = LINEARBLEND;
+      break;
+    case 9:
+      currentPalette = myRedWhiteBluePalette_p;
+      currentBlending = NOBLEND;
+      break;
+    case 10:
+      currentPalette = myRedWhiteBluePalette_p;
+      currentBlending = LINEARBLEND;
+      break;
+  }
+}
 #define TWINKLE_SPEED 4
 #define TWINKLE_DENSITY 5
 #define SECONDS_PER_PALETTE  30
-CRGB gBackgroundColor = CRGB::Black; 
+CRGB gBackgroundColor = CRGB::Black;
 #define AUTO_SELECT_BACKGROUND_COLOR 0
 #define COOL_LIKE_INCANDESCENT 1
 
@@ -331,17 +360,17 @@ CRGBPalette16 gTargetPalette;
 
 uint8_t attackDecayWave8( uint8_t i)
 {
-  if( i < 86) {
+  if ( i < 86) {
     return i * 3;
   } else {
     i -= 86;
-    return 255 - (i + (i/2));
+    return 255 - (i + (i / 2));
   }
 }
 
 void coolLikeIncandescent( CRGB& c, uint8_t phase)
 {
-  if( phase < 128) return;
+  if ( phase < 128) return;
 
   uint8_t cooling = (phase - 128) >> 4;
   c.g = qsub8( c.g, cooling);
@@ -350,23 +379,23 @@ void coolLikeIncandescent( CRGB& c, uint8_t phase)
 
 CRGB computeOneTwinkle( uint32_t ms, uint8_t salt)
 {
-  uint16_t ticks = ms >> (8-TWINKLE_SPEED);
+  uint16_t ticks = ms >> (8 - TWINKLE_SPEED);
   uint8_t fastcycle8 = ticks;
   uint16_t slowcycle16 = (ticks >> 8) + salt;
   slowcycle16 += sin8( slowcycle16);
   slowcycle16 =  (slowcycle16 * 2053) + 1384;
   uint8_t slowcycle8 = (slowcycle16 & 0xFF) + (slowcycle16 >> 8);
-  
+
   uint8_t bright = 0;
-  if( ((slowcycle8 & 0x0E)/2) < TWINKLE_DENSITY) {
+  if ( ((slowcycle8 & 0x0E) / 2) < TWINKLE_DENSITY) {
     bright = attackDecayWave8( fastcycle8);
   }
 
   uint8_t hue = slowcycle8 - salt;
   CRGB c;
-  if( bright > 0) {
+  if ( bright > 0) {
     c = ColorFromPalette( gCurrentPalette, hue, bright, NOBLEND);
-    if( COOL_LIKE_INCANDESCENT == 1 ) {
+    if ( COOL_LIKE_INCANDESCENT == 1 ) {
       coolLikeIncandescent( c, fastcycle8);
     }
   } else {
@@ -382,7 +411,7 @@ void drawTwinkles( CRGBSet& L)
   // this function is called, so that the sequence of 'random'
   // numbers that it generates is (paradoxically) stable.
   uint16_t PRNG16 = 11337;
-  
+
   uint32_t clock32 = millis();
 
   // Set up the background color, "bg".
@@ -390,13 +419,13 @@ void drawTwinkles( CRGBSet& L)
   // the current palette are identical, then a deeply faded version of
   // that color is used for the background color
   CRGB bg;
-  if( (AUTO_SELECT_BACKGROUND_COLOR == 1) &&
-      (gCurrentPalette[0] == gCurrentPalette[1] )) {
+  if ( (AUTO_SELECT_BACKGROUND_COLOR == 1) &&
+       (gCurrentPalette[0] == gCurrentPalette[1] )) {
     bg = gCurrentPalette[0];
     uint8_t bglight = bg.getAverageLight();
-    if( bglight > 64) {
+    if ( bglight > 64) {
       bg.nscale8_video( 16); // very bright, so scale to 1/16th
-    } else if( bglight > 16) {
+    } else if ( bglight > 16) {
       bg.nscale8_video( 64); // not that bright, so scale to 1/4th
     } else {
       bg.nscale8_video( 86); // dim, scale to 1/3rd.
@@ -406,13 +435,13 @@ void drawTwinkles( CRGBSet& L)
   }
 
   uint8_t backgroundBrightness = bg.getAverageLight();
-  
-  for( CRGB& pixel: L) {
+
+  for ( CRGB& pixel : L) {
     PRNG16 = (uint16_t)(PRNG16 * 2053) + 1384; // next 'random' number
-    uint16_t myclockoffset16= PRNG16; // use that number as clock offset
+    uint16_t myclockoffset16 = PRNG16; // use that number as clock offset
     PRNG16 = (uint16_t)(PRNG16 * 2053) + 1384; // next 'random' number
     // use that number as clock speed adjustment factor (in 8ths, from 8/8ths to 23/8ths)
-    uint8_t myspeedmultiplierQ5_3 =  ((((PRNG16 & 0xFF)>>4) + (PRNG16 & 0x0F)) & 0x0F) + 0x08;
+    uint8_t myspeedmultiplierQ5_3 =  ((((PRNG16 & 0xFF) >> 4) + (PRNG16 & 0x0F)) & 0x0F) + 0x08;
     uint32_t myclock30 = (uint32_t)((clock32 * myspeedmultiplierQ5_3) >> 3) + myclockoffset16;
     uint8_t  myunique8 = PRNG16 >> 8; // get 'salt' value for this pixel
 
@@ -423,15 +452,15 @@ void drawTwinkles( CRGBSet& L)
 
     uint8_t cbright = c.getAverageLight();
     int16_t deltabright = cbright - backgroundBrightness;
-    if( deltabright >= 32 || (!bg)) {
-      // If the new pixel is significantly brighter than the background color, 
+    if ( deltabright >= 32 || (!bg)) {
+      // If the new pixel is significantly brighter than the background color,
       // use the new color.
       pixel = c;
-    } else if( deltabright > 0 ) {
+    } else if ( deltabright > 0 ) {
       // If the new pixel is just slightly brighter than the background color,
       // mix a blend of the new color and the background color
       pixel = blend( bg, c, deltabright * 8);
-    } else { 
+    } else {
       // if the new pixel is not at all brighter than the background color,
       // just use the background color.
       pixel = bg;
@@ -440,52 +469,57 @@ void drawTwinkles( CRGBSet& L)
 }
 
 const TProgmemRGBPalette16 RedGreenWhite_p FL_PROGMEM =
-{  CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red, 
-   CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red, 
-   CRGB::Red, CRGB::Red, CRGB::Gray, CRGB::Gray, 
-   CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green };
+{ CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red,
+  CRGB::Red, CRGB::Red, CRGB::Red, CRGB::Red,
+  CRGB::Red, CRGB::Red, CRGB::Gray, CRGB::Gray,
+  CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green
+};
 
 // A mostly (dark) green palette with red berries.
 #define Holly_Green 0x00580c
 #define Holly_Red   0xB00402
 const TProgmemRGBPalette16 Holly_p FL_PROGMEM =
-{  Holly_Green, Holly_Green, Holly_Green, Holly_Green, 
-   Holly_Green, Holly_Green, Holly_Green, Holly_Green, 
-   Holly_Green, Holly_Green, Holly_Green, Holly_Green, 
-   Holly_Green, Holly_Green, Holly_Green, Holly_Red 
+{ Holly_Green, Holly_Green, Holly_Green, Holly_Green,
+  Holly_Green, Holly_Green, Holly_Green, Holly_Green,
+  Holly_Green, Holly_Green, Holly_Green, Holly_Green,
+  Holly_Green, Holly_Green, Holly_Green, Holly_Red
 };
 
 // A red and white striped palette
 // "CRGB::Gray" is used as white to keep the brightness more uniform.
 const TProgmemRGBPalette16 RedWhite_p FL_PROGMEM =
-{  CRGB::Red,  CRGB::Red,  CRGB::Red,  CRGB::Red, 
-   CRGB::Gray, CRGB::Gray, CRGB::Gray, CRGB::Gray,
-   CRGB::Red,  CRGB::Red,  CRGB::Red,  CRGB::Red, 
-   CRGB::Gray, CRGB::Gray, CRGB::Gray, CRGB::Gray };
+{ CRGB::Red,  CRGB::Red,  CRGB::Red,  CRGB::Red,
+  CRGB::Gray, CRGB::Gray, CRGB::Gray, CRGB::Gray,
+  CRGB::Red,  CRGB::Red,  CRGB::Red,  CRGB::Red,
+  CRGB::Gray, CRGB::Gray, CRGB::Gray, CRGB::Gray
+};
 
 // A mostly blue palette with white accents.
 // "CRGB::Gray" is used as white to keep the brightness more uniform.
 const TProgmemRGBPalette16 BlueWhite_p FL_PROGMEM =
-{  CRGB::Blue, CRGB::Blue, CRGB::Blue, CRGB::Blue, 
-   CRGB::Blue, CRGB::Blue, CRGB::Blue, CRGB::Blue, 
-   CRGB::Blue, CRGB::Blue, CRGB::Blue, CRGB::Blue, 
-   CRGB::Blue, CRGB::Gray, CRGB::Gray, CRGB::Gray };
+{ CRGB::Blue, CRGB::Blue, CRGB::Blue, CRGB::Blue,
+  CRGB::Blue, CRGB::Blue, CRGB::Blue, CRGB::Blue,
+  CRGB::Blue, CRGB::Blue, CRGB::Blue, CRGB::Blue,
+  CRGB::Blue, CRGB::Gray, CRGB::Gray, CRGB::Gray
+};
 
 // A pure "fairy light" palette with some brightness variations
 #define HALFFAIRY ((CRGB::FairyLight & 0xFEFEFE) / 2)
 #define QUARTERFAIRY ((CRGB::FairyLight & 0xFCFCFC) / 4)
 const TProgmemRGBPalette16 FairyLight_p FL_PROGMEM =
-{  CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight, 
-   HALFFAIRY,        HALFFAIRY,        CRGB::FairyLight, CRGB::FairyLight, 
-   QUARTERFAIRY,     QUARTERFAIRY,     CRGB::FairyLight, CRGB::FairyLight, 
-   CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight };
+{ CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight,
+  HALFFAIRY,        HALFFAIRY,        CRGB::FairyLight, CRGB::FairyLight,
+  QUARTERFAIRY,     QUARTERFAIRY,     CRGB::FairyLight, CRGB::FairyLight,
+  CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight, CRGB::FairyLight
+};
 
 // A palette of soft snowflakes with the occasional bright one
 const TProgmemRGBPalette16 Snow_p FL_PROGMEM =
-{  0x304048, 0x304048, 0x304048, 0x304048,
-   0x304048, 0x304048, 0x304048, 0x304048,
-   0x304048, 0x304048, 0x304048, 0x304048,
-   0x304048, 0x304048, 0x304048, 0xE0F0FF };
+{ 0x304048, 0x304048, 0x304048, 0x304048,
+  0x304048, 0x304048, 0x304048, 0x304048,
+  0x304048, 0x304048, 0x304048, 0x304048,
+  0x304048, 0x304048, 0x304048, 0xE0F0FF
+};
 
 // A palette reminiscent of large 'old-school' C9-size tree lights
 // in the five classic colors: red, orange, green, blue, and white.
@@ -495,11 +529,11 @@ const TProgmemRGBPalette16 Snow_p FL_PROGMEM =
 #define C9_Blue   0x070758
 #define C9_White  0x606820
 const TProgmemRGBPalette16 RetroC9_p FL_PROGMEM =
-{  C9_Red,    C9_Orange, C9_Red,    C9_Orange,
-   C9_Orange, C9_Red,    C9_Orange, C9_Red,
-   C9_Green,  C9_Green,  C9_Green,  C9_Green,
-   C9_Blue,   C9_Blue,   C9_Blue,
-   C9_White
+{ C9_Red,    C9_Orange, C9_Red,    C9_Orange,
+  C9_Orange, C9_Red,    C9_Orange, C9_Red,
+  C9_Green,  C9_Green,  C9_Green,  C9_Green,
+  C9_Blue,   C9_Blue,   C9_Blue,
+  C9_White
 };
 
 // A cold, icy pale blue palette
@@ -527,7 +561,7 @@ const TProgmemRGBPalette16* ActivePaletteList[] = {
   &RedWhite_p,
   &Snow_p,
   &Holly_p,
-  &Ice_p  
+  &Ice_p
 };
 
 
@@ -535,7 +569,7 @@ const TProgmemRGBPalette16* ActivePaletteList[] = {
 void chooseNextColorPalette( CRGBPalette16& pal)
 {
   const uint8_t numberOfPalettes = sizeof(ActivePaletteList) / sizeof(ActivePaletteList[0]);
-  static uint8_t whichPalette = -1; 
+  static uint8_t whichPalette = -1;
   whichPalette = addmod8( whichPalette, 1, numberOfPalettes);
 
   pal = *(ActivePaletteList[whichPalette]);
@@ -543,15 +577,15 @@ void chooseNextColorPalette( CRGBPalette16& pal)
 
 void TwinkleFox()
 {
-  EVERY_N_SECONDS( SECONDS_PER_PALETTE ) { 
-    chooseNextColorPalette( gTargetPalette ); 
+  EVERY_N_SECONDS( SECONDS_PER_PALETTE ) {
+    chooseNextColorPalette( gTargetPalette );
   }
-  
+
   EVERY_N_MILLISECONDS( 10 ) {
     nblendPaletteTowardPalette( gCurrentPalette, gTargetPalette, 12);
   }
 
   drawTwinkles( leds);
-  
+
   //FastLED.show();
 }

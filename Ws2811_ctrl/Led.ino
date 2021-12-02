@@ -16,9 +16,10 @@ bool anim_play = true;
 
 int step_counter = 0;
 int cycle_steps = 0;
-int max_anim = 5;
+
 bool fade_in = false;
 bool fade_out = false;
+bool state_changed = false;
 
 void display_animation_mode() {
 #ifdef DISPLAY_ON
@@ -30,7 +31,7 @@ void led_setup() {
   delay(3000); // sanity delay
   FastLED.addLeds<CHIPSET, LED_PIN, COLOR_ORDER>(leds, NUM_LEDS).setCorrection( TypicalLEDStrip );
   FastLED.setBrightness( BRIGHTNESS );
-
+  //max_anim = sizeof(animation_names);
   pinMode(BUTTON, INPUT);
   if (animation_mode == 1) {
     anim_cycle = true;
@@ -39,17 +40,17 @@ void led_setup() {
 
 }
 
-void animation_state(bool anim_on){
-  if(anim_on){
-    animation_mode=get_animation_mode();
-    if(animation_mode==0){
-      animation_mode=2;
-      anim_cycle=true;
-      }
-    }else{
-      animation_mode=0;
-      }
+void animation_state(bool anim_on) {
+  if (anim_on) {
+    animation_mode = get_animation_mode();
+    if (animation_mode == 0) {
+      animation_mode = 2;
+      anim_cycle = true;
+    }
+  } else {
+    animation_mode = 0;
   }
+}
 
 void set_fadein(bool in) {
   fade_in = in;
@@ -129,6 +130,7 @@ void set_led_cycle(int new_cycle) {
   cycle_steps = 25 * CYCLE_THROUGH - BRIGHTNESS;
 }
 
+
 void next_anim() {
   if (animation_mode < max_anim) {
     animation_mode++;
@@ -146,6 +148,7 @@ void next_anim() {
   } else {
     anim_cycle = false;
   }
+  state_changed = true;
 }
 
 
@@ -167,6 +170,7 @@ void prev_anim() {
   } else {
     anim_cycle = false;
   }
+  state_changed = true;
 }
 //ANIMATIONS HERE
 
@@ -217,19 +221,20 @@ void led_loop() {
   if (anim_play) {
     if (millis() >= led_ck + _rate) {
       led_ck = millis();
-      
-      if(anim_cycle){
-      if (fade_in && step_counter < BRIGHTNESS) {
-        FastLED.setBrightness(step_counter);
-        //Serial.println(step_counter);//0-255
-      }
-      if (fade_out && step_counter >= cycle_steps) {
-        bright_counter++;
-        int birt = BRIGHTNESS - bright_counter;
-        FastLED.setBrightness(birt);
-        //Serial.println(birt);
-      }
-      step_counter++;
+
+      if (anim_cycle) {
+        if (fade_in && step_counter < BRIGHTNESS) {
+          FastLED.setBrightness(step_counter);
+          //Serial.println(step_counter);//0-255
+        }
+        if (fade_out && step_counter >= cycle_steps) {
+          bright_counter++;
+          int birt = BRIGHTNESS - bright_counter; //In loving memory of Birt Sampson
+          FastLED.setBrightness(birt);
+          if (birt <= 1)state_changed = true;
+          //Serial.println(birt);
+        }
+        step_counter++;
       }
 
       switch (animation_mode) {
@@ -246,16 +251,24 @@ void led_loop() {
           Ocean();
           break;
         case 3:
-          Palette();
+          TwinkleFox();
           break;
         case 4:
           pride();
           break;
-        case 5:
-          TwinkleFox();
-          break;
+          //        case 5:
+          //          Palette();
+          //          break;
       }
-      
+      if (animation_mode > 4 && animation_mode < max_anim) {
+        if (state_changed) {
+          int palette_index = animation_mode - 4;
+          Palette(palette_index);
+          state_changed = false;
+        }
+        Palette();
+      }
+
       FastLED.show();
     }
 

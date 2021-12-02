@@ -5,9 +5,26 @@
 AsyncWebServer webServer(80);
 String memSSID, memPSK;
 
-String animation_names[] = {"OFF","CYCLE ALL","Ocean","Palette","Pride!","Christmas"};
+//------------------------------------------------------LED
+int max_anim = 14;
+String animation_names[] = {"OFF",
+                            "CYCLE ALL",
+                            "Ocean",
+                            "Christmas" ,
+                            "Pride!",
+                            "Palette[Rainbow]",
+                            "Palette[Purple&Green]",
+                            "Palette[Random]",
+                            "Palette[B&W I]",
+                            "Palette[B&W II]",
+                            "Palette[B&W III]",
+                            "Palette[Cloud]" ,
+                            "Palette[Party]", 
+                            "Palette[R&W&B I]",
+                            "Palette[R&W&B II]"
+                           };
 int animation_mode = 1;
-bool anim_cycle=false;
+bool anim_cycle = false;
 
 void led_setup();
 void led_loop();
@@ -24,15 +41,18 @@ int get_led_speed();
 int get_led_cycle();
 void next_anim();
 void prev_anim();
+//------------------------------------------------------LED
 
+//------------------------------------------------------WiFi_ctrl
 void web_setup();
 int wifi_setup();
 void ota_start();
 void ota_loop();
 void dns_begin();
 void dns_loop();
+//------------------------------------------------------WiFi_ctrl
 
-
+//------------------------------------------------------Settings
 void load_settings();
 void timed_schedule_loop();
 void save_time_schedule(bool ts);
@@ -47,10 +67,10 @@ void save_fade_settings(int new_settings);
 //void get_animation();
 int get_on_time();
 int get_off_time();
-void save_time(int H_ON,int M_ON,int H_OFF,int M_OFF);
+void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF);
 void save_credentials();
 int get_timezone();
 void set_timezone(int new_timezone);
-
 void load_credentials();
 void delete_credentials();
+//------------------------------------------------------Settings
