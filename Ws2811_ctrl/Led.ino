@@ -5,7 +5,7 @@ FASTLED_USING_NAMESPACE
 //#define LED_PIN 15 //"D8"
 #define LED_PIN 13
 #define COLOR_ORDER RGB
-#define CHIPSET WS2812
+#define CHIPSET WS2811
 //#define BUTTON 12 //"D6"
 #define BUTTON 10
 #define BUTTON_RATE 10

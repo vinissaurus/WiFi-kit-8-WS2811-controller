@@ -3,6 +3,7 @@
 #include <WiFiUdp.h>
 #define EE_SIZE 256
 #define TIME_UPDATE_RATE 5000
+#define FADE_MINUTES 30
 //EEPROM MAP
 #define TIMED_ON 0
 #define TIMED_FADE 1
@@ -46,10 +47,10 @@ void load_settings() {
   }
 }
 
-int get_animation_mode(){
+int get_animation_mode() {
   EEPROM.begin(EE_SIZE);
   return EEPROM.read(ANIMATION);
-  }
+}
 
 void save_time_schedule(bool ts) {
   time_schedule = ts;
@@ -71,20 +72,36 @@ bool get_time_schedule() {
 bool STATE_ON = false;
 int timed_loop_ck = 0;
 void timed_schedule_loop() {
-  if (millis() >= timed_loop_ck + TIME_UPDATE_RATE) {
-    timed_loop_ck = millis();
-    timeClient.update();
-    int now_h = timeClient.getHours();
-    int now_m = timeClient.getMinutes();
-    if ((now_h == h_on && now_m >= m_on) || (now_h > h_on && now_h < h_off) || (now_h == h_off && now_m <= m_off)) {
-      animation_state(true);
-      //Serial.println("I'm on, B1TCH");
-    } else {
-      animation_state(false);
+  if (time_schedule) {
+    if (millis() >= timed_loop_ck + TIME_UPDATE_RATE) {
+      timed_loop_ck = millis();
+      timeClient.update();
+      int now_h = timeClient.getHours();
+      int now_m = timeClient.getMinutes();
+      
+        if ((now_h == h_on && now_m >= m_on) || (now_h == h_off && now_m <= m_off)) {
+          animation_state(true);
+          //Serial.println("I'm on, B1TCH");
+        } else if(h_on<=h_off&&(now_h > h_on && now_h < h_off) ){
+          animation_state(true);
+          //Serial.println("I'm on, B1TCH");
+        } else if(h_on > h_off && (now_h > h_on && now_h > h_off)){
+          animation_state(true);
+          //Serial.println("I'm on, B1TCH");
+          }else {
+          animation_state(false);
+          //Serial.println("I'm ofF");
+        }
+
+        //Serial.println(timeClient.getFormattedTime());
+      
+
+      //Serial.println(timeClient.getFormattedTime());
     }
 
-    //Serial.println(timeClient.getFormattedTime());
   }
+
+
 }
 
 void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
