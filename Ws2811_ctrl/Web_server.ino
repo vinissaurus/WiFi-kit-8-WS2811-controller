@@ -1,6 +1,6 @@
 #include "Pages.h"
 
-char message_200[] = "{Ok!U+1F44D}";
+char message_200[] = "{Ok!}";
 char ipAdr[16];
 
 void set_value(AsyncWebServerRequest *request) {
@@ -14,44 +14,46 @@ void set_value(AsyncWebServerRequest *request) {
     set_led_cycle(request->getParam("cycle")->value().toInt());
   }
   if (request->hasParam("fadein")) {
-    if (request->getParam("fadein")->value() == "on") {
+    if (request->getParam("fadein")->value().toInt() == 1) {
       set_fadein(true);
     }
-    if (request->getParam("fadein")->value() == "off") {
+    if (request->getParam("fadein")->value().toInt() == 0) {
       set_fadein(false);
     }
   }
   if (request->hasParam("fadeout")) {
-    if (request->getParam("fadeout")->value() == "on") {
+    if (request->getParam("fadeout")->value().toInt() == 1) {
       set_fadeout(true);
     }
-    if (request->getParam("fadeout")->value() == "off") {
+    if (request->getParam("fadeout")->value().toInt() == 0) {
       set_fadeout(false);
+    }
+  }
+  if (request->hasParam("on_sched")) {
+    if (request->getParam("on_sched")->value().toInt() == 1) {
+      save_time_schedule(true);
+    }
+    if (request->getParam("on_sched")->value().toInt() == 0) {
+      save_time_schedule(false);
     }
   }
   if (request->hasParam("timezone")) {
     //Serial.println(String(request->getParam("timezone")->value()));
     set_timezone(request->getParam("timezone")->value().toInt());
   }
-  if (request->hasParam("on_sched")) {
-    if (request->getParam("on_sched")->value() == "on") {
-      save_time_schedule(true);
-    }
-    if (request->getParam("on_sched")->value() == "off") {
-      save_time_schedule(false);
-    }
-  }
 
   request->send(200, "text/plain", message_200 );
 }
 
 void change_anim(AsyncWebServerRequest *request) {
+  if (request->hasParam("d")) {
   String sign = request->getParam("d")->value();
   if (sign.equals("next")) {
     next_anim();
   }
   if (sign.equals("prev")) {
     prev_anim();
+  }
   }
 
   String response = "anim=" + get_animation_name();

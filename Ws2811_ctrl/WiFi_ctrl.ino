@@ -5,7 +5,7 @@
 #define DNS_NAME "wesp2811"
 #endif
 
-#define ESP_DRD_USE_EEPROM false
+//#define ESP_DRD_USE_EEPROM false
 
 #ifdef OTA_ENABLED
 #include <WiFiUdp.h>
@@ -30,6 +30,7 @@ int wifi_setup() {
     WiFi.mode(WIFI_STA);
     WiFi.begin(memSSID.c_str(), memPSK.c_str());
     if (WiFi.status() == WL_CONNECTED) {
+      is_it_connected = 1;
       goto finished;
     }
   }

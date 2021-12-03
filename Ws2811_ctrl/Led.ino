@@ -232,9 +232,6 @@ void do_anim(int which_one) {
       do_anim(local_anim_mode);//Recursion, BI4TCH!1
 
       break;
-    //      case 2:
-    //        Fire();
-    //        break;
     case 2:
       Ocean();
       break;

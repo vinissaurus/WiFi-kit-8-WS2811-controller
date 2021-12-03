@@ -1,7 +1,7 @@
 #include <EEPROM.h>
 #include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
 #include <WiFiUdp.h>
-#define EE_SIZE 256
+#define EE_SIZE 512
 #define TIME_UPDATE_RATE 5000
 #define FADE_MINUTES 30
 //EEPROM MAP
@@ -61,6 +61,7 @@ void save_time_schedule(bool ts) {
     EEPROM.write(TIMED_ON, 0);
   }
   EEPROM.commit();
+  
   //Serial.println(EEPROM.read(TIMED_ON));
   //EEPROM.end();
 }
@@ -92,16 +93,9 @@ void timed_schedule_loop() {
           animation_state(false);
           //Serial.println("I'm ofF");
         }
-
-        //Serial.println(timeClient.getFormattedTime());
-      
-
-      //Serial.println(timeClient.getFormattedTime());
-    }
-
+        //Serial.println(timeClient.getFormattedTime());    
+      }
   }
-
-
 }
 
 void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
@@ -169,6 +163,7 @@ void save_cycle_time(int new_cycle_time) {
 void save_fade_settings(int new_settings) {
   EEPROM.begin(EE_SIZE);
   EEPROM.write(TIMED_FADE , new_settings);
+  //Serial.println(EEPROM.read(TIMED_FADE));
   EEPROM.commit();
 }
 

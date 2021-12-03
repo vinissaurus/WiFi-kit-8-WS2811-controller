@@ -104,19 +104,51 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.send();
     }
     function send_cycle_time() {
+      setInterval('autoRefresh()', document.getElementById("cycle_time").value*1000);
       xhr.open("GET", "/set?cycle=" + document.getElementById("cycle_time").value, true);
       xhr.send();
     }
+
+    function autoRefresh() {
+      if(document.getElementById("anim_mode").value.includes('CYCLE:')){
+      xhr.open("GET", "/anim?", true);
+      xhr.responseType = 'text';
+      xhr.onload = function () {
+        if (xhr.readyState === xhr.DONE) {
+          if (xhr.status === 200) {
+            // console.log(xhr.response);
+            console.log(xhr.responseText);
+            get_response(xhr.responseText);
+          }
+        }
+      }
+      xhr.send();
+    }
+        // window.location = window.location.href;
+    }
+
     function send_on_off() {
-      xhr.open("GET", "/set?on_sched=" + document.getElementById("timeschedule").value, true);
+      if(document.getElementById("timeschedule").checked == true){
+      xhr.open("GET", "/set?on_sched=1", true);
+      }else{
+        xhr.open("GET", "/set?on_sched=0", true);
+      }
       xhr.send();
     }
     function send_fade_in() {
-      xhr.open("GET", "/set?fadein=" + document.getElementById("fadein").value, true);
+      if(document.getElementById("fadein").checked == true){
+      xhr.open("GET", "/set?fadein=1", true);
+      }else{
+        xhr.open("GET", "/set?fadein=0", true);
+      }     
       xhr.send();
     }
     function send_fade_out() {
-      xhr.open("GET", "/set?fadeout=" + document.getElementById("fadeout").value, true);
+      if(document.getElementById("fadeout").checked == true){
+      xhr.open("GET", "/set?fadeout=1", true);
+      }else{
+        xhr.open("GET", "/set?fadeout=0", true);
+      }     
       xhr.send();
     }
     function next_() {
@@ -125,7 +157,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
           if (xhr.status === 200) {
-            console.log(xhr.response);
+            // console.log(xhr.response);
             console.log(xhr.responseText);
             get_response(xhr.responseText);
           }
@@ -138,7 +170,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
           if (xhr.status === 200) {
-            console.log(xhr.response);
+            // console.log(xhr.response);
             console.log(xhr.responseText);
             get_response(xhr.responseText);
           }
@@ -170,14 +202,15 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.send();
     }
     function delete_credentials() {
-      if (window.confirm("Are you sure?You know, if you delete my WiFi credentials I won't remember them later...")) {
+      if (window.confirm("Are you sure about that?You know, if you delete my WiFi credentials I won't remember them later...")) {
         xhr.open("GET", "/reset", true);
         xhr.send();
       }
     }
+    
     $(document).ready(function () {
       xhr.open("GET", "/status?", true);
-      xhr.onload = function () {//
+      xhr.onload = function () {
         if (xhr.readyState === xhr.DONE && xhr.status === 200 && xhr.responseText.includes("s=")) {
           var received_text = xhr.responseText.replace('s=', '');
           var values = received_text.split(';');
@@ -193,7 +226,8 @@ const char index_html[] PROGMEM = R"rawliteral(
           document.getElementById("ontime").value = values[7];
           document.getElementById("offtime").value = values[8];
           document.getElementById("timezone-offset").selectedIndex = parseInt(values[9]) + 12;
-        }
+          setInterval('autoRefresh()', document.getElementById("cycle_time").value*1000);
+                  }
       }
       xhr.send();
       console.log("ready!");
