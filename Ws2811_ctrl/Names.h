@@ -46,6 +46,7 @@ void prev_anim();
 //------------------------------------------------------WiFi_ctrl
 void web_setup();
 int wifi_setup();
+void wifi_reset();
 void ota_start();
 void ota_loop();
 void dns_begin();

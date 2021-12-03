@@ -129,7 +129,7 @@ void handleNotFound(AsyncWebServerRequest *request) {
 
 void delete_ssid(AsyncWebServerRequest *request) {
   delete_credentials();
-
+  wifi_reset();
   request->send(200, "text/plain", message_200 );
 }
 
