@@ -34,6 +34,7 @@ int wifi_setup() {
     }
   }
   ESPAsync_wifiManager.autoConnect("AutoConnectAP");
+  ESPAsync_wifiManager.setConfigPortalTimeout(360);
   if (WiFi.status() == WL_CONNECTED) {
     Serial.println(ESPAsync_wifiManager.WiFi_SSID());
     memSSID = ESPAsync_wifiManager.WiFi_SSID();
@@ -44,6 +45,7 @@ int wifi_setup() {
   }
 
 finished:
+  WiFi.softAPdisconnect(true);
   Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
   Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
 
@@ -63,11 +65,15 @@ finished:
 #endif
 
 #ifdef DNS_ON
-  dns_begin();
+  if (is_it_connected == 1) {
+    dns_begin();
+  }
 #endif
 
   return is_it_connected;
 }
+
+
 
 void wifi_reset() {
   ESPAsync_wifiManager.resetSettings();
@@ -76,6 +82,8 @@ void wifi_reset() {
   scr_out("Credentials", "deleted!");
 #endif
 }
+
+
 
 #ifdef OTA_ENABLED
 void ota_start() {
@@ -143,7 +151,7 @@ void dns_begin() {
   }
   Serial.println("mDNS responder started");
 
-   // Add service to MDNS-SD
+  // Add service to MDNS-SD
   MDNS.addService("http", "tcp", 80);
 }
 

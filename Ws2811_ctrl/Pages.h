@@ -170,7 +170,7 @@ const char index_html[] PROGMEM = R"rawliteral(
       xhr.send();
     }
     function delete_credentials() {
-      if (window.confirm("Are you sure?You know, if you delete my credentials I won't remember them later...")) {
+      if (window.confirm("Are you sure?You know, if you delete my WiFi credentials I won't remember them later...")) {
         xhr.open("GET", "/reset", true);
         xhr.send();
       }

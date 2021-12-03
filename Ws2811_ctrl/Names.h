@@ -24,7 +24,6 @@ String animation_names[] = {"OFF",
                             "Palette[R&W&B II]"
                            };
 int animation_mode = 1;
-bool anim_cycle = false;
 
 void led_setup();
 void led_loop();
@@ -36,6 +35,7 @@ int get_led_fade();
 void set_led_speed(int new_speed);
 void set_led_brightness(int new_brightness);
 void set_led_cycle(int new_cycle);
+String get_animation_name();
 int get_led_brightness();
 int get_led_speed();
 int get_led_cycle();

@@ -1,6 +1,6 @@
 #include "Pages.h"
 
-char message_200[]="{Ok!U+1F44D}";
+char message_200[] = "{Ok!U+1F44D}";
 char ipAdr[16];
 
 void set_value(AsyncWebServerRequest *request) {
@@ -54,12 +54,8 @@ void change_anim(AsyncWebServerRequest *request) {
     prev_anim();
   }
 
-  String response = "anim=";
-  if (!anim_cycle) {
-    response += animation_names[animation_mode];
-  } else {
-    response += actual_anim = "CYCLE ALL";
-  }
+  String response = "anim=" + get_animation_name();
+
   request->send(200, "text/plain", response  );
 }
 
@@ -82,19 +78,15 @@ String _fields() {
       time_fadeout = 1;
       break;
   }
-  if (!anim_cycle) {
-    actual_anim = animation_names[animation_mode];
-  } else {
-    actual_anim = "CYCLE ALL";
-  }
-  
+  actual_anim = get_animation_name();
+
   time_on = get_on_time();
   time_off = get_off_time();
   int h1, m1, h2, m2;
   h1 = (time_on - time_on % 100) / 100;
   m1 = time_on % 100;
   h2 = (time_off - time_off % 100) / 100;
-  m2 = time_off % 100;  
+  m2 = time_off % 100;
   char buffer[20];
   sprintf(buffer, "%02d:%02d;%02d:%02d", h1, m1 , h2, m2);
 
@@ -131,13 +123,13 @@ void send_status(AsyncWebServerRequest *request) {
 //}
 
 void handleNotFound(AsyncWebServerRequest *request) {
- 
+
   request->send(404, "text/plain", message_200);
 }
 
 void delete_ssid(AsyncWebServerRequest *request) {
   delete_credentials();
-  
+
   request->send(200, "text/plain", message_200 );
 }
 
