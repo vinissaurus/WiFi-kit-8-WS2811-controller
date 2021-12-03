@@ -1,27 +1,28 @@
 #include <ESPAsyncWebServer.h>
 //#include <ESP8266SSDP.h>
 #define NUM_LEDS 100
-
+#define max_anim 16
 AsyncWebServer webServer(80);
 String memSSID, memPSK;
 
 //------------------------------------------------------LED
-int max_anim = 14;
+
 String animation_names[] = {"OFF",
                             "CYCLE ALL",
                             "Ocean",
                             "Christmas" ,
                             "Pride!",
-                            "Palette[Rainbow]",
+                            "Palette[Rainbow I]",
+                            "Palette[Rainbow II]",
+                            "Palette[Rainbow III]",
                             "Palette[Purple&Green]",
-                            "Palette[Random]",
-                            "Palette[B&W I]",
-                            "Palette[B&W II]",
-                            "Palette[B&W III]",
-                            "Palette[Cloud]" ,
-                            "Palette[Party]", 
-                            "Palette[R&W&B I]",
-                            "Palette[R&W&B II]"
+                            "Palette[Random colors]",
+                            "Palette[Black&White]",
+                            "Palette[Black&White]" ,
+                            "Palette[Clouds]", 
+                            "Palette[Partay]",
+                            "Palette[Red&White&Blue I]",
+                            "Palette[Red&White&Blue II]"
                            };
 int animation_mode = 1;
 

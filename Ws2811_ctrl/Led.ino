@@ -20,6 +20,8 @@ int cycle_steps = 0;
 bool fade_in = false;
 bool fade_out = false;
 bool state_changed = false;
+int anim_sequence[max_anim - 2];
+void generate_sequence();
 
 void display_animation_mode() {
 #ifdef DISPLAY_ON
@@ -33,17 +35,15 @@ void led_setup() {
   FastLED.setBrightness( BRIGHTNESS );
   //max_anim = sizeof(animation_names);
   pinMode(BUTTON, INPUT);
-  if (animation_mode == 1) {
-    animation_mode = 2;
-  }
-
+  randomSeed(analogRead(A0));
+  generate_sequence();
 }
 
 void animation_state(bool anim_on) {
   if (anim_on) {
     animation_mode = get_animation_mode();
     if (animation_mode == 0) {
-      animation_mode = 1;      
+      animation_mode = 1;
     }
   } else {
     animation_mode = 0;
@@ -192,11 +192,32 @@ void button_loop() {
   }
 }
 
+void generate_sequence() {
+  int anim_aux[max_anim - 2];
+  for (int i = 2; i < max_anim; i++) {
+    anim_aux[i - 2] = i;
+  }
+  for (int i = 0; i < max_anim - 2; i++) {
+    int test_case = random(0, (max_anim - 2));
+    if (i > 0) {
+      while (anim_aux[test_case] == 0) {
+        test_case = random(0, (max_anim - 2));
+      }
+    }
+    anim_sequence[i] = anim_aux[test_case];
+    //Serial.println(anim_aux[test_case]);
+    anim_aux[test_case] = 0;
+    
+  }
+}
+
 int led_ck = 0;
 int button_ck = 0;
 int cycle_counter = 0;
 int bright_counter = 0;
 int _rate = 100 - RATE;
+int random_counter=0;
+
 
 int local_anim_mode = 2;
 void do_anim(int which_one) {
@@ -220,11 +241,18 @@ void do_anim(int which_one) {
 
       if (millis() >= cycle_counter + CYCLE_THROUGH * 1000) {
         cycle_counter = millis();
-        if (local_anim_mode < max_anim) {
-          local_anim_mode++;
+        if (random_counter < max_anim-2) {
+          random_counter++;
         } else {
-          local_anim_mode = 2;
+          random_counter = 0;
+          generate_sequence();
         }
+        local_anim_mode = anim_sequence[random_counter];
+        //        if (local_anim_mode < max_anim) {
+        //          local_anim_mode++;
+        //        } else {
+        //          local_anim_mode = 2;
+        //        }
         //Serial.println(step_counter);
         step_counter = 0;
         bright_counter = 0;
@@ -255,16 +283,16 @@ void do_anim(int which_one) {
   }
 }
 
-String get_animation_name(){
-  String answer="";
-  if(animation_mode==1){
-    answer+="CYCLE: "+animation_names[local_anim_mode];
-    }
-    else{
-      answer+=animation_names[animation_mode];
-      }
-      return answer;
+String get_animation_name() {
+  String answer = "";
+  if (animation_mode == 1) {
+    answer += "CYCLE: " + animation_names[local_anim_mode];
   }
+  else {
+    answer += animation_names[animation_mode];
+  }
+  return answer;
+}
 
 
 void led_loop() {
