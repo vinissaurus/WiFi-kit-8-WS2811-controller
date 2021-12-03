@@ -10,8 +10,11 @@ This is a simple controller for a WS2811LED strip, which features:<br>
 And some animations for the LED strip, which were all from FastLED's examples.
 
 **Libraries used:**<br>
-//#include <U8g2lib.h>//<sub>There is not enough RAM in an ESP8266 to handle a small OLED display with all the other functions in this application. Did not test in and ESP32.</sub><br>
-#include <FastLED.h>//https://github.com/FastLED/FastLED<br>
-#include <ESPAsyncWebServer.h>//https://github.com/me-no-dev/ESPAsyncWebServer<br>
-#include <ESPAsync_WiFiManager.h>//https://github.com/khoih-prog/ESPAsync_WiFiManager<br>
-#include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient<br>
+```c++
+//There is not enough RAM in an ESP8266 to handle a small OLED display with all the other functions in this application. Did not test in and ESP32.
+//#include <U8g2lib.h>
+#include <FastLED.h>//https://github.com/FastLED/FastLED
+#include <ESPAsyncWebServer.h>//https://github.com/me-no-dev/ESPAsyncWebServer
+#include <ESPAsync_WiFiManager.h>//https://github.com/khoih-prog/ESPAsync_WiFiManager
+#include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
+```
