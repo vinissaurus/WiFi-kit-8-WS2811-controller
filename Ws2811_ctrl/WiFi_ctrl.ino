@@ -2,6 +2,7 @@
 
 #ifdef DNS_ON
 #include <ESP8266mDNS.h>
+#define CAPTIVE_NAME "wesp2811-Config"
 #define DNS_NAME "wesp2811"
 #endif
 
@@ -15,7 +16,7 @@
 
 DNSServer dnsServer;
 
-ESPAsync_WiFiManager ESPAsync_wifiManager(&webServer, &dnsServer, "AutoConnectAP");
+ESPAsync_WiFiManager ESPAsync_wifiManager(&webServer, &dnsServer, CAPTIVE_NAME);
 
 int wifi_setup() {
 #ifdef DISPLAY_ON
@@ -34,7 +35,7 @@ int wifi_setup() {
       goto finished;
     }
   }
-  ESPAsync_wifiManager.autoConnect("AutoConnectAP");
+  ESPAsync_wifiManager.autoConnect(CAPTIVE_NAME);
   ESPAsync_wifiManager.setConfigPortalTimeout(360);
   if (WiFi.status() == WL_CONNECTED) {
     //Serial.println(ESPAsync_wifiManager.WiFi_SSID());

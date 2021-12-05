@@ -128,7 +128,6 @@ void set_led_cycle(int new_cycle) {
   cycle_steps = 25 * CYCLE_THROUGH - BRIGHTNESS;
 }
 
-
 void next_anim() {
   if (animation_mode < max_anim) {
     animation_mode++;
@@ -140,7 +139,6 @@ void next_anim() {
 
   state_changed = true;
 }
-
 
 void prev_anim() {
   if (animation_mode > 0) {

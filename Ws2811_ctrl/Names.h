@@ -21,8 +21,8 @@ String animation_names[] = {"OFF",
                             "Palette[Black&White II]" ,
                             "Palette[Clouds]", 
                             "Palette[Partay]",
-                            "Palette[Red&White&Blue I]",
-                            "Palette[Red&White&Blue II]"
+                            "Palette[Green&Yellow]",
+                            "Palette[Red&White&Blue]"
                            };
 int animation_mode = 1;
 

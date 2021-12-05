@@ -199,7 +199,7 @@ TBlendType    currentBlending;
 
 extern CRGBPalette16 myRedWhiteBluePalette;
 extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
-
+extern const TProgmemPalette16 green_yellow PROGMEM;
 
 
 void FillLEDsFromPaletteColors( uint8_t colorIndex)
@@ -244,7 +244,6 @@ void SetupBlackAndWhiteStripedPalette()
   currentPalette[4] = CRGB::White;
   currentPalette[8] = CRGB::White;
   currentPalette[12] = CRGB::White;
-
 }
 
 // This function sets up a palette of purple and green stripes.
@@ -282,6 +281,28 @@ const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
   CRGB::Red,
   CRGB::Gray,
   CRGB::Gray,
+  CRGB::Blue,
+  CRGB::Blue,
+  CRGB::Black,
+  CRGB::Black
+};
+
+const TProgmemPalette16 green_yellow PROGMEM =
+{
+  CRGB::Green,
+  CRGB::Yellow, 
+  CRGB::Blue,
+  CRGB::Gray,
+
+  CRGB::Green,
+  CRGB::Yellow, 
+  CRGB::Blue,
+  CRGB::Gray,
+
+  CRGB::Green,
+  CRGB::Green,
+  CRGB::Yellow,
+  CRGB::Yellow,
   CRGB::Blue,
   CRGB::Blue,
   CRGB::Black,
@@ -338,8 +359,8 @@ void Palette(int which_one) {
       currentBlending = LINEARBLEND;
       break;
     case 9:
-      currentPalette = myRedWhiteBluePalette_p;
-      currentBlending = NOBLEND;
+      currentPalette = green_yellow;
+      currentBlending = LINEARBLEND;
       break;
     case 10:
       currentPalette = myRedWhiteBluePalette_p;
