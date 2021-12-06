@@ -3,7 +3,7 @@
 #include <WiFiUdp.h>
 #define EE_SIZE 512
 #define TIME_UPDATE_RATE 5000
-#define FADE_MINUTES 30
+#define FADE_MINUTES 10 //might convert to a variable, if needed to user config
 //EEPROM MAP
 #define TIMED_ON 0
 #define TIMED_FADE 1
@@ -22,7 +22,8 @@
 int h_on, m_on, h_off, m_off;
 int on_time, off_time;
 bool time_schedule;
-int fade_config;
+int fade_settings;
+int bright_settings;
 int hour_offset = 0;
 
 WiFiUDP ntpUDP;
@@ -31,12 +32,14 @@ NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
 void load_settings() {
   EEPROM.begin(EE_SIZE);
   time_schedule = (EEPROM.read(TIMED_ON) == 1 ? true : false);
-  set_led_fade(EEPROM.read(TIMED_FADE));
+  fade_settings = EEPROM.read(TIMED_FADE);
+  set_led_fade(fade_settings);
   hour_offset = EEPROM.read(GMT) - 12;
   //LINE Reserved for DST
   read_time();//ON_TIME & OFF_TIME
   animation_mode = EEPROM.read(ANIMATION);
-  set_led_brightness(EEPROM.read(BRIGHTNESS));
+  bright_settings = EEPROM.read(BRIGHTNESS);
+  set_led_brightness(bright_settings);
   set_led_speed(EEPROM.read(SPEED));
   set_led_cycle(EEPROM.read(CYCLE_TIME));
 
@@ -44,6 +47,8 @@ void load_settings() {
     timeClient.begin();
     int t_offset = hour_offset * 3600;
     timeClient.setTimeOffset(t_offset);
+
+
   }
 }
 
@@ -61,7 +66,7 @@ void save_time_schedule(bool ts) {
     EEPROM.write(TIMED_ON, 0);
   }
   EEPROM.commit();
-  
+
   //Serial.println(EEPROM.read(TIMED_ON));
   //EEPROM.end();
 }
@@ -79,22 +84,34 @@ void timed_schedule_loop() {
       timeClient.update();
       int now_h = timeClient.getHours();
       int now_m = timeClient.getMinutes();
-      
-        if ((now_h == h_on && now_m >= m_on) || (now_h == h_off && now_m <= m_off)) {
-          animation_state(true);
-          //Serial.println("I'm on, B1TCH");
-        } else if(h_on<=h_off&&(now_h > h_on && now_h < h_off) ){
-          animation_state(true);
-          //Serial.println("I'm on, B1TCH");
-        } else if(h_on > h_off && (now_h > h_on && now_h > h_off)){
-          animation_state(true);
-          //Serial.println("I'm on, B1TCH");
-          }else {
-          animation_state(false);
-          //Serial.println("I'm ofF");
+
+      if (fade_settings == 1 || fade_settings == 3) { //Fade in enabled--> set_led_brightness_d(int new_brightness)
+        if (now_h == h_on && now_m >= m_on - FADE_MINUTES) {
+          //set_led_brightness_d(int new_brightness)
         }
-        //Serial.println(timeClient.getFormattedTime());    
       }
+      if (fade_settings == 2 || fade_settings == 3) { //Fade out enabled
+        if (now_h == h_off && now_m <= m_off - FADE_MINUTES) {
+          //set_led_brightness_d(int new_brightness)
+        }
+      }
+      //if fade in/out disabled
+      if ((now_h == h_on && now_m >= m_on) || (now_h == h_off && now_m <= m_off)) {
+        animation_state(true);
+        //Serial.println("I'm on, B1TCH");
+      } else if (h_on <= h_off && (now_h > h_on && now_h < h_off) ) {
+        animation_state(true);
+        //Serial.println("I'm on, B1TCH");
+      } else if (h_on > h_off && (now_h > h_on && now_h > h_off)) {
+        animation_state(true);
+        //Serial.println("I'm on, B1TCH");
+      } else {
+        animation_state(false);
+        //Serial.println("I'm ofF");
+      }
+      //Serial.println(timeClient.getFormattedTime());
+
+    }
   }
 }
 
@@ -124,8 +141,6 @@ void read_time() {
   off_time = h_off * 100 +  m_off;
   //EEPROM.end();
 }
-
-
 
 void save_animation() {
   EEPROM.begin(EE_SIZE);

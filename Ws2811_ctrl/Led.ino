@@ -102,6 +102,15 @@ void set_led_brightness(int new_brightness) {
   //Serial.println(BRIGHTNESS);
 }
 
+void set_led_brightness_d(int new_brightness) {//Directly change brightness without saving to EEPROM
+  BRIGHTNESS = new_brightness;
+  FastLED.setBrightness( BRIGHTNESS );
+  //save_brightness(BRIGHTNESS);
+  //cycle_steps = 25 * CYCLE_THROUGH - BRIGHTNESS;
+  //Serial.println("Changed brightness to:");
+  //Serial.println(BRIGHTNESS);
+}
+
 int get_led_brightness() {
   //Serial.println(BRIGHTNESS);
   return BRIGHTNESS;

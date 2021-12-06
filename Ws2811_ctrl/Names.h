@@ -35,6 +35,7 @@ void set_led_fade(int new_fade);
 int get_led_fade();
 void set_led_speed(int new_speed);
 void set_led_brightness(int new_brightness);
+void set_led_brightness_d(int new_brightness);
 void set_led_cycle(int new_cycle);
 String get_animation_name();
 int get_led_brightness();
