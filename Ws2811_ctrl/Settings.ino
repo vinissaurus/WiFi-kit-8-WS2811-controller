@@ -2,7 +2,7 @@
 #include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
 #include <WiFiUdp.h>
 #define EE_SIZE 512
-#define TIME_UPDATE_RATE 5000
+#define TIME_UPDATE_RATE 5000//ms
 #define FADE_MINUTES 10 //might convert to a variable, if needed to user config
 //EEPROM MAP
 #define TIMED_ON 0
@@ -74,6 +74,10 @@ void save_time_schedule(bool ts) {
 bool get_time_schedule() {
   return time_schedule;
 }
+
+int get_fading_step(){
+  return bright_settings/(FADE_MINUTES*(60/(TIME_UPDATE_RATE/1000)));//altura do brilho, dividida por intervalos de 5 segundos
+  }
 
 bool STATE_ON = false;
 int timed_loop_ck = 0;
