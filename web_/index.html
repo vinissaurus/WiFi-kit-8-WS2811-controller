@@ -95,18 +95,20 @@
     }
 
     function autoRefresh() {
-      xhr.open("GET", "/anim?d", true);
+      if(document.getElementById("anim_mode").value.includes('CYCLE:')){
+      xhr.open("GET", "/anim?", true);
       xhr.responseType = 'text';
       xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
           if (xhr.status === 200) {
-            console.log(xhr.response);
+            // console.log(xhr.response);
             console.log(xhr.responseText);
             get_response(xhr.responseText);
           }
         }
       }
       xhr.send();
+    }
         // window.location = window.location.href;
     }
 
@@ -134,33 +136,21 @@
       }     
       xhr.send();
     }
-    function next_() {
-      xhr.open("GET", "/anim?d=next", true);
+    function change_anim(direction){
+      xhr.open("GET", "/anim?d="+direction, true);
       xhr.responseType = 'text';
       xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
           if (xhr.status === 200) {
-            console.log(xhr.response);
+            // console.log(xhr.response);
             console.log(xhr.responseText);
             get_response(xhr.responseText);
           }
         }
       }
-      xhr.send();
+      xhr.send();      
     }
-    function previous_() {
-      xhr.open("GET", "/anim?d=prev", true);
-      xhr.onload = function () {
-        if (xhr.readyState === xhr.DONE) {
-          if (xhr.status === 200) {
-            console.log(xhr.response);
-            console.log(xhr.responseText);
-            get_response(xhr.responseText);
-          }
-        }
-      }
-      xhr.send();
-    }
+    
     function get_response(h_response) {
       if (h_response.includes('anim=')) {
         h_response = h_response.replace('anim=', '');
@@ -193,7 +183,7 @@
     
     $(document).ready(function () {
       xhr.open("GET", "/status?", true);
-      xhr.onload = function () {//
+      xhr.onload = function () {
         if (xhr.readyState === xhr.DONE && xhr.status === 200 && xhr.responseText.includes("s=")) {
           var received_text = xhr.responseText.replace('s=', '');
           var values = received_text.split(';');
@@ -210,8 +200,7 @@
           document.getElementById("offtime").value = values[8];
           document.getElementById("timezone-offset").selectedIndex = parseInt(values[9]) + 12;
           setInterval('autoRefresh()', document.getElementById("cycle_time").value*1000);
-
-        }
+                  }
       }
       xhr.send();
       console.log("ready!");
@@ -242,10 +231,10 @@
     </div>
     <div class="change_buttons">
       <div>
-        <button class="p_button" type="button" onclick=previous_()>&#11013;</button>
+        <button class="p_button" type="button" onclick=change_anim("-")>&#11013;</button>
       </div>
       <div>
-        <button class="p_button" type="button" onclick=next_()>&#10145;</button>
+        <button class="p_button" type="button" onclick=change_anim("+")>&#10145;</button>
       </div>
       <div>
         <input type="checkbox" id="fadein" onclick=send_fade_in() name="Fadein">
