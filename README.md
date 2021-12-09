@@ -11,7 +11,7 @@ And some animations for the LED strip, which were all from FastLED's examples.
 
 **Libraries used:**<br>
 ```c++
-//There is not enough RAM in an ESP8266 to handle a small OLED display with all the other functions in this application. Did not test in and ESP32.
+//There is not enough RAM in an ESP8266 to handle a small OLED display with all the other functions in this application. Did not test this code in an ESP32.
 //#include <U8g2lib.h>
 #include <FastLED.h>//https://github.com/FastLED/FastLED
 #include <ESPAsyncWebServer.h>//https://github.com/me-no-dev/ESPAsyncWebServer
