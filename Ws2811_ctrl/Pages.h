@@ -151,8 +151,8 @@ const char index_html[] PROGMEM = R"rawliteral(
       }     
       xhr.send();
     }
-    function next_() {
-      xhr.open("GET", "/anim?d=next", true);
+    function change_anim(direction){
+      xhr.open("GET", "/anim?d="+direction, true);
       xhr.responseType = 'text';
       xhr.onload = function () {
         if (xhr.readyState === xhr.DONE) {
@@ -163,21 +163,9 @@ const char index_html[] PROGMEM = R"rawliteral(
           }
         }
       }
-      xhr.send();
+      xhr.send();      
     }
-    function previous_() {
-      xhr.open("GET", "/anim?d=prev", true);
-      xhr.onload = function () {
-        if (xhr.readyState === xhr.DONE) {
-          if (xhr.status === 200) {
-            // console.log(xhr.response);
-            console.log(xhr.responseText);
-            get_response(xhr.responseText);
-          }
-        }
-      }
-      xhr.send();
-    }
+    
     function get_response(h_response) {
       if (h_response.includes('anim=')) {
         h_response = h_response.replace('anim=', '');
@@ -258,10 +246,10 @@ const char index_html[] PROGMEM = R"rawliteral(
     </div>
     <div class="change_buttons">
       <div>
-        <button class="p_button" type="button" onclick=previous_()>&#11013;</button>
+        <button class="p_button" type="button" onclick=change_anim("p")>&#11013;</button>
       </div>
       <div>
-        <button class="p_button" type="button" onclick=next_()>&#10145;</button>
+        <button class="p_button" type="button" onclick=change_anim("n")>&#10145;</button>
       </div>
       <div>
         <input type="checkbox" id="fadein" onclick=send_fade_in() name="Fadein">
@@ -334,64 +322,3 @@ const char index_html[] PROGMEM = R"rawliteral(
 </html>
 
 )rawliteral";
-
-
-//String processor(const String& var){
-//  //Serial.println(var);
-//if(var == F("XPRT0")){
-//    String exif = "\""+String(ext_bright)+"\"";
-//    return exif;
-//  }
-//if(var == F("XPRT1")){
-//    String exif = "\""+String(ext_speed)+"\"";
-//    return exif;
-//  }
-//if(var == F("XPRT2")){
-//    String exif = "\""+String(ext_cycle)+"\"";
-//    return exif;
-//  }
-//
-//if(var == F("XPRT3")){
-//    int h, m;
-//    h=(time_on-time_on%100)/100;
-//    m=time_on%100;
-//    char buffer[10];
-//    sprintf(buffer, "\"%02d:%02d\"", h, m);
-//    return buffer;
-//  }
-//
-//if(var == F("XPRT4")){
-//    int h, m;
-//    h=(time_off-time_off%100)/100;
-//    m=time_off%100;
-//    char buffer[10];
-//    sprintf(buffer, "\"%02d:%02d\"", h, m);
-//    return buffer;
-//  }  
-//  if(var == F("XPRT5")){
-//    return actual_anim;
-//  } 
-//    if(var == F("XPRT6")){
-//    if(time_schedule==1){
-//    return "checked";
-//    }else{
-//    return "";
-//    }
-//  } 
-//      if(var == F("XPRT7")){
-//    if(time_fadein==1){
-//    return "checked";
-//    }else{
-//    return "";
-//    }
-//  }
-//      if(var == F("XPRT8")){
-//    if(time_fadeout==1){
-//    return "checked";
-//    }else{
-//    return "";
-//    }
-//  }
-//  
-//  return String();
-//}

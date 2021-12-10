@@ -48,10 +48,10 @@ void set_value(AsyncWebServerRequest *request) {
 void change_anim(AsyncWebServerRequest *request) {
   if (request->hasParam("d")) {
   String sign = request->getParam("d")->value();
-  if (sign.equals("next")) {
+  if (sign.equals("n")) {
     next_anim();
   }
-  if (sign.equals("prev")) {
+  if (sign.equals("p")) {
     prev_anim();
   }
   }

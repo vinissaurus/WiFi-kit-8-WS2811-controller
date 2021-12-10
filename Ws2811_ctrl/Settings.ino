@@ -3,7 +3,7 @@
 #include <WiFiUdp.h>
 #define EE_SIZE 512
 #define TIME_UPDATE_RATE 5000//ms
-#define FADE_MINUTES 10 //might convert to a variable, if needed to user config
+//#define FADE_MINUTES 10 //might convert to a variable, if needed to user config (deprecated)
 //EEPROM MAP
 #define TIMED_ON 0
 #define TIMED_FADE 1
@@ -25,6 +25,7 @@ bool time_schedule;
 int fade_settings;
 int bright_settings;
 int hour_offset = 0;
+int time_brightness = 0;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
@@ -47,8 +48,9 @@ void load_settings() {
     timeClient.begin();
     int t_offset = hour_offset * 3600;
     timeClient.setTimeOffset(t_offset);
-
-
+    if(timeClient.getHours()>h_on || (timeClient.getHours()==h_on && timeClient.getMinutes()>m_on + 20)){
+      time_brightness = bright_settings;
+      }
   }
 }
 
@@ -64,6 +66,7 @@ void save_time_schedule(bool ts) {
     EEPROM.write(TIMED_ON, 1);
   } else {
     EEPROM.write(TIMED_ON, 0);
+    set_led_brightness_d(bright_settings);
   }
   EEPROM.commit();
 
@@ -75,38 +78,49 @@ bool get_time_schedule() {
   return time_schedule;
 }
 
-int get_fading_step(){
-  return bright_settings/(FADE_MINUTES*(60/(TIME_UPDATE_RATE/1000)));//altura do brilho, dividida por intervalos de 5 segundos
-  }
+
 
 bool STATE_ON = false;
 int timed_loop_ck = 0;
+
 void timed_schedule_loop() {
   if (time_schedule) {
     if (millis() >= timed_loop_ck + TIME_UPDATE_RATE) {
       timed_loop_ck = millis();
       timeClient.update();
-      int now_h = timeClient.getHours();
-      int now_m = timeClient.getMinutes();
+      int now_H = timeClient.getHours();
+      int now_M = timeClient.getMinutes();
+      int now_S = timeClient.getSeconds();
 
       if (fade_settings == 1 || fade_settings == 3) { //Fade in enabled--> set_led_brightness_d(int new_brightness)
-        if (now_h == h_on && now_m >= m_on - FADE_MINUTES) {
-          //set_led_brightness_d(int new_brightness)
+        if (now_H == h_on && now_M >= m_on && time_brightness < bright_settings) {
+          time_brightness = (now_M - m_on) * 12 + (now_S - now_S % 5) / 5;
+          //set_led_brightness_d(time_brightness);
+          Serial.println();
+          Serial.print(now_S);
+          Serial.print("-ON->");
+          Serial.print(time_brightness);
+          //
         }
       }
       if (fade_settings == 2 || fade_settings == 3) { //Fade out enabled
-        if (now_h == h_off && now_m <= m_off - FADE_MINUTES) {
-          //set_led_brightness_d(int new_brightness)
+        if (now_H == h_off && now_M >= m_off && time_brightness > 0) {
+          time_brightness = bright_settings - ((now_M - m_off) * 12 + (now_S - now_S % 5) / 5);
+          //set_led_brightness_d(time_brightness);
+          Serial.println();
+          Serial.print(now_S);
+          Serial.print("-OFF->");
+          Serial.print(time_brightness);
         }
       }
       //if fade in/out disabled
-      if ((now_h == h_on && now_m >= m_on) || (now_h == h_off && now_m <= m_off)) {
+      if ((now_H == h_on && now_M >= m_on) || (now_H == h_off && now_M <= m_off)) {
         animation_state(true);
         //Serial.println("I'm on, B1TCH");
-      } else if (h_on <= h_off && (now_h > h_on && now_h < h_off) ) {
+      } else if (h_on <= h_off && (now_H > h_on && now_H < h_off) ) {
         animation_state(true);
         //Serial.println("I'm on, B1TCH");
-      } else if (h_on > h_off && (now_h > h_on && now_h > h_off)) {
+      } else if (h_on > h_off && (now_H > h_on && now_H > h_off)) {
         animation_state(true);
         //Serial.println("I'm on, B1TCH");
       } else {
@@ -184,6 +198,9 @@ void save_fade_settings(int new_settings) {
   EEPROM.write(TIMED_FADE , new_settings);
   //Serial.println(EEPROM.read(TIMED_FADE));
   EEPROM.commit();
+  if (new_settings == 0) {
+    set_led_brightness_d(bright_settings);
+  }
 }
 
 
