@@ -20,6 +20,7 @@
 
 
 int h_on, m_on, h_off, m_off;
+int h_off_F, m_off_F;
 int on_time, off_time;
 bool time_schedule;
 int fade_settings;
@@ -48,10 +49,26 @@ void load_settings() {
     timeClient.begin();
     int t_offset = hour_offset * 3600;
     timeClient.setTimeOffset(t_offset);
-    if(timeClient.getHours()>h_on || (timeClient.getHours()==h_on && timeClient.getMinutes()>m_on + 20)){
-      time_brightness = bright_settings;
-      }
+    update_fading_time();
   }
+}
+
+void update_fading_time() {
+  if (fade_settings != 0) {
+    h_off_F = h_off;
+    m_off_F = m_off - ((bright_settings * 5) - (bright_settings * 5) % 60) / 60;
+    if (m_off_F < 0) {
+      h_off_F--;
+      m_off_F += 60;
+    }
+    if (timeClient.getHours() > h_on || (timeClient.getHours() == h_on && timeClient.getMinutes() > m_on + 20)) {
+      time_brightness = bright_settings;
+    }
+  }
+  //Serial.println("---");
+  Serial.print("h_off_F="); Serial.print(h_off_F); Serial.println("---");
+  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---");
+  //Serial.println("---");
 }
 
 int get_animation_mode() {
@@ -69,7 +86,7 @@ void save_time_schedule(bool ts) {
     set_led_brightness_d(bright_settings);
   }
   EEPROM.commit();
-
+  update_fading_time();
   //Serial.println(EEPROM.read(TIMED_ON));
   //EEPROM.end();
 }
@@ -103,15 +120,22 @@ void timed_schedule_loop() {
           //
         }
       }
-      if (fade_settings == 2 || fade_settings == 3) { //Fade out enabled
-        if (now_H == h_off && now_M >= m_off && time_brightness > 0) {
-          time_brightness = bright_settings - ((now_M - m_off) * 12 + (now_S - now_S % 5) / 5);
+      if (fade_settings == 2 || fade_settings == 3 && time_brightness>1) { //Fade out enabled
+        if (now_H == h_off_F && now_M >= m_off_F) {//now_H == h_off && now_M < m_off
+          time_brightness = bright_settings - ((now_M - m_off_F) * 12 + (now_S - now_S % 5) / 5);
           //set_led_brightness_d(time_brightness);
-          Serial.println();
-          Serial.print(now_S);
-          Serial.print("-OFF->");
-          Serial.print(time_brightness);
+
         }
+        if (now_H == h_off && now_M < m_off) {//now_H == h_off && now_M < m_off
+          time_brightness = bright_settings - ((now_M + (60-m_off_F)) * 12 + (now_S - now_S % 5) / 5);
+          //set_led_brightness_d(time_brightness);
+
+        }
+
+        Serial.println();
+        Serial.print(now_S);
+        Serial.print("-OFF->");
+        Serial.print(time_brightness);
       }
       //if fade in/out disabled
       if ((now_H == h_on && now_M >= m_on) || (now_H == h_off && now_M <= m_off)) {
@@ -147,6 +171,7 @@ void save_time(int H_ON, int M_ON, int H_OFF, int M_OFF) {
   EEPROM.write(OFF_TIME + 1, M_OFF);
   EEPROM.commit();
   //EEPROM.end();
+  update_fading_time();
 }
 
 void read_time() {
@@ -174,6 +199,7 @@ void save_brightness(int new_brighness) {
   EEPROM.write(BRIGHTNESS, new_brighness);
   EEPROM.commit();
   //EEPROM.end();
+  update_fading_time();
 }
 
 void save_speed(int new_speed) {
@@ -201,6 +227,7 @@ void save_fade_settings(int new_settings) {
   if (new_settings == 0) {
     set_led_brightness_d(bright_settings);
   }
+  update_fading_time();
 }
 
 
@@ -230,6 +257,7 @@ void set_timezone(int new_timezone) {
   int t_offset = hour_offset * 3600;
   timeClient.setTimeOffset(t_offset);
   timeClient.forceUpdate();
+  update_fading_time();
 }
 
 void save_credentials() {
