@@ -40,7 +40,8 @@ void load_settings() {
   //LINE Reserved for DST
   read_time();//ON_TIME & OFF_TIME
   animation_mode = EEPROM.read(ANIMATION);
-  bright_settings = EEPROM.read(BRIGHTNESS);
+  //bright_settings = EEPROM.read(BRIGHTNESS);
+  bright_settings = 500;//just for the debug-------------------------------------------------
   set_led_brightness(bright_settings);
   set_led_speed(EEPROM.read(SPEED));
   set_led_cycle(EEPROM.read(CYCLE_TIME));
@@ -122,23 +123,25 @@ void timed_schedule_loop() {
           //
         }
       }
-      if (fade_settings == 2 || fade_settings == 3 && time_brightness > 0) { //Fade out enabled
+      if ((fade_settings == 2 || fade_settings == 3) && time_brightness > 0) { //Fade out enabled
         if (now_H == h_off_F && now_M >= m_off_F) {//n
           time_brightness = bright_settings - ((now_M - m_off_F) * 12 + (now_S - now_S % 5) / 5);
           //set_led_brightness_d(time_brightness);
-          Serial.println("Un");
-
         }
-        if (now_H == h_off && now_M <= m_off && h_off_F==h_off-1) {//now_H == h_off && now_M < m_off
-          time_brightness = bright_settings - ((now_M  -60- m_off_F) * 12 + (now_S - now_S % 5) / 5);
+        if (now_H == h_off && now_M <= m_off && h_off_F == h_off - 1) { //now_H == h_off && now_M < m_off
+          
+          time_brightness = bright_settings - ((now_M  + 60 - m_off_F) * 12 + (now_S - now_S % 5) / 5);
+          int rst = now_M  - 60 - m_off_F;
+          //Serial.println("Dos");
+          Serial.println(rst);
           //set_led_brightness_d(time_brightness);
-          Serial.println("Tres");
         }
-        if (now_H == h_off && now_M <= m_off) {//now_H == h_off && now_M < m_off
-          time_brightness = bright_settings - ((now_M  - m_off) * 12 + (now_S - now_S % 5) / 5);
-          //set_led_brightness_d(time_brightness);
-          Serial.println("Dos");
-        }
+        //        if (now_H == h_off && now_M <= m_off) {//now_H == h_off && now_M < m_off
+        //          time_brightness = bright_settings - ((now_M  - m_off) * 12 + (now_S - now_S % 5) / 5);
+        //          //set_led_brightness_d(time_brightness);
+        //          Serial.println("Dos");
+        //          Serial.println(rst);
+        //        }
 
         Serial.println();
         Serial.print(now_S);
