@@ -47,19 +47,21 @@ void load_settings() {
 
   if (time_schedule) {
     timeClient.begin();
+    timeClient.update();
     int t_offset = hour_offset * 3600;
     timeClient.setTimeOffset(t_offset);
     update_fading_time();
   }
 }
 
-void update_fading_time() {
+void update_fading_time() {//update the time for starting to fade out
   if (fade_settings != 0) {
+    time_brightness = 1;
     h_off_F = h_off;
     m_off_F = m_off - ((bright_settings * 5) - (bright_settings * 5) % 60) / 60;
-    if (m_off_F < 0) {
-      h_off_F--;
-      m_off_F += 60;
+    if (m_off_F < 0) {//in case this variable is a negative number, which means the starting hour for the fade is on hour earlier
+      h_off_F = h_off - 1; //subtract an hour
+      m_off_F += 60;//correct the difference
     }
     if (timeClient.getHours() > h_on || (timeClient.getHours() == h_on && timeClient.getMinutes() > m_on + 20)) {
       time_brightness = bright_settings;
@@ -67,7 +69,7 @@ void update_fading_time() {
   }
   //Serial.println("---");
   Serial.print("h_off_F="); Serial.print(h_off_F); Serial.println("---");
-  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---");
+  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---\n");
   //Serial.println("---");
 }
 
@@ -120,16 +122,22 @@ void timed_schedule_loop() {
           //
         }
       }
-      if (fade_settings == 2 || fade_settings == 3 && time_brightness>1) { //Fade out enabled
-        if (now_H == h_off_F && now_M >= m_off_F) {//now_H == h_off && now_M < m_off
+      if (fade_settings == 2 || fade_settings == 3 && time_brightness > 0) { //Fade out enabled
+        if (now_H == h_off_F && now_M >= m_off_F) {//n
           time_brightness = bright_settings - ((now_M - m_off_F) * 12 + (now_S - now_S % 5) / 5);
           //set_led_brightness_d(time_brightness);
+          Serial.println("Un");
 
         }
-        if (now_H == h_off && now_M < m_off) {//now_H == h_off && now_M < m_off
-          time_brightness = bright_settings - ((now_M + (60-m_off_F)) * 12 + (now_S - now_S % 5) / 5);
+        if (now_H == h_off && now_M <= m_off && h_off_F==h_off-1) {//now_H == h_off && now_M < m_off
+          time_brightness = bright_settings - ((now_M  -60- m_off_F) * 12 + (now_S - now_S % 5) / 5);
           //set_led_brightness_d(time_brightness);
-
+          Serial.println("Tres");
+        }
+        if (now_H == h_off && now_M <= m_off) {//now_H == h_off && now_M < m_off
+          time_brightness = bright_settings - ((now_M  - m_off) * 12 + (now_S - now_S % 5) / 5);
+          //set_led_brightness_d(time_brightness);
+          Serial.println("Dos");
         }
 
         Serial.println();
@@ -195,6 +203,7 @@ void save_animation() {
 
 
 void save_brightness(int new_brighness) {
+  bright_settings = new_brighness;
   EEPROM.begin(EE_SIZE);
   EEPROM.write(BRIGHTNESS, new_brighness);
   EEPROM.commit();

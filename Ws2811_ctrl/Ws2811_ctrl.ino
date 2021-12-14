@@ -3,6 +3,7 @@
 //#define OTA_ENABLED
 #define DNS_ON
 int wifi_status = 0;
+//I hope I can comment every function in this code before I die, because there are too many, and it's a little complex
 
 void setup() {
   Serial.begin(115200);
