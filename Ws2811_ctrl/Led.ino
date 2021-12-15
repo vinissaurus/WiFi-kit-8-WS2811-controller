@@ -10,7 +10,7 @@ FASTLED_USING_NAMESPACE
 #define BUTTON 10
 #define BUTTON_RATE 10
 
-int CYCLE_THROUGH = 250;//20-100
+uint8_t CYCLE_THROUGH = 250;//20-100
 
 bool anim_play = true;
 
@@ -20,7 +20,7 @@ int cycle_steps = 0;
 bool fade_in = false;
 bool fade_out = false;
 bool state_changed = false;
-int anim_sequence[max_anim - 2];
+uint8_t anim_sequence[max_anim - 2];
 void generate_sequence();
 
 void display_animation_mode() {
@@ -222,7 +222,7 @@ int led_ck = 0;
 int button_ck = 0;
 int cycle_counter = 0;
 int bright_counter = 0;
-int _rate = 100 - RATE;
+uint8_t _rate = 100 - RATE;
 int random_counter=0;
 
 

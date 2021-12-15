@@ -19,14 +19,14 @@
 
 
 
-int h_on, m_on, h_off, m_off;
-int h_off_F, m_off_F;
-int on_time, off_time;
+uint8_t h_on, m_on, h_off, m_off;
+uint8_t h_off_F, m_off_F;
+uint16_t on_time, off_time;
 bool time_schedule;
-int fade_settings;
-int bright_settings;
+uint8_t fade_settings;
+uint8_t bright_settings;
 int hour_offset = 0;
-int time_brightness = 0;
+uint8_t time_brightness = 0;
 
 WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "europe.pool.ntp.org", 3600, 60000);
@@ -69,8 +69,8 @@ void update_fading_time() {//update the time for starting to fade out
     }
   }
   //Serial.println("---");
-  Serial.print("h_off_F="); Serial.print(h_off_F); Serial.println("---");
-  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---\n");
+//  Serial.print("h_off_F="); Serial.print(h_off_F); Serial.println("---");
+//  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---\n");
   //Serial.println("---");
 }
 
@@ -97,8 +97,6 @@ void save_time_schedule(bool ts) {
 bool get_time_schedule() {
   return time_schedule;
 }
-
-
 
 bool STATE_ON = false;
 int timed_loop_ck = 0;
@@ -131,7 +129,7 @@ void timed_schedule_loop() {
         if (now_H == h_off && now_M <= m_off && h_off_F == h_off - 1) { //now_H == h_off && now_M < m_off
           
           time_brightness = bright_settings - ((now_M  + 60 - m_off_F) * 12 + (now_S - now_S % 5) / 5);
-          int rst = now_M  - 60 - m_off_F;
+          //int rst = now_M  - 60 - m_off_F;
           //Serial.println("Dos");
 //          Serial.println(rst);
           set_led_brightness_d(time_brightness);
@@ -164,7 +162,6 @@ void timed_schedule_loop() {
         //Serial.println("I'm ofF");
       }
       }
-      //Serial.println(timeClient.getFormattedTime());
 
     }
   }
@@ -234,6 +231,7 @@ void save_cycle_time(int new_cycle_time) {
 
 
 void save_fade_settings(int new_settings) {
+  fade_settings = new_settings;
   EEPROM.begin(EE_SIZE);
   EEPROM.write(TIMED_FADE , new_settings);
   //Serial.println(EEPROM.read(TIMED_FADE));

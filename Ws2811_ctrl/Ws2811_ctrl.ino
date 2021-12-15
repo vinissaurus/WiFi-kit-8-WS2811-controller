@@ -7,7 +7,8 @@ int wifi_status = 0;
 
 void setup() {
   Serial.begin(115200);
-  Serial.println(F("WS2811_Control \nby VSSAURUS - 2021 \ngithub.com/vinissaurus"));
+  delay(500);
+  Serial.println(F("\nWS2811_Control \nby VSSAURUS - 2021 \ngithub.com/vinissaurus"));
   
   if (wifi_setup() == 1) {
     wifi_status=1;

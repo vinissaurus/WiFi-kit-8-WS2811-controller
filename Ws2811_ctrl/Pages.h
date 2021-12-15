@@ -13,6 +13,7 @@ int time_fadeout = 0;
 String actual_anim;
  
 const char index_html[] PROGMEM = R"rawliteral( 
+
 <!DOCTYPE html>
 <html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -180,9 +181,15 @@ const char index_html[] PROGMEM = R"rawliteral(
         alert("Please, fill in the time to shutdown!");
       }
       else {
+        var time_on = document.getElementById("ontime").value.split(":");
+        var time_off = document.getElementById("offtime").value.split(":");
+        if(time_on[0]===time_off[0]&& time_off[1]-time_on[1]<60){
+          alert("Hey Boss, the time to turn off the lights should be at least 60 minutes after turning on!")          
+        }else{
         xhr.open("GET", "/time?on=" + document.getElementById("ontime").value + "&off=" + document.getElementById("offtime").value, true);
         xhr.send();
         //alert("you're good!");
+        }
       }
     }
     function send_timezone() {

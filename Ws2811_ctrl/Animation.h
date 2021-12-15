@@ -1,7 +1,7 @@
 #define FRAMES_PER_SECOND 60
 
-int BRIGHTNESS = 255;
-int RATE = 60;
+uint8_t BRIGHTNESS = 255;
+uint8_t RATE = 60;
 
 CRGBArray<NUM_LEDS> leds;
 //CRGB leds[NUM_LEDS];

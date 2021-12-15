@@ -151,8 +151,9 @@ void dns_begin() {
       delay(1000);
     }
   }
-  //Serial.println("mDNS responder started");
-
+ // Serial.print("\n");
+  Serial.print(DNS_NAME);
+  Serial.print(".local\n");
   // Add service to MDNS-SD
   MDNS.addService("http", "tcp", 80);
 }
