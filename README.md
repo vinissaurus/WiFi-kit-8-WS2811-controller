@@ -4,7 +4,7 @@ This is a simple controller for a WS2811LED strip, which features:<br>
 -A captive portal to set up a wifi connection<br> 
 ![captive](https://user-images.githubusercontent.com/18562403/144536800-d81c5d98-b185-4fd4-8ce7-1eb246ea7248.JPG)<br>
 
--A UI that you can reach through your network in the address http://wesp2811.local (you can change to other name in the code)<br>
+-A UI that you can reach through your network in the address http://wesp2811.local (you can change to another name in the code)<br>
 ![web_ui](https://user-images.githubusercontent.com/18562403/144534986-3f279588-1085-4e45-aa01-7f3fa575b4d6.JPG)<br>
 
 And some animations for the LED strip, which were all from FastLED's examples.
