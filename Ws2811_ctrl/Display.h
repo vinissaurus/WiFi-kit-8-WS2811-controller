@@ -69,11 +69,11 @@ void splashScreen() {
 }
 
 void scr_out(String a, String b) { //método para imprimir duas linhas na tela OLED
-//  Heltec.display->clear();
-//  Heltec.display->setTextAlignment(TEXT_ALIGN_LEFT);
-//  Heltec.display->drawStringMaxWidth(4, 12,128, a);
-//  Heltec.display->drawStringMaxWidth(4, 20,128, b);
-//  Heltec.display->display();
+  //  Heltec.display->clear();
+  //  Heltec.display->setTextAlignment(TEXT_ALIGN_LEFT);
+  //  Heltec.display->drawStringMaxWidth(4, 12,128, a);
+  //  Heltec.display->drawStringMaxWidth(4, 20,128, b);
+  //  Heltec.display->display();
   const char* aa = a.c_str();
   const char* bb = b.c_str();
   scr.firstPage();
@@ -98,7 +98,7 @@ void scrMainPage(int c) {
 }
 
 
-void scr_setup(){
+void scr_setup() {
   scr.begin();
   scr.setFont(u8g2_font_amstrad_cpc_extended_8f); // set the target font to calculate the pixel width
   width = scr.getUTF8Width(text);    // calculate the pixel width of the text
@@ -107,7 +107,7 @@ void scr_setup(){
   scr.firstPage();
   do {
     scr.drawUTF8(4, 12, "Connected to:");
-//    scr.drawUTF8(4, 20, ssid);
+    //    scr.drawUTF8(4, 20, ssid);
 
   } while ( scr.nextPage() );
   delay(2000);
@@ -115,12 +115,12 @@ void scr_setup(){
   //sprintf(ipAdr,"",WiFi.localIP(),"");
   //sprintf(ipAdr, "%d.%d.%d.%d", WiFi.localIP()[0], WiFi.localIP()[1], WiFi.localIP()[2], WiFi.localIP()[3]);
 
-  }
+}
 
 void scr_loop() {
   //Heltec.display->clear();
-  
-  
+
+
   //scr.firstPage();
   //Heltec.display->display();
 }

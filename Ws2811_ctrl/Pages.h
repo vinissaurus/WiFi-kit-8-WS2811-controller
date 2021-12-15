@@ -11,8 +11,8 @@ int time_fadeout = 0;
 //int h_offset = 0;
 
 String actual_anim;
- 
-const char index_html[] PROGMEM = R"rawliteral( 
+
+const char index_html[] PROGMEM = R"rawliteral(
 
 <!DOCTYPE html>
 <html>

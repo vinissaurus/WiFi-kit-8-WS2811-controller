@@ -214,7 +214,7 @@ void generate_sequence() {
     anim_sequence[i] = anim_aux[test_case];
     //Serial.println(anim_aux[test_case]);
     anim_aux[test_case] = 0;
-    
+
   }
 }
 
@@ -223,7 +223,7 @@ int button_ck = 0;
 int cycle_counter = 0;
 int bright_counter = 0;
 uint8_t _rate = 100 - RATE;
-int random_counter=0;
+int random_counter = 0;
 
 
 int local_anim_mode = 2;
@@ -248,7 +248,7 @@ void do_anim(int which_one) {
 
       if (millis() >= cycle_counter + CYCLE_THROUGH * 1000) {
         cycle_counter = millis();
-        if (random_counter < max_anim-2) {
+        if (random_counter < max_anim - 2) {
           random_counter++;
         } else {
           random_counter = 0;

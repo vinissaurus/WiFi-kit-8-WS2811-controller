@@ -69,8 +69,8 @@ void update_fading_time() {//update the time for starting to fade out
     }
   }
   //Serial.println("---");
-//  Serial.print("h_off_F="); Serial.print(h_off_F); Serial.println("---");
-//  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---\n");
+  //  Serial.print("h_off_F="); Serial.print(h_off_F); Serial.println("---");
+  //  Serial.print("m_off_F="); Serial.print(m_off_F); Serial.println("---\n");
   //Serial.println("---");
 }
 
@@ -114,10 +114,10 @@ void timed_schedule_loop() {
         if (now_H == h_on && now_M >= m_on && time_brightness < bright_settings) {
           time_brightness = (now_M - m_on) * 12 + (now_S - now_S % 5) / 5;
           set_led_brightness_d(time_brightness);
-//          Serial.println();
-//          Serial.print(now_S);
-//          Serial.print("-ON->");
-//          Serial.print(time_brightness);
+          //          Serial.println();
+          //          Serial.print(now_S);
+          //          Serial.print("-ON->");
+          //          Serial.print(time_brightness);
           //
         }
       }
@@ -127,11 +127,11 @@ void timed_schedule_loop() {
           set_led_brightness_d(time_brightness);
         }
         if (now_H == h_off && now_M <= m_off && h_off_F == h_off - 1) { //now_H == h_off && now_M < m_off
-          
+
           time_brightness = bright_settings - ((now_M  + 60 - m_off_F) * 12 + (now_S - now_S % 5) / 5);
           //int rst = now_M  - 60 - m_off_F;
           //Serial.println("Dos");
-//          Serial.println(rst);
+          //          Serial.println(rst);
           set_led_brightness_d(time_brightness);
         }
         //        if (now_H == h_off && now_M <= m_off) {//now_H == h_off && now_M < m_off
@@ -141,26 +141,26 @@ void timed_schedule_loop() {
         //          Serial.println(rst);
         //        }
 
-//        Serial.println();
-//        Serial.print(now_S);
-//        Serial.print("-OFF->");
-//        Serial.print(time_brightness);
+        //        Serial.println();
+        //        Serial.print(now_S);
+        //        Serial.print("-OFF->");
+        //        Serial.print(time_brightness);
       }
-     
-      if(fade_settings==0){ //if fade in/out disabled
-      if ((now_H == h_on && now_M >= m_on) || (now_H == h_off && now_M <= m_off)) {
-        animation_state(true);
-        //Serial.println("I'm on, B1TCH");
-      } else if (h_on <= h_off && (now_H > h_on && now_H < h_off) ) {
-        animation_state(true);
-        //Serial.println("I'm on, B1TCH");
-      } else if (h_on > h_off && (now_H > h_on && now_H > h_off)) {
-        animation_state(true);
-        //Serial.println("I'm on, B1TCH");
-      } else {
-        animation_state(false);
-        //Serial.println("I'm ofF");
-      }
+
+      if (fade_settings == 0) { //if fade in/out disabled
+        if ((now_H == h_on && now_M >= m_on) || (now_H == h_off && now_M <= m_off)) {
+          animation_state(true);
+          //Serial.println("I'm on, B1TCH");
+        } else if (h_on <= h_off && (now_H > h_on && now_H < h_off) ) {
+          animation_state(true);
+          //Serial.println("I'm on, B1TCH");
+        } else if (h_on > h_off && (now_H > h_on && now_H > h_off)) {
+          animation_state(true);
+          //Serial.println("I'm on, B1TCH");
+        } else {
+          animation_state(false);
+          //Serial.println("I'm ofF");
+        }
       }
 
     }

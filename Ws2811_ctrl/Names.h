@@ -19,7 +19,7 @@ String animation_names[] = {"OFF",
                             "Palette[Random colors]",
                             "Palette[Black&White I]",
                             "Palette[Black&White II]" ,
-                            "Palette[Clouds]", 
+                            "Palette[Clouds]",
                             "Palette[Partay]",
                             "Palette[Green&Yellow]",
                             "Palette[Red&White&Blue]"

@@ -48,8 +48,8 @@ int wifi_setup() {
 
 finished:
   WiFi.softAPdisconnect(true);
- // Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
- // Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
+  // Serial.println(ESPAsync_wifiManager.getStatus(WiFi.status()));
+  // Serial.print(F("Connected. Local IP: ")); Serial.println(WiFi.localIP());
 
 #ifdef SCHEMA_ON
   //  //SSDP.schema(webServer());
@@ -151,7 +151,7 @@ void dns_begin() {
       delay(1000);
     }
   }
- // Serial.print("\n");
+  //Serial.print("\n");
   Serial.print(DNS_NAME);
   Serial.print(".local\n");
   // Add service to MDNS-SD

@@ -47,13 +47,13 @@ void set_value(AsyncWebServerRequest *request) {
 
 void change_anim(AsyncWebServerRequest *request) {
   if (request->hasParam("d")) {
-  String sign = request->getParam("d")->value();
-  if (sign.equals("n")) {
-    next_anim();
-  }
-  if (sign.equals("p")) {
-    prev_anim();
-  }
+    String sign = request->getParam("d")->value();
+    if (sign.equals("n")) {
+      next_anim();
+    }
+    if (sign.equals("p")) {
+      prev_anim();
+    }
   }
 
   String response = "anim=" + get_animation_name();

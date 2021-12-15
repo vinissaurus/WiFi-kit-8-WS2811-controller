@@ -290,12 +290,12 @@ const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM =
 const TProgmemPalette16 green_yellow PROGMEM =
 {
   CRGB::Green,
-  CRGB::Yellow, 
+  CRGB::Yellow,
   CRGB::Blue,
   CRGB::Gray,
 
   CRGB::Green,
-  CRGB::Yellow, 
+  CRGB::Yellow,
   CRGB::Blue,
   CRGB::Gray,
 
@@ -339,7 +339,7 @@ void Palette(int which_one) {
       currentBlending = LINEARBLEND;
       break;
     case 4:
-      SetupTotallyRandomPalette();  
+      SetupTotallyRandomPalette();
       currentBlending = LINEARBLEND;
       break;
     case 5:

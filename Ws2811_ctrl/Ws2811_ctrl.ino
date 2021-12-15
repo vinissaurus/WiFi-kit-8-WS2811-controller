@@ -9,9 +9,9 @@ void setup() {
   Serial.begin(115200);
   delay(500);
   Serial.println(F("\nWS2811_Control \nby VSSAURUS - 2021 \ngithub.com/vinissaurus"));
-  
+
   if (wifi_setup() == 1) {
-    wifi_status=1;
+    wifi_status = 1;
     web_setup();
   }
   load_settings();
@@ -31,10 +31,10 @@ void loop() {
   timed_schedule_loop();
 
 #ifdef DNS_ON
-if(wifi_status == 1){
+  if (wifi_status == 1) {
     dns_loop();
-}
-#endif  
+  }
+#endif
 
 #ifdef OTA_ENABLED
   ota_loop();
