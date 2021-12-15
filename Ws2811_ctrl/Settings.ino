@@ -40,8 +40,8 @@ void load_settings() {
   //LINE Reserved for DST
   read_time();//ON_TIME & OFF_TIME
   animation_mode = EEPROM.read(ANIMATION);
-  //bright_settings = EEPROM.read(BRIGHTNESS);
-  bright_settings = 500;//just for the debug-------------------------------------------------
+  bright_settings = EEPROM.read(BRIGHTNESS);
+  //bright_settings = 500;//just for the debug-------------------------------------------------
   set_led_brightness(bright_settings);
   set_led_speed(EEPROM.read(SPEED));
   set_led_cycle(EEPROM.read(CYCLE_TIME));
@@ -115,26 +115,26 @@ void timed_schedule_loop() {
       if (fade_settings == 1 || fade_settings == 3) { //Fade in enabled--> set_led_brightness_d(int new_brightness)
         if (now_H == h_on && now_M >= m_on && time_brightness < bright_settings) {
           time_brightness = (now_M - m_on) * 12 + (now_S - now_S % 5) / 5;
-          //set_led_brightness_d(time_brightness);
-          Serial.println();
-          Serial.print(now_S);
-          Serial.print("-ON->");
-          Serial.print(time_brightness);
+          set_led_brightness_d(time_brightness);
+//          Serial.println();
+//          Serial.print(now_S);
+//          Serial.print("-ON->");
+//          Serial.print(time_brightness);
           //
         }
       }
       if ((fade_settings == 2 || fade_settings == 3) && time_brightness > 0) { //Fade out enabled
         if (now_H == h_off_F && now_M >= m_off_F) {//n
           time_brightness = bright_settings - ((now_M - m_off_F) * 12 + (now_S - now_S % 5) / 5);
-          //set_led_brightness_d(time_brightness);
+          set_led_brightness_d(time_brightness);
         }
         if (now_H == h_off && now_M <= m_off && h_off_F == h_off - 1) { //now_H == h_off && now_M < m_off
           
           time_brightness = bright_settings - ((now_M  + 60 - m_off_F) * 12 + (now_S - now_S % 5) / 5);
           int rst = now_M  - 60 - m_off_F;
           //Serial.println("Dos");
-          Serial.println(rst);
-          //set_led_brightness_d(time_brightness);
+//          Serial.println(rst);
+          set_led_brightness_d(time_brightness);
         }
         //        if (now_H == h_off && now_M <= m_off) {//now_H == h_off && now_M < m_off
         //          time_brightness = bright_settings - ((now_M  - m_off) * 12 + (now_S - now_S % 5) / 5);
@@ -143,12 +143,13 @@ void timed_schedule_loop() {
         //          Serial.println(rst);
         //        }
 
-        Serial.println();
-        Serial.print(now_S);
-        Serial.print("-OFF->");
-        Serial.print(time_brightness);
+//        Serial.println();
+//        Serial.print(now_S);
+//        Serial.print("-OFF->");
+//        Serial.print(time_brightness);
       }
-      //if fade in/out disabled
+     
+      if(fade_settings==0){ //if fade in/out disabled
       if ((now_H == h_on && now_M >= m_on) || (now_H == h_off && now_M <= m_off)) {
         animation_state(true);
         //Serial.println("I'm on, B1TCH");
@@ -161,6 +162,7 @@ void timed_schedule_loop() {
       } else {
         animation_state(false);
         //Serial.println("I'm ofF");
+      }
       }
       //Serial.println(timeClient.getFormattedTime());
 
