@@ -69,17 +69,33 @@
     }
 
     .control_buttons {
+      width: 250px;
       display: flex;
       justify-content: center;
       align-items: center;
+      margin-left: auto; 
+      margin-right: auto; 
+    }
+
+    .c_button{
+      width: 50px;
+      height: 25px;
+      font-size: 90%;
+      border-radius: 5%;
+      border: 1px solid black;
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 1px;
     }
 
     #effect_name {
-      width: 65%; 
+      width: 248px; 
       justify-content: center;
       font-family: fantasy; 
       text-align: center;
-      display: block;
+      display: flex;
       margin-left: auto; 
       margin-right: auto; 
       font-size: 150%;
@@ -137,12 +153,25 @@
         <div>
           <input type="text" id="effect_name" name="fname" disabled="disabled">
         </div>
-        <div class="control_buttons">        
-            <button class="p_button" type="button" onclick=change_anim("p")>&#11013;</button>
-            <button class="p_button" type="button" onclick=change_anim("p")>Play all</button>
-            <button class="p_button" type="button" onclick=change_anim("p")>Play/pause</button>
-            <button class="p_button" type="button" onclick=change_anim("p")>Random</button>
-            <button class="p_button" type="button" onclick=change_anim("n")>&#10145;</button>
+        <div class="control_buttons">
+          <table></table>
+            <tr>
+              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+            </tr>
+            <tr>
+              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+            </tr>
+            <tr>
+              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+            </tr>
+            <tr>
+              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+            </tr>
+            <tr>
+              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+            </tr>
+
+          </table>        
           
 
         </div>
