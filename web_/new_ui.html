@@ -6,6 +6,7 @@
   <style>
     :root {
       --gradient_time: 35s;
+      --background_bottom_color: rgb(184, 184, 184);
     }
 
     * {
@@ -45,7 +46,7 @@
 
     /* Style tab links */
     .tablink {
-      background-color: #555;
+      background-color: rgb(14, 71, 85);
       color: white;
       float: left;
       border: none;
@@ -53,18 +54,18 @@
       cursor: pointer;
       padding: 14px 16px;
       font-size: 17px;
-      width: 25%;
+      width: 20%;
     }
 
     .tablink:hover {
-      background-color: #777;
+      background-color: rgb(33, 113, 133);
     }
 
     /* Style the tab content (and add height:100% for full page content) */
     .tabcontent {
       color: white;
       display: none;
-      padding: 100px 20px;
+      padding: 80px 10px;
       height: 100%;
     }
 
@@ -101,20 +102,24 @@
       font-size: 150%;
     }
 
-    #Home {
-      background-color: rgb(250, 164, 164);
+    #main {
+        background: linear-gradient(to bottom, rgb(250, 164, 164), var(--background_bottom_color));
     }
 
-    #News {
-      background-color: rgb(142, 250, 142);
+    #effects {
+        background: linear-gradient(to bottom, rgb(142, 250, 142), var(--background_bottom_color));
     }
 
-    #Contact {
-      background-color: rgb(132, 255, 218);
+    #colors {
+        background: linear-gradient(to bottom, rgb(132, 255, 218), var(--background_bottom_color));
     }
 
-    #About {
-      background-color: rgb(255, 222, 161);
+    #wifi {
+        background: linear-gradient(to bottom, rgb(255, 222, 161), var(--background_bottom_color));
+    }
+
+    #other {
+        background: linear-gradient(to bottom, rgb(255, 161, 255), var(--background_bottom_color));
     }
 
   @-webkit-keyframes AnimationName {
@@ -143,12 +148,13 @@
 
 <body>
   <div class="mainframe">
-    <button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">Home</button>
-    <button class="tablink" onclick="openPage('News', this, 'green')" >News</button>
-    <button class="tablink" onclick="openPage('Contact', this, 'blue')">Contact</button>
-    <button class="tablink" onclick="openPage('About', this, 'orange')">About</button>
+    <button class="tablink" onclick="openPage('main', this, 'red')" id="defaultOpen">Main</button>
+    <button class="tablink" onclick="openPage('effects', this, 'green')" >Effects</button>
+    <button class="tablink" onclick="openPage('colors', this, 'blue')">Colors</button>
+    <button class="tablink" onclick="openPage('wifi', this, 'yellow')">WiFi</button>
+    <button class="tablink" onclick="openPage('other', this, 'orange')">Other</button>
 
-    <div id="Home" class="tabcontent">
+    <div id="main" class="tabcontent">
       <div id="effect_controls">
         <div>
           <input type="text" id="effect_name" name="fname" disabled="disabled">
@@ -178,17 +184,21 @@
       </div>
     </div>
 
-    <div id="News" class="tabcontent">
-      <h3>News</h3>
-      <p>Some news this fine day!</p>
+    <div id="effects" class="tabcontent">
+
     </div>
 
-    <div id="Contact" class="tabcontent">
+    <div id="colors" class="tabcontent">
       <h3>Contact</h3>
       <p>Get in touch, or swing by for a cup of coffee.</p>
     </div>
 
-    <div id="About" class="tabcontent">
+    <div id="wifi" class="tabcontent">
+        <h3>Contact</h3>
+        <p>Get in touch, or swing by for a cup of coffee.</p>
+      </div>
+
+    <div id="other" class="tabcontent">
       <h3>About</h3>
       <p>Who we are and what we do.</p>
     </div>
@@ -207,7 +217,7 @@
         tablinks[i].style.backgroundColor = "";
       }
       document.getElementById(pageName).style.display = "block";
-      elmnt.style.backgroundColor = color;
+      elmnt.style.backgroundColor = color;      
     }
 
     // Get the element with id="defaultOpen" and click on it
