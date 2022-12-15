@@ -1,6 +1,5 @@
-#include <EEPROM.h>
-#include <NTPClient.h>//https://github.com/arduino-libraries/NTPClient
-#include <WiFiUdp.h>
+#include "Ws_2811_ctrl.h"
+
 #define EE_SIZE 512
 #define TIME_UPDATE_RATE 5000//ms
 //#define FADE_MINUTES 10 //might convert to a variable, if needed to user config (deprecated)

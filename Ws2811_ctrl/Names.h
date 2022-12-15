@@ -1,9 +1,20 @@
-#include <ESPAsyncWebServer.h>
-//#include <ESP8266SSDP.h>
 #define NUM_LEDS 100
 #define max_anim 15
 AsyncWebServer webServer(80);
 String memSSID, memPSK;
+
+
+//---------------------------------------NAMES
+#define WIFI_NULL = "@null"
+#define CAPTIVE_NAME "wesp2811-Config"
+#define DNS_NAME "wesp2811"
+#define DNS_ON
+//---------------------------------------NAMES
+
+//---------------------------------------VARIABLES
+uint8_t wifi_status = 0;
+
+
 
 //------------------------------------------------------LED
 
@@ -24,7 +35,7 @@ String animation_names[] = {"OFF",
                             "Palette[Green&Yellow]",
                             "Palette[Red&White&Blue]"
                            };
-int animation_mode = 1;
+uint8_t animation_mode = 1;
 
 void led_setup();
 void led_loop();

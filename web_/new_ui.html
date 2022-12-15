@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=2">
+  <style>
+    :root {
+      --gradient_time: 35s;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+
+    /* Set height of body and the document to 100% */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(36deg, #eeeda6, #6076f3, #915987, #186aa3);
+      background-size: 800% 800%;
+
+      -webkit-animation: AnimationName var(--gradient_time) ease infinite;
+      -moz-animation: AnimationName var(--gradient_time) ease infinite;
+      animation: AnimationName var(--gradient_time) ease infinite;
+      /* background: linear-gradient(0deg, rgb(7, 7, 7), rgb(218, 218, 218)); */
+      /* padding: 2% 2%; */
+      /* width: 40%; */
+      /* margin: auto; */
+      position: center;
+    }
+
+    .mainframe {
+      /* background: linear-gradient(to bottom, rgb(7, 7, 7), rgb(218, 218, 218)); */
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      margin: auto;
+      /* border-style: solid;
+      border-width: 0.5px; */
+      height: 550px;
+      width: 450px;
+    }
+
+    /* Style tab links */
+    .tablink {
+      background-color: #555;
+      color: white;
+      float: left;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      font-size: 17px;
+      width: 25%;
+    }
+
+    .tablink:hover {
+      background-color: #777;
+    }
+
+    /* Style the tab content (and add height:100% for full page content) */
+    .tabcontent {
+      color: white;
+      display: none;
+      padding: 100px 20px;
+      height: 100%;
+    }
+
+    .control_buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #effect_name {
+      width: 65%; 
+      justify-content: center;
+      font-family: fantasy; 
+      text-align: center;
+      display: block;
+      margin-left: auto; 
+      margin-right: auto; 
+      font-size: 150%;
+    }
+
+    #Home {
+      background-color: rgb(250, 164, 164);
+    }
+
+    #News {
+      background-color: rgb(142, 250, 142);
+    }
+
+    #Contact {
+      background-color: rgb(132, 255, 218);
+    }
+
+    #About {
+      background-color: rgb(255, 222, 161);
+    }
+
+  @-webkit-keyframes AnimationName {
+    0%{background-position:90% 0%}
+    50%{background-position:11% 100%}
+    100%{background-position:90% 0%}
+  }
+  @-moz-keyframes AnimationName {
+    0%{background-position:90% 0%}
+    50%{background-position:11% 100%}
+    100%{background-position:90% 0%}
+  }
+  @keyframes AnimationName {
+    0%{background-position:90% 0%}
+    50%{background-position:11% 100%}
+    100%{background-position:90% 0%}
+  }
+
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+
+  </script>
+
+</head>
+
+<body>
+  <div class="mainframe">
+    <button class="tablink" onclick="openPage('Home', this, 'red')" id="defaultOpen">Home</button>
+    <button class="tablink" onclick="openPage('News', this, 'green')" >News</button>
+    <button class="tablink" onclick="openPage('Contact', this, 'blue')">Contact</button>
+    <button class="tablink" onclick="openPage('About', this, 'orange')">About</button>
+
+    <div id="Home" class="tabcontent">
+      <div id="effect_controls">
+        <div>
+          <input type="text" id="effect_name" name="fname" disabled="disabled">
+        </div>
+        <div class="control_buttons">        
+            <button class="p_button" type="button" onclick=change_anim("p")>&#11013;</button>
+            <button class="p_button" type="button" onclick=change_anim("p")>Play all</button>
+            <button class="p_button" type="button" onclick=change_anim("p")>Play/pause</button>
+            <button class="p_button" type="button" onclick=change_anim("p")>Random</button>
+            <button class="p_button" type="button" onclick=change_anim("n")>&#10145;</button>
+          
+
+        </div>
+      </div>
+    </div>
+
+    <div id="News" class="tabcontent">
+      <h3>News</h3>
+      <p>Some news this fine day!</p>
+    </div>
+
+    <div id="Contact" class="tabcontent">
+      <h3>Contact</h3>
+      <p>Get in touch, or swing by for a cup of coffee.</p>
+    </div>
+
+    <div id="About" class="tabcontent">
+      <h3>About</h3>
+      <p>Who we are and what we do.</p>
+    </div>
+  </div>
+
+
+  <script>
+    function openPage(pageName, elmnt, color) {
+      var i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].style.backgroundColor = "";
+      }
+      document.getElementById(pageName).style.display = "block";
+      elmnt.style.backgroundColor = color;
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+  </script>
+
+</body>
+
+</html>

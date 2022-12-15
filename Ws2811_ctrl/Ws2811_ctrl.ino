@@ -1,16 +1,17 @@
-#include "Names.h"
-//#include "Display.h"
-//#define OTA_ENABLED
-#define DNS_ON
-int wifi_status = 0;
-//I hope I can comment every function in this code before I die, because there are too many, and it's a little complex
+#include "Ws_2811_ctrl.h"
 
-void setup() {
+// #define OTA_ENABLED
+
+// I hope I can comment every function in this code before I die, because there are too many, and it's a little complex
+
+void setup()
+{
   Serial.begin(115200);
   delay(500);
   Serial.println(F("\nWS2811_Control \nby VSSAURUS - 2021 \ngithub.com/vinissaurus"));
 
-  if (wifi_setup() == 1) {
+  if (wifi_setup() == 1)
+  {
     wifi_status = 1;
     web_setup();
   }
@@ -20,18 +21,16 @@ void setup() {
 #ifdef OTA_ENABLED
   ota_start();
 #endif
-#ifdef DISPLAY_ON
-  scr_setup();
-#endif
 }
 
-
-void loop() {
+void loop()
+{
   led_loop();
   timed_schedule_loop();
 
 #ifdef DNS_ON
-  if (wifi_status == 1) {
+  if (wifi_status == 1)
+  {
     dns_loop();
   }
 #endif
