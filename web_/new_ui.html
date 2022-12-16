@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=2">
   <style>
     :root {
-      --gradient_time: 35s;
-      --background_bottom_color: rgb(184, 184, 184);
+      --gradient_time: 60s;
+      --background_bottom_color: rgb(145 145 145);
     }
+
 
     * {
       box-sizing: border-box
@@ -41,7 +42,7 @@
       /* border-style: solid;
       border-width: 0.5px; */
       height: 550px;
-      width: 450px;
+      width: 350px;
     }
 
     /* Style tab links */
@@ -65,8 +66,9 @@
     .tabcontent {
       color: white;
       display: none;
-      padding: 80px 10px;
+      padding: 65px 50px;
       height: 100%;
+      border: 2px solid;
     }
 
     .control_buttons {
@@ -74,11 +76,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-left: auto; 
-      margin-right: auto; 
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .c_button{
+    .c_button {
       width: 50px;
       height: 25px;
       font-size: 90%;
@@ -92,95 +94,293 @@
     }
 
     #effect_name {
-      width: 248px; 
+      width: 248px;
       justify-content: center;
-      font-family: fantasy; 
+      font-family: fantasy;
       text-align: center;
       display: flex;
-      margin-left: auto; 
-      margin-right: auto; 
+      margin-left: auto;
+      margin-right: auto;
       font-size: 150%;
     }
 
+    #effects_box {
+      width: 250px;
+      height: 200px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .name_label {
+      color: rgb(184, 184, 184);
+      width: 248px;
+      text-shadow: 0 0 5px rgb(14, 71, 85), 0 0 2px royalblue;
+      justify-content: center;
+      font-family: fantasy;
+      text-align: center;
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 130%;
+    }
+
+    .name_label_small {
+      width: 148px;
+      text-shadow: 0 0 5px rgb(14, 71, 85), 0 0 2px royalblue;
+      justify-content: center;
+      font-family: fantasy;
+      text-align: center;
+      display: flex;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 100%;
+    }
+
+    .adjustment_slider {
+      /* -webkit-appearance: sliderthumb-horizontal; */
+      /* justify-content: space-evenly; */
+      width: 248px;
+      /* height: 25px; */
+      border-radius: 5px;
+      background: #d3d3d3;
+      /* outline: none; */
+      /* text-align: center; */
+      opacity: 0.7;
+      -webkit-transition: .2s;
+      transition: opacity .2s;
+      display: flex;
+      margin: auto;
+    }
+
+    .power_button {
+      background-color: #04AA6D;
+      border: none;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      /* margin: 4px 2px; */
+      border-radius: 50%;
+      position: absolute;
+      top: 55px;
+      left: 8px;
+      /* height: 50px; */
+      z-index: 25;
+    }
+
+
+
     #main {
-        background: linear-gradient(to bottom, rgb(250, 164, 164), var(--background_bottom_color));
+      background: linear-gradient(to bottom, rgb(25 34 68), var(--background_bottom_color));
     }
 
     #effects {
-        background: linear-gradient(to bottom, rgb(142, 250, 142), var(--background_bottom_color));
+      background: linear-gradient(to bottom, rgb(142, 250, 142), var(--background_bottom_color));
     }
 
     #colors {
-        background: linear-gradient(to bottom, rgb(132, 255, 218), var(--background_bottom_color));
+      background: linear-gradient(to bottom, rgb(132, 255, 218), var(--background_bottom_color));
     }
 
     #wifi {
-        background: linear-gradient(to bottom, rgb(255, 222, 161), var(--background_bottom_color));
+      background: linear-gradient(to bottom, rgb(255, 222, 161), var(--background_bottom_color));
     }
 
     #other {
-        background: linear-gradient(to bottom, rgb(255, 161, 255), var(--background_bottom_color));
+      background: linear-gradient(to bottom, rgb(255, 161, 255), var(--background_bottom_color));
     }
 
-  @-webkit-keyframes AnimationName {
-    0%{background-position:90% 0%}
-    50%{background-position:11% 100%}
-    100%{background-position:90% 0%}
-  }
-  @-moz-keyframes AnimationName {
-    0%{background-position:90% 0%}
-    50%{background-position:11% 100%}
-    100%{background-position:90% 0%}
-  }
-  @keyframes AnimationName {
-    0%{background-position:90% 0%}
-    50%{background-position:11% 100%}
-    100%{background-position:90% 0%}
-  }
+    @-webkit-keyframes AnimationName {
+      0% {
+        background-position: 90% 0%
+      }
 
+      50% {
+        background-position: 11% 100%
+      }
+
+      100% {
+        background-position: 90% 0%
+      }
+    }
+
+    @-moz-keyframes AnimationName {
+      0% {
+        background-position: 90% 0%
+      }
+
+      50% {
+        background-position: 11% 100%
+      }
+
+      100% {
+        background-position: 90% 0%
+      }
+    }
+
+    @keyframes AnimationName {
+      0% {
+        background-position: 90% 0%
+      }
+
+      50% {
+        background-position: 11% 100%
+      }
+
+      100% {
+        background-position: 90% 0%
+      }
+    }
+    /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;  
+  top: -3px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 2px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(18px);
+  -ms-transform: translateX(18px);
+  transform: translateX(18px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
 
   </script>
-
+  <!-- SVG -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="line">
+      <line x1="75" y1="34" x2="75" y2="58" />
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150" id="circle">
+      <circle cx="75" cy="80" r="35" />
+    </symbol>
+  </svg>
 </head>
 
 <body>
   <div class="mainframe">
     <button class="tablink" onclick="openPage('main', this, 'red')" id="defaultOpen">Main</button>
-    <button class="tablink" onclick="openPage('effects', this, 'green')" >Effects</button>
+    <button class="tablink" onclick="openPage('effects', this, 'green')">Effects</button>
     <button class="tablink" onclick="openPage('colors', this, 'blue')">Colors</button>
     <button class="tablink" onclick="openPage('wifi', this, 'yellow')">WiFi</button>
     <button class="tablink" onclick="openPage('other', this, 'orange')">Other</button>
 
     <div id="main" class="tabcontent">
+      <!--- MAIN PAGE --->
+      <!-- POWER BUTTON -->
+
+
       <div id="effect_controls">
         <div>
+          <label for="effect_name" class="name_label">CURRENT FX NAME</label>
           <input type="text" id="effect_name" name="fname" disabled="disabled">
         </div>
         <div class="control_buttons">
-              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
-              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
-              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
-              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
-              <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+          <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+          <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+          <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+          <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
+          <button class="c_button" type="button" onclick=change_anim("p")>&#11013;</button>
         </div>
       </div>
+      <br>
+      <div>
+        <label for="Bright" class="name_label_small">Brightness</label>
+        <input type="range" name="Bright" min="0" max="255" class="adjustment_slider" id="brightness" onmouseup=send_bright()>
+        <br>
+        <label for="Speed" class="name_label_small">Animation speed</label>
+        <input type="range" name="Speed" min="1" max="100" class="adjustment_slider" id="speed" onmouseup=send_speed()>
+        <br>
+        <label for="Cycle" class="name_label_small">Cycle period</label>
+        <input type="range" name="Cycle" min="30" max="250" class="adjustment_slider" id="cycle_time" onmouseup=send_cycle_time()>
+      </div>
+      <br>
+      <div>
+        <label for="Bright" class="name_label">STEADY MODE</label>
+        <label for="Bright" class="name_label_small">Select color</label>
+        <input type="color" name="Color1" id="color1" onmouseup=send_color1()>
+
+        <!-- Rounded switch -->
+        <label class="switch">
+          <input type="checkbox">
+          <span class="slider round"></span>
+        </label>
+        <label for="enable_waving">ENABLE WAVING</label>
+
+      </div>
+    <!--- MAIN PAGE --->
     </div>
 
     <div id="effects" class="tabcontent">
-        <h3>Effects</h3>
-        <form>
-            <select name="plataforma" required="required" multiple size="5">
-                <option value="">Escolha uma plataforma de jogos</option>
-                <option value="xbox">Xbox Series</option>
-                <option value="ps5">PS5</option>
-                <option value="nsw">Nintendo Switch</option>
-                <option value="pcg">PC Gaming</option>
-            </select>
-        </form>
-            
+      <!-- <h2>Effects</h2> -->
+      <form>
+        <select name="plataforma" required="required" multiple size="1" id="effects_box">
+          <option value="">Clair de Lune</option>
+          <option value="xbox">Shakespeare</option>
+          <option value="ps5">Everdread</option>
+          <option value="nsw">Nintendo Switch</option>
+          <option value="pcg">Flash drive</option>
+        </select>
+      </form>
+
     </div>
 
     <div id="colors" class="tabcontent">
@@ -189,9 +389,9 @@
     </div>
 
     <div id="wifi" class="tabcontent">
-        <h3>Contact</h3>
-        <p>Get in touch, or swing by for a cup of coffee.</p>
-      </div>
+      <h3>Contact</h3>
+      <p>Get in touch, or swing by for a cup of coffee.</p>
+    </div>
 
     <div id="other" class="tabcontent">
       <h3>About</h3>
@@ -212,7 +412,7 @@
         tablinks[i].style.backgroundColor = "";
       }
       document.getElementById(pageName).style.display = "block";
-      elmnt.style.backgroundColor = color;      
+      elmnt.style.backgroundColor = color;
     }
 
     // Get the element with id="defaultOpen" and click on it
