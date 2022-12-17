@@ -155,24 +155,35 @@
       margin: auto;
     }
 
-    .power_button {
-      background-color: #04AA6D;
-      border: none;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      /* margin: 4px 2px; */
-      border-radius: 50%;
-      position: absolute;
-      top: 55px;
-      left: 8px;
-      /* height: 50px; */
-      z-index: 25;
+
+    .small_box {
+      background-color: #103631;
+      border-radius: 5px;
     }
 
+    .inline_components {
+      display: flex;
+      /* justify-content: flex-end; */
+      align-items: center;
+      /* margin-left: 8px; */
+      /* margin-bottom: 1px; */
+      /* margin-right: auto; */
+      height: 26px;
+    }
+
+
+    .flavor_buttons {
+      /* background-color: #04AA6D; */
+      font-size: small;
+      border: none;
+      display: flex;
+      justify-content: center;
+      width: 250px;
+    }
+
+    .flavor_select {
+      font-size: smaller;
+    }
 
 
     #main {
@@ -236,6 +247,7 @@
         background-position: 90% 0%
       }
     }
+
 
     /* The switch - the box around the slider */
     .switch {
@@ -302,49 +314,50 @@
     }
 
     .collapsible {
-  background-color: #296661;
-  color: white;
-  cursor: pointer;
-  padding: 18px;
-  width: 100%;
-  border: none;
-  text-align: left;
-  outline: none;
-  font-size: 15px;
-}
+      background-color: #296661;
+      color: white;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 15px;
+    }
 
-.active, .collapsible:hover {
-  background-color: #103631;
-}
+    .active,
+    .collapsible:hover {
+      background-color: #103631;
+    }
 
-.collapsible:after {
-  content: '\002B';
-  color: white;
-  font-weight: bold;
-  float: right;
-  margin-left: 5px;
-}
+    .collapsible:after {
+      content: '\002B';
+      color: white;
+      font-weight: bold;
+      float: right;
+      margin-left: 5px;
+    }
 
-.active:after {
-  content: "\2212";
-}
+    .active:after {
+      content: "\2212";
+    }
 
-.content {
-  padding: 0 18px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-  background-color: #f1f1f1;
-}
+    .effect_settings {
+      padding: 0 18px;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+      background-color: #f1f1f1;
+    }
 
-.button_box{
-  width: 250px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  width: 100%;
-}
+    .button_box {
+      width: 250px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-evenly;
+      align-items: center;
+      width: 100%;
+    }
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script>
@@ -401,18 +414,33 @@
           onmouseup=send_cycle_time()>
       </div>
       <br>
-      <div style="border: 1px solid;">
+      <div class="small_box">
         <label for="Bright" class="name_label">STEADY MODE</label>
         <!-- <label for="Bright" class="name_label_small">Select color</label> -->
-        <input type="color" name="Color1" id="color1" onmouseup=send_color1()>
+        <div class="inline_components">
+          <input type="color" name="Color1" id="color1" onmouseup=send_color1()>
 
-        <!-- Rounded switch -->
-        <label class="switch">
-          <input type="checkbox">
-          <span class="slider round"></span>
-        </label>
-        <label for="enable_waving">ENABLE WAVING</label>
+          <!-- Rounded switch -->
+          <label class="switch">
+            <input type="checkbox">
+            <span class="slider round"></span>
+          </label>
+          <label for="enable_waving">ENABLE WAVING</label>
+        </div>
 
+      </div>
+
+      <br>
+      <div class="small_box">
+        <label class="name_label">PICK A FLAVOR</label>
+        <div class="flavor_buttons">
+          <button class="flavor_select">PLAIN</button>
+          <!-- <button class="flavor_select">CHERRY</button> -->
+          <button class="flavor_select">MINT</button>
+          <button class="flavor_select">STRAWBERRY</button>
+          <button class="flavor_select">BANANA</button>
+          <!-- <button class="flavor_select">PEANUT</button> -->
+        </div>
       </div>
       <!--- MAIN PAGE --->
     </div>
@@ -421,25 +449,48 @@
       <label for="effects_box" class="name_label">FX ATTRIBUTE EDITOR</label>
       <div style="overflow-y: auto; height: 300px; border: 1px solid;" id="effects_box">
         <button class="collapsible">Onett</button>
-        <div class="content">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-            dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-            ea commodo consequat.</p>
+        <div class="effect_settings">
+          <div class="inline_components">
+            <label>NAME:</label>
+            <input type="text">
+          </div>
+          <div class="inline_components">
+            <label>ACTIVE</label>
+            <input type="checkbox">
+          </div>
+          <div class="inline_components">
+            <label>SPEED</label>
+            <input type="range" name="Cycle" min="30" max="250" class="adjustment_slider" id="cycle_time"
+            onmouseup=send_cycle_time()>
+            <input type="checkbox">
+          </div>
+          <div class="inline_components">
+            <label>BRIGHT</label>
+            <input type="range" name="Cycle" min="30" max="250" class="adjustment_slider" id="cycle_time"
+            onmouseup=send_cycle_time()>
+            <input type="checkbox">
+          </div>
+          <div class="inline_components">
+            <label>CYCLE TIME</label>
+            <input type="range" name="Cycle" min="30" max="250" class="adjustment_slider" id="cycle_time"
+            onmouseup=send_cycle_time()>
+            <input type="checkbox">
+          </div>
         </div>
         <button class="collapsible">Twoson</button>
-        <div class="content">
+        <div class="effect_settings">
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat.</p>
         </div>
         <button class="collapsible">Threed</button>
-        <div class="content">
+        <div class="effect_settings">
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat.</p>
         </div>
         <button class="collapsible">Fourside</button>
-        <div class="content">
+        <div class="effect_settings">
           <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat.</p>
@@ -491,19 +542,19 @@
 
     // Collapsible
     var coll = document.getElementsByClassName("collapsible");
-          var i;
+    var i;
 
-          for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-              this.classList.toggle("active");
-              var content = this.nextElementSibling;
-              if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-              } else {
-                content.style.maxHeight = content.scrollHeight + "px";
-              }
-            });
-          }
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function () {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+    }
   </script>
 
 </body>
